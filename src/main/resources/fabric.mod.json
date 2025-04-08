@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "whatsthis",
+  "version": "${version}",
+
+  "name": "OwO Whats This",
+  "description": "",
+  "authors": [
+    "DanyGames2014"
+  ],
+
+  "license": "MIT",
+  "icon": "assets/whatsthis/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "stationapi:event_bus": [
+      "net.mcjty.whatsthis.WhatsThis"
+    ],
+    "stationapi:event_bus_client": [
+    ],
+    "stationapi:event_bus_server": [
+    ],
+    "gcapi3": [
+      "net.mcjty.whatsthis.config.Config"
+    ]
+  },
+  "mixins": [
+    "whatsthis.mixins.json"
+  ],
+
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3"
+  }
+}
