@@ -17,6 +17,8 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
     
     private int entityId;
     private ProbeInfo probeInfo;
+    
+    private int size;
 
     public PacketReturnEntityInfo() {
     }
@@ -44,6 +46,8 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
     @Override
     public void write(DataOutputStream stream) {
         try {
+            int initialStreamSize = stream.size();
+            
             stream.writeInt(entityId);
             if (probeInfo != null) {
                 stream.writeBoolean(true);
@@ -51,6 +55,8 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
             } else {
                 stream.writeBoolean(false);
             }
+            
+            size = stream.size() - initialStreamSize;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +69,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override

@@ -59,7 +59,7 @@ public class RenderHelper {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
-        GL11.glTranslatef(xPos + 8, yPos + 24, 50F);
+        GL11.glTranslatef(xPos + 8, yPos + 32, 50F);
         GL11.glScalef(-scale, scale, scale);
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(135F, 0.0F, 1.0F, 0.0F);
@@ -85,7 +85,7 @@ public class RenderHelper {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_DEPTH);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);
         GL13.glActiveTexture(GL13.GL_TEXTURE1); // lightmapTexUnit
         GL11.glDisable(GL11.GL_TEXTURE_2D);

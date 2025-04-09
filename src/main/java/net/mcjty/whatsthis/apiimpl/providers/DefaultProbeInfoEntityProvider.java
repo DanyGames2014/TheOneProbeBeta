@@ -5,6 +5,7 @@ import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.config.ConfigSetup;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
@@ -157,12 +158,13 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
             probeInfo.horizontal()
                     .entity(entity)
                     .vertical()
-                        .text(NAME + entity.getClass().getName())
+                        .text(NAME + EntityRegistry.getId(entity))
+                    // TODO : Proper Entity Names
                         .text(MODNAME + modid);
         } else {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                     .entity(entity)
-                    .text(NAME + entity.getClass().getName());
+                    .text(NAME + EntityRegistry.getId(entity));
         }
     }
 }
