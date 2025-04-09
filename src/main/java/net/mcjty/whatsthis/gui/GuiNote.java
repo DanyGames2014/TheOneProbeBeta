@@ -1,7 +1,6 @@
 package net.mcjty.whatsthis.gui;
 
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.rendering.RenderHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.modificationstation.stationapi.api.util.Formatting;
@@ -49,7 +48,7 @@ public class GuiNote extends Screen {
         RenderHelper.renderText(minecraft, x, y, "when you look at a block or an entity"); y += 10;
 
         y += 10;
-        switch (ConfigSetup.needsProbe) {
+        switch (Config.MAIN_CONFIG.needsProbe) {
             case PROBE_NEEDED:
                 RenderHelper.renderText(minecraft, x, y, "In this pack the probe is configured to be"); y += 10;
                 RenderHelper.renderText(minecraft, x, y, "required in order to see the tooltip"); y += 10;
@@ -89,6 +88,7 @@ public class GuiNote extends Screen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        
         mouseX += guiLeft;
         mouseY += guiTop;
         if (mouseY >= hitY && mouseY < hitY + BUTTON_HEIGHT) {
