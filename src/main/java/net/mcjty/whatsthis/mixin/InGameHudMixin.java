@@ -1,7 +1,7 @@
 package net.mcjty.whatsthis.mixin;
 
 import net.mcjty.whatsthis.api.ProbeMode;
-import net.mcjty.whatsthis.config.ConfigSetup;
+import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.items.ModItems;
 import net.mcjty.whatsthis.rendering.OverlayRenderer;
 import net.minecraft.client.Minecraft;
@@ -23,12 +23,12 @@ import static net.mcjty.whatsthis.config.ConfigSetup.PROBE_NEEDEDHARD;
 public class InGameHudMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glColor4f(FFFF)V", remap = false))
     public void renderOverlay(float tickDelta, boolean screenOpen, int mouseX, int mouseY, CallbackInfo ci) {
-        if (ConfigSetup.holdKeyToMakeVisible) {
+        if (Config.CLIENT_CONFIG.holdKeyToMakeVisible) {
             if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) { //!KeyBindings.toggleVisible.isKeyDown()) {
                 return;
             }
         } else {
-            if (!ConfigSetup.isVisible) {
+            if (!Config.CLIENT_CONFIG.isVisible) {
                 return;
             }
         }
@@ -36,7 +36,7 @@ public class InGameHudMixin {
         if (hasItemInMainHand(Item.STICK)) {
             OverlayRenderer.renderHUD(ProbeMode.DEBUG, tickDelta);
         } else {
-            switch (ConfigSetup.needsProbe) {
+            switch (Config.MAIN_CONFIG.needsProbe) {
                 case PROBE_NOTNEEDED:
                 case PROBE_NEEDEDFOREXTENDED:
                     OverlayRenderer.renderHUD(getModeForPlayer(), tickDelta);
@@ -54,7 +54,7 @@ public class InGameHudMixin {
     @Unique
     private ProbeMode getModeForPlayer() {
         PlayerEntity player = Minecraft.INSTANCE.player;
-        if (ConfigSetup.extendedInMain) {
+        if (Config.MAIN_CONFIG.extendedInMain) {
             if (hasItemInMainHand(Item.BOOK)) {
                 return ProbeMode.EXTENDED;
             }

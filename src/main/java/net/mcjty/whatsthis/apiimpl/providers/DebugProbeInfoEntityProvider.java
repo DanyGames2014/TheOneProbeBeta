@@ -1,6 +1,7 @@
 package net.mcjty.whatsthis.apiimpl.providers;
 
 import net.mcjty.whatsthis.WhatsThis;
+import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.api.IProbeHitEntityData;
 import net.mcjty.whatsthis.api.IProbeInfo;
@@ -22,7 +23,7 @@ public class DebugProbeInfoEntityProvider implements IProbeInfoEntityProvider {
 
     @Override
     public void addProbeEntityInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
-        if (mode == ProbeMode.DEBUG && ConfigSetup.showDebugInfo) {
+        if (mode == ProbeMode.DEBUG && Config.MAIN_CONFIG.showDebugInfo) {
             IProbeInfo vertical = null;
             if (entity instanceof LivingEntity entityLivingBase) {
                 vertical = probeInfo.vertical(new LayoutStyle().borderColor(0xffff4444).spacing(2));

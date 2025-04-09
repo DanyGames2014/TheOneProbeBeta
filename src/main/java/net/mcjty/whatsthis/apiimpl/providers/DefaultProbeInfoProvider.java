@@ -5,6 +5,7 @@ import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.apiimpl.ProbeConfig;
 import net.mcjty.whatsthis.apiimpl.elements.ElementProgress;
+import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -214,12 +215,12 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
             probeInfo.progress(energy, maxEnergy,
                     probeInfo.defaultProgressStyle()
                             .suffix("RF")
-                            .filledColor(ConfigSetup.rfbarFilledColor)
-                            .alternateFilledColor(ConfigSetup.rfbarAlternateFilledColor)
-                            .borderColor(ConfigSetup.rfbarBorderColor)
-                            .numberFormat(ConfigSetup.rfFormat));
+                            .filledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarFilledColor))
+                            .alternateFilledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarAlternateFilledColor))
+                            .borderColor(Config.parseColor(Config.MAIN_CONFIG.rfbarBorderColor))
+                            .numberFormat(Config.MAIN_CONFIG.getRfFormat()));
         } else {
-            probeInfo.text(PROGRESS + "RF: " + ElementProgress.format(energy, ConfigSetup.rfFormat, "RF"));
+            probeInfo.text(PROGRESS + "RF: " + ElementProgress.format(energy, Config.MAIN_CONFIG.getRfFormat(), "RF"));
         }
     }
 

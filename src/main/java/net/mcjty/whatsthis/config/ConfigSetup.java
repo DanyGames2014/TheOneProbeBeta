@@ -270,7 +270,7 @@ public class ConfigSetup {
 //        cfg.get(CATEGORY_CLIENT, "boxTopY", topy).set(topy);
 //        cfg.get(CATEGORY_CLIENT, "boxBottomY", bottomy).set(bottomy);
 //        cfg.save();
-//        updateDefaultOverlayStyle();
+        updateDefaultOverlayStyle();
     }
 
     public static void setScale(float scale) {
@@ -279,7 +279,7 @@ public class ConfigSetup {
 //        tooltipScale = scale;
 //        cfg.get(CATEGORY_CLIENT, "tooltipScale", tooltipScale).set(tooltipScale);
 //        cfg.save();
-//        updateDefaultOverlayStyle();
+        updateDefaultOverlayStyle();
     }
 
     public static void setBoxStyle(int thickness, int borderColor, int fillcolor, int offset) {
@@ -297,7 +297,7 @@ public class ConfigSetup {
 //        cfg.get(CATEGORY_CLIENT, "boxFillColor", Integer.toHexString(fillcolor)).set(Integer.toHexString(fillcolor));
 //        cfg.get(CATEGORY_CLIENT, "boxOffset", offset).set(offset);
 //        cfg.save();
-//        updateDefaultOverlayStyle();
+        updateDefaultOverlayStyle();
     }
 
     private static Formatting convertFormatting(String input) {
@@ -393,11 +393,11 @@ public class ConfigSetup {
 
     public static void updateDefaultOverlayStyle() {
         defaultOverlayStyle = new DefaultOverlayStyle()
-                .borderThickness(boxThickness)
-                .borderColor(boxBorderColor)
-                .boxColor(boxFillColor)
-                .borderOffset(boxOffset)
-                .location(leftX, rightX, topY, bottomY);
+                .borderThickness(Config.CLIENT_CONFIG.boxThickness)
+                .borderColor(Config.parseColor(Config.CLIENT_CONFIG.boxBorderColor))
+                .boxColor(Config.parseColor(Config.CLIENT_CONFIG.boxFillColor))
+                .borderOffset(Config.CLIENT_CONFIG.boxOffset)
+                .location(Config.CLIENT_CONFIG.leftX, Config.CLIENT_CONFIG.rightX, Config.CLIENT_CONFIG.topY, Config.CLIENT_CONFIG.bottomY);
     }
 
     public static IOverlayStyle getDefaultOverlayStyle() {

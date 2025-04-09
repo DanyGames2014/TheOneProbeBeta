@@ -4,6 +4,7 @@ import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.apiimpl.ProbeHitEntityData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
+import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.items.ModItems;
 import net.minecraft.entity.Entity;
@@ -108,7 +109,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
 //    }
 
     private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, Entity entity, Vec3d hitVec) {
-        if (ConfigSetup.needsProbe == PROBE_NEEDEDFOREXTENDED) {
+        if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
             // We need a probe only for extended information
             if (!ModItems.hasAProbeSomewhere(player)) {
                 // No probe anywhere, switch EXTENDED to NORMAL
@@ -116,7 +117,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
                     mode = ProbeMode.NORMAL;
                 }
             }
-        } else if (ConfigSetup.needsProbe == PROBE_NEEDEDHARD && !ModItems.hasAProbeSomewhere(player)) {
+        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ModItems.hasAProbeSomewhere(player)) {
             // The server says we need a probe but we don't have one in our hands or on our head
             return null;
         }
