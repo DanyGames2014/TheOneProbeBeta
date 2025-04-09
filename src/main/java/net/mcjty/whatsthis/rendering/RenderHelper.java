@@ -604,7 +604,7 @@ public class RenderHelper {
         int width = minecraft.textRenderer.getWidth(text);
         minecraft.textRenderer.drawWithShadow(text, x, y, 16777215);
         GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glPopMatrix();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);

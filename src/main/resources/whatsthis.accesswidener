@@ -4,3 +4,4 @@ accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/M
 accessible field net/minecraft/block/entity/MobSpawnerBlockEntity spawnedEntityId Ljava/lang/String;
 accessible field net/minecraft/client/MultiplayerInteractionManager blockBreakingProgress F
 accessible field net/minecraft/client/SingleplayerInteractionManager blockBreakingProgress F
+accessible field net/minecraft/server/network/ServerPlayNetworkHandler player Lnet/minecraft/entity/player/ServerPlayerEntity;

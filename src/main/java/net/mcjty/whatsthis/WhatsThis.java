@@ -7,15 +7,19 @@ import net.mcjty.whatsthis.apiimpl.elements.*;
 import net.mcjty.whatsthis.apiimpl.providers.*;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
+import net.mcjty.whatsthis.items.ProbeNote;
 import net.mcjty.whatsthis.network.PacketGetEntityInfo;
 import net.mcjty.whatsthis.network.PacketGetInfo;
 import net.mcjty.whatsthis.network.PacketReturnEntityInfo;
 import net.mcjty.whatsthis.network.PacketReturnInfo;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.item.Item;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.event.mod.PreInitEvent;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
+import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
@@ -35,13 +39,20 @@ public class WhatsThis {
     public static Logger LOGGER = Null.get();
 
     public static TheOneProbeImp theOneProbeImp = new TheOneProbeImp();
-    
+
+    public static Item probeNote;
+
     // TODO: BH Creative Support
 
     public Logger getLogger() {
         return LOGGER;
     }
-    
+
+    @EventListener
+    public void registerItems(ItemRegistryEvent event) {
+        probeNote = new ProbeNote(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");
+    }
+
     @EventListener
     public void registerPackets(PacketRegisterEvent event) {
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("get_info"), PacketGetInfo.TYPE);
@@ -62,7 +73,7 @@ public class WhatsThis {
 
         setupModCompat();
     }
-    
+
     @EventListener(phase = InitEvent.POST_INIT_PHASE)
     public void postInit(InitEvent event) {
         configureProviders();

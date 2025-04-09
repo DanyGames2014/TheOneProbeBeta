@@ -1,21 +1,27 @@
 package net.mcjty.whatsthis.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.apiimpl.ProbeHitData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
 import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.items.ModItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
@@ -31,14 +37,16 @@ import static net.mcjty.whatsthis.config.ConfigSetup.PROBE_NEEDEDFOREXTENDED;
 import static net.mcjty.whatsthis.config.ConfigSetup.PROBE_NEEDEDHARD;
 
 public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo> {
-    public static final PacketType<PacketGetInfo> TYPE = PacketType.builder(false, true, PacketGetInfo::new).build(); 
-    
+    public static final PacketType<PacketGetInfo> TYPE = PacketType.builder(false, true, PacketGetInfo::new).build();
+
     private int dim;
     private BlockPos pos;
     private ProbeMode mode;
     private Direction sideHit;
     private Vec3d hitVec;
     private ItemStack pickBlock;
+
+    private int size = 0;
 
     public PacketGetInfo() {
     }
@@ -51,7 +59,7 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
         this.hitVec = Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ);
         this.pickBlock = pickBlock;
     }
-    
+
     @Override
     public void read(DataInputStream buf) {
         try {
@@ -67,7 +75,7 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
             if (buf.readBoolean()) {
                 hitVec = Vec3d.create(buf.readDouble(), buf.readDouble(), buf.readDouble());
             }
-            
+
             //pickBlock = ByteBufUtils.readItemStack(buf);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -75,22 +83,28 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     }
 
     @Override
-    public void write(DataOutputStream buf) {
+    public void write(DataOutputStream stream) {
         try {
-            buf.writeInt(dim);
-            buf.writeInt(pos.getX());
-            buf.writeInt(pos.getY());
-            buf.writeInt(pos.getZ());
-            buf.writeByte(mode.ordinal());
-            buf.writeByte(sideHit == null ? 127 : sideHit.ordinal());
+            stream.writeInt(dim); // 4b
+            stream.writeInt(pos.getX()); // 4b
+            stream.writeInt(pos.getY()); // 4b
+            stream.writeInt(pos.getZ()); // 4b
+            stream.writeByte(mode.ordinal()); // 1b
+            stream.writeByte(sideHit == null ? 127 : sideHit.ordinal()); // 1b
             if (hitVec == null) {
-                buf.writeBoolean(false);
+                stream.writeBoolean(false); // 1b
+
+                this.size = 19;
             } else {
-                buf.writeBoolean(true);
-                buf.writeDouble(hitVec.x);
-                buf.writeDouble(hitVec.y);
-                buf.writeDouble(hitVec.z);
+                stream.writeBoolean(true); // 1b
+                stream.writeDouble(hitVec.x); // 8b 
+                stream.writeDouble(hitVec.y); // 8b
+                stream.writeDouble(hitVec.z); // 8b
+
+                this.size = 43;
             }
+            
+            // TODO: Write the item
 
 //            ByteBuff buffer = Unpooled.buffer();
 //            ByteBufUtils.writeItemStack(buffer, pickBlock);
@@ -108,12 +122,39 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
 
     @Override
     public void apply(NetworkHandler networkHandler) {
-        // TODO: handle
+        switch (FabricLoader.getInstance().getEnvironmentType()) {
+            case CLIENT -> {
+                handleClient(networkHandler);
+            }
+            case SERVER -> {
+                handleServer(networkHandler);
+            }
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void handleClient(NetworkHandler networkHandler) {
+        World world = Minecraft.INSTANCE.world;
+        if (world != null) {
+            ProbeInfo probeInfo = getProbeInfo(Minecraft.INSTANCE.player, mode, world, pos, sideHit, hitVec, pickBlock);
+            PacketHelper.sendTo(Minecraft.INSTANCE.player, new PacketReturnInfo(dim, pos, probeInfo));
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void handleServer(NetworkHandler networkHandler) {
+        if (networkHandler instanceof ServerPlayNetworkHandler handler) {
+            World world = handler.player.world;
+            if (world != null) {
+                ProbeInfo probeInfo = getProbeInfo(handler.player, mode, world, pos, sideHit, hitVec, pickBlock);
+                PacketHelper.sendTo(handler.player, new PacketReturnInfo(dim, pos, probeInfo));
+            }
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     @Override

@@ -15,10 +15,12 @@ import java.io.IOException;
 
 public class PacketReturnInfo extends Packet implements ManagedPacket<PacketReturnInfo> {
     public static final PacketType<PacketReturnInfo> TYPE = PacketType.builder(true, false, PacketReturnInfo::new).build();
-    
+
     private int dim;
     private BlockPos pos;
     private ProbeInfo probeInfo;
+
+    private int size = 0;
 
     public PacketReturnInfo() {
     }
@@ -28,16 +30,16 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
         this.pos = pos;
         this.probeInfo = probeInfo;
     }
-    
+
     @Override
     public void read(DataInputStream stream) {
         try {
             dim = stream.readInt();
             pos = new BlockPos(stream.readInt(), stream.readInt(), stream.readInt());
-            if(stream.readBoolean()) {
+            if (stream.readBoolean()) {
                 probeInfo = new ProbeInfo();
                 probeInfo.fromBytes(stream);
-            }else{
+            } else {
                 probeInfo = null;
             }
         } catch (IOException e) {
@@ -48,6 +50,8 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
     @Override
     public void write(DataOutputStream stream) {
         try {
+            int streamInitialSize = stream.size();
+
             stream.writeInt(dim);
             stream.writeInt(pos.getX());
             stream.writeInt(pos.getY());
@@ -58,12 +62,13 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
             } else {
                 stream.writeBoolean(false);
             }
+
+            size = stream.size() - streamInitialSize;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    
 
     @Override
     public void apply(NetworkHandler networkHandler) {
@@ -72,7 +77,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
