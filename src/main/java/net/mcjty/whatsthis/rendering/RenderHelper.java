@@ -14,6 +14,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 
+import java.awt.*;
+
 @SuppressWarnings("DuplicatedCode")
 public class RenderHelper {
     public static float rot = 0.0f;
@@ -21,7 +23,7 @@ public class RenderHelper {
     public static void enableLighting() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        //wGL11.glEnable(GL11.GL_DEPTH_TEST);
     }
 
     public static void enableItemLighting() {
@@ -36,7 +38,7 @@ public class RenderHelper {
     public static void disableLighting() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        //GL11.glDisable(GL11.GL_DEPTH_TEST);
     }
 
     public static void disableItemLighting() {
@@ -134,7 +136,7 @@ public class RenderHelper {
             GL11.glDisable(GL11.GL_LIGHTING);
             drawVerticalGradientRect(x, y, x + 16, y + 16, 0x80ffffff, 0xffffffff);
         }
-        
+
         enableItemLighting();
         itemRenderer.renderGuiItem(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
         disableItemLighting();
@@ -544,28 +546,36 @@ public class RenderHelper {
 //        Tessellator.getInstance().draw();
 //    }
     
-    
     public static int renderText(Minecraft minecraft, int x, int y, String text) {
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        enableStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
-        int width = minecraft.textRenderer.getWidth(text);
-        minecraft.textRenderer.drawWithShadow(text, x, y, 16777215);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        int width = ProbeTextRenderer.INSTANCE.getWidth(text);
 
+        GL11.glDisable(GL11.GL_BLEND);
+        renderStringAtPos(text, x+1, y+1, Color.WHITE, true);
+        renderStringAtPos(text, x, y, Color.WHITE, false);
+        GL11.glEnable(GL11.GL_BLEND);
+        
         return width;
+    }
+
+    public static void renderStringAtPos(String text, int x, int y, Color color, boolean shadow) {
+        int intColor = color.getRGB();
+        
+        if (shadow) {
+            int shadowOffset = intColor & -16777216;
+            intColor = (intColor & 16579836) >> 2;
+            intColor += shadowOffset;
+        }
+
+        float red = (float)(intColor >> 16 & 255) / 255;
+        float green = (float)(intColor >> 8 & 255) / 255;
+        float blue = (float)(intColor & 255) / 255;
+        float alpha = (float)(intColor >> 24 & 255) / 255;
+        
+        if (alpha == 0) {
+            alpha = 1;
+        }
+
+        ProbeTextRenderer.INSTANCE.renderStringAtPos(text, x, y, new Color(red, green, blue, alpha), shadow);
     }
 
     public static class Vector {

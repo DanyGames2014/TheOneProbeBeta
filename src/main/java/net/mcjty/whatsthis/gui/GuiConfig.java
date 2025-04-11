@@ -58,8 +58,8 @@ public class GuiConfig extends Screen {
                 Pair.of(PROGRESS, "white")
         ));
         presets.add(new Preset("Soft Pastels", 0xffe0bbff, 0x00000000, 1, 1,
-                Pair.of(TextStyleClass.MODNAME, "pink,bold,italic")
-        ));
+                Pair.of(MODNAME, "aqua")
+                ));
         presets.add(new Preset("Ocean Blue", 0xff003366, 0x556699cc, 2, 0,
                 Pair.of(TextStyleClass.MODNAME, "cyan"),
                 Pair.of(TextStyleClass.NAME, "light_blue,bold"),
@@ -184,14 +184,7 @@ public class GuiConfig extends Screen {
 
     private void applyPreset(Preset preset) {
         ConfigSetup.setBoxStyle(preset.getBoxThickness(), preset.getBoxBorderColor(), preset.getBoxFillColor(), preset.getBoxOffset());
-
-        for (Map.Entry<TextStyleClass, String> entry : ConfigSetup.defaultTextStyleClasses.entrySet()) {
-            ConfigSetup.setTextStyle(entry.getKey(), entry.getValue());
-        }
-
-        for (Map.Entry<TextStyleClass, String> entry : preset.getTextStyleClasses().entrySet()) {
-            ConfigSetup.setTextStyle(entry.getKey(), entry.getValue());
-        }
+        ConfigSetup.setTextStyle(ConfigSetup.defaultTextStyleClasses, preset.getTextStyleClasses());
     }
 
     private int addPreset(int x, int y, Preset preset) {

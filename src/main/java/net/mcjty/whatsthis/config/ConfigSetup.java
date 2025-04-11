@@ -6,10 +6,10 @@ import net.glasslauncher.mods.gcapi3.impl.GlassYamlFile;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.IOverlayStyle;
 import net.mcjty.whatsthis.api.IProbeConfig;
-import net.mcjty.whatsthis.api.NumberFormat;
 import net.mcjty.whatsthis.api.TextStyleClass;
 import net.mcjty.whatsthis.apiimpl.ProbeConfig;
 import net.mcjty.whatsthis.apiimpl.styles.DefaultOverlayStyle;
+import net.mcjty.whatsthis.rendering.ProbeTextRenderer;
 import net.modificationstation.stationapi.api.util.Formatting;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.MathHelper;
@@ -23,6 +23,7 @@ import java.util.Set;
 import static net.mcjty.whatsthis.api.TextStyleClass.*;
 
 // TODO: Move this to config
+@SuppressWarnings("StringConcatenationArgumentToLogCall")
 public class ConfigSetup {
     public static final int PROBE_NOTNEEDED = 0;
     public static final int PROBE_NEEDED = 1;
@@ -38,7 +39,7 @@ public class ConfigSetup {
 
     static {
         defaultTextStyleClasses.put(NAME, "white");
-        defaultTextStyleClasses.put(MODNAME, "blue,italic");
+        defaultTextStyleClasses.put(MODNAME, "blue");
         defaultTextStyleClasses.put(ERROR, "red,bold");
         defaultTextStyleClasses.put(WARNING, "yellow");
         defaultTextStyleClasses.put(OK, "green");
@@ -68,42 +69,6 @@ public class ConfigSetup {
         return realConfig;
     }
 
-//    public static void init(Configuration cfg) {
-//        loggingThrowableTimeout = cfg.getInt("loggingThrowableTimeout", CATEGORY_THEONEPROBE, loggingThrowableTimeout, 1, 10000000, "How much time (ms) to wait before reporting an exception again");
-//        needsProbe = cfg.getInt("needsProbe", CATEGORY_THEONEPROBE, needsProbe, 0, 3, "Is the probe needed to show the tooltip? 0 = no, 1 = yes, 2 = yes and clients cannot override, 3 = probe needed for extended info only");
-//        extendedInMain = cfg.getBoolean("extendedInMain", CATEGORY_THEONEPROBE, extendedInMain, "If true the probe will automatically show extended information if it is in your main hand (so not required to sneak)");
-//        supportBaubles = cfg.getBoolean("supportBaubles", CATEGORY_THEONEPROBE, supportBaubles, "If true there will be a bauble version of the probe if baubles is present");
-//        spawnNote = cfg.getBoolean("spawnNote", CATEGORY_THEONEPROBE, spawnNote, "If true there will be a readme note for first-time players");
-//        defaultConfig.setRFMode(cfg.getInt("showRF", CATEGORY_THEONEPROBE, defaultConfig.getRFMode(), 0, 2, "How to display RF: 0 = do not show, 1 = show in a bar, 2 = show as text"));
-//        defaultConfig.setTankMode(cfg.getInt("showTank", CATEGORY_THEONEPROBE, defaultConfig.getTankMode(), 0, 2, "How to display tank contents: 0 = do not show, 1 = show in a bar, 2 = show as text"));
-//        int fmt = cfg.getInt("rfFormat", CATEGORY_THEONEPROBE, rfFormat.ordinal(), 0, 2, "Format for displaying RF: 0 = full, 1 = compact, 2 = comma separated");
-//        rfFormat = NumberFormat.values()[fmt];
-//        fmt = cfg.getInt("tankFormat", CATEGORY_THEONEPROBE, tankFormat.ordinal(), 0, 2, "Format for displaying tank contents: 0 = full, 1 = compact, 2 = comma separated");
-//        tankFormat = NumberFormat.values()[fmt];
-//        timeout = cfg.getInt("timeout", CATEGORY_THEONEPROBE, timeout, 10, 100000, "The amount of milliseconds to wait before updating probe information from the server (this is a client-side config)");
-//        waitingForServerTimeout = cfg.getInt("waitingForServerTimeout", CATEGORY_THEONEPROBE, waitingForServerTimeout, -1, 100000, "The amount of milliseconds to wait before showing a 'fetch from server' info on the client (if the server is slow to respond) (-1 to disable this feature)");
-//        maxPacketToServer = cfg.getInt("maxPacketToServer", CATEGORY_THEONEPROBE, maxPacketToServer, -1, 32768, "The maximum packet size to send an itemstack from client to server. Reduce this if you have issues with network lag caused by TOP");
-//        probeDistance = cfg.getFloat("probeDistance", CATEGORY_THEONEPROBE, probeDistance, 0.1f, 200f, "Distance at which the probe works");
-//        initDefaultConfig(cfg);
-//
-//        showDebugInfo = cfg.getBoolean("showDebugInfo", CATEGORY_THEONEPROBE, showDebugInfo, "If true show debug info with creative probe");
-//        compactEqualStacks = cfg.getBoolean("compactEqualStacks", CATEGORY_THEONEPROBE, compactEqualStacks, "If true equal stacks will be compacted in the chest contents overlay");
-//        rfbarFilledColor = parseColor(cfg.getString("rfbarFilledColor", CATEGORY_THEONEPROBE, Integer.toHexString(rfbarFilledColor), "Color for the RF bar"));
-//        rfbarAlternateFilledColor = parseColor(cfg.getString("rfbarAlternateFilledColor", CATEGORY_THEONEPROBE, Integer.toHexString(rfbarAlternateFilledColor), "Alternate color for the RF bar"));
-//        rfbarBorderColor = parseColor(cfg.getString("rfbarBorderColor", CATEGORY_THEONEPROBE, Integer.toHexString(rfbarBorderColor), "Color for the RF bar border"));
-//        tankbarFilledColor = parseColor(cfg.getString("tankbarFilledColor", CATEGORY_THEONEPROBE, Integer.toHexString(tankbarFilledColor), "Color for the tank bar"));
-//        tankbarAlternateFilledColor = parseColor(cfg.getString("tankbarAlternateFilledColor", CATEGORY_THEONEPROBE, Integer.toHexString(tankbarAlternateFilledColor), "Alternate color for the tank bar"));
-//        tankbarBorderColor = parseColor(cfg.getString("tankbarBorderColor", CATEGORY_THEONEPROBE, Integer.toHexString(tankbarBorderColor), "Color for the tank bar border"));
-//
-//        showItemDetailThresshold = cfg.getInt("showItemDetailThresshold", CATEGORY_THEONEPROBE, showItemDetailThresshold, 0, 20, "If the number of items in an inventory is lower or equal then this number then more info is shown");
-//        showSmallChestContentsWithoutSneaking = cfg.getInt("showSmallChestContentsWithoutSneaking", CATEGORY_THEONEPROBE, showSmallChestContentsWithoutSneaking, 0, 1000, "The maximum amount of slots (empty or not) to show without sneaking");
-//        showContentsWithoutSneaking = cfg.getStringList("showContentsWithoutSneaking", CATEGORY_THEONEPROBE, showContentsWithoutSneaking, "A list of blocks for which we automatically show chest contents even if not sneaking");
-//        dontShowContentsUnlessSneaking = cfg.getStringList("dontShowContentsUnlessSneaking", CATEGORY_THEONEPROBE, dontShowContentsUnlessSneaking, "A list of blocks for which we don't show chest contents automatically except if sneaking");
-//        dontSendNBT = cfg.getStringList("dontSendNBT", CATEGORY_THEONEPROBE, dontSendNBT, "A list of blocks for which we don't send NBT over the network. This is mostly useful for blocks that have HUGE NBT in their pickblock (itemstack)");
-//
-//        setupStyleConfig(cfg);
-//    }
-
 //    private static void initDefaultConfig(Configuration cfg) {
 //        defaultConfig.showModName(IProbeConfig.ConfigMode.values()[cfg.getInt("showModName", CATEGORY_THEONEPROBE, defaultConfig.getShowModName().ordinal(), 0, 2, "Show mod name (0 = not, 1 = always, 2 = sneak)")]);
 //        defaultConfig.showHarvestLevel(IProbeConfig.ConfigMode.values()[cfg.getInt("showHarvestLevel", CATEGORY_THEONEPROBE, defaultConfig.getShowHarvestLevel().ordinal(), 0, 2, "Show harvest level (0 = not, 1 = always, 2 = sneak)")]);
@@ -123,46 +88,47 @@ public class ConfigSetup {
 //        defaultConfig.showHorseStatSetting(IProbeConfig.ConfigMode.values()[cfg.getInt("showHorseStatSetting", CATEGORY_THEONEPROBE, defaultConfig.getHorseStatSetting().ordinal(), 0, 2, "Show horse stats setting (0 = not, 1 = always, 2 = sneak)")]);
 //    }
 
-//    public static void setupStyleConfig(Configuration cfg) {
-//        leftX = cfg.getInt("boxLeftX", CATEGORY_CLIENT, leftX, -1, 10000, "The distance to the left side of the screen. Use -1 if you don't want to set this");
-//        rightX = cfg.getInt("boxRightX", CATEGORY_CLIENT, rightX, -1, 10000, "The distance to the right side of the screen. Use -1 if you don't want to set this");
-//        topY = cfg.getInt("boxTopY", CATEGORY_CLIENT, topY, -1, 10000, "The distance to the top side of the screen. Use -1 if you don't want to set this");
-//        bottomY = cfg.getInt("boxBottomY", CATEGORY_CLIENT, bottomY, -1, 10000, "The distance to the bottom side of the screen. Use -1 if you don't want to set this");
-//        boxBorderColor = parseColor(cfg.getString("boxBorderColor", CATEGORY_CLIENT, Integer.toHexString(boxBorderColor), "Color of the border of the box (0 to disable)"));
-//        boxFillColor = parseColor(cfg.getString("boxFillColor", CATEGORY_CLIENT, Integer.toHexString(boxFillColor), "Color of the box (0 to disable)"));
-//        boxThickness = cfg.getInt("boxThickness", CATEGORY_CLIENT, boxThickness, 0, 20, "Thickness of the border of the box (0 to disable)");
-//        boxOffset = cfg.getInt("boxOffset", CATEGORY_CLIENT, boxOffset, 0, 20, "How much the border should be offset (i.e. to create an 'outer' border)");
-//        showLiquids = cfg.getBoolean("showLiquids", CATEGORY_CLIENT, showLiquids, "If true show liquid information when the probe hits liquid first");
-//        isVisible = cfg.getBoolean("isVisible", CATEGORY_CLIENT, isVisible, "Toggle default probe visibility (client can override)");
-//        holdKeyToMakeVisible = cfg.getBoolean("holdKeyToMakeVisible", CATEGORY_CLIENT, holdKeyToMakeVisible, "If true then the probe hotkey must be held down to show the tooltip");
-//        compactEqualStacks = cfg.getBoolean("compactEqualStacks", CATEGORY_CLIENT, compactEqualStacks, "If true equal stacks will be compacted in the chest contents overlay");
-//        tooltipScale = cfg.getFloat("tooltipScale", CATEGORY_CLIENT, tooltipScale, 0.4f, 5.0f, "The scale of the tooltips, 1 is default, 2 is smaller");
-//        chestContentsBorderColor = parseColor(cfg.getString("chestContentsBorderColor", CATEGORY_CLIENT, Integer.toHexString(chestContentsBorderColor), "Color of the border of the chest contents box (0 to disable)"));
-//        showBreakProgress = cfg.getInt("showBreakProgress", CATEGORY_CLIENT, showBreakProgress, 0, 2, "0 means don't show break progress, 1 is show as bar, 2 is show as text");
-//        harvestStyleVanilla = cfg.getBoolean("harvestStyleVanilla", CATEGORY_CLIENT, harvestStyleVanilla, "true means shows harvestability with vanilla style icons");
-//
-//        Map<TextStyleClass, String> newformat = new HashMap<>();
-//        for (TextStyleClass styleClass : textStyleClasses.keySet()) {
-//            String style = cfg.getString("textStyle" + styleClass.getReadableName(),
-//                    CATEGORY_CLIENT, textStyleClasses.get(styleClass),
-//                    "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...");
-//            newformat.put(styleClass, style);
-//        }
-//        textStyleClasses = newformat;
-//
-//        extendedInMain = cfg.getBoolean("extendedInMain", CATEGORY_CLIENT, extendedInMain, "If true the probe will automatically show extended information if it is in your main hand (so not required to sneak)");
-//    }
+    public static void setTextStyle(Map<TextStyleClass, String> defaultStyle, Map<TextStyleClass, String> style) {
+        HashMap<String, Object> toSave = new HashMap<>();
 
-    public static void setTextStyle(TextStyleClass styleClass, String style) {
-//        Configuration cfg = mainConfig;
-//        ConfigSetup.textStyleClasses.put(styleClass, style);
-//        cfg.get(CATEGORY_CLIENT, "textStyle" + styleClass.getReadableName(), style).set(style);
-//        cfg.save();
+        // First load the defaults
+        textStyleClasses.putAll(defaultStyle);
+        for (Map.Entry<TextStyleClass, String> styleClass : defaultStyle.entrySet()) {
+            toSave.put("textStyle" + styleClass.getKey().getReadableName(), styleClass.getValue());
+        }
+        
+        // After loading the defaults, overwrite any changed values
+        textStyleClasses.putAll(style);
+        for (Map.Entry<TextStyleClass, String> styleClass : style.entrySet()) {
+            toSave.put("textStyle" + styleClass.getKey().getReadableName(), styleClass.getValue());
+        }
+
+        setConfigValues("whatsthis:client", toSave);
     }
+    
+    public static void setTextStyle(Map<TextStyleClass, String> style) {
+        HashMap<String, Object> toSave = new HashMap<>();
+        
+        textStyleClasses.putAll(style);
+        for (Map.Entry<TextStyleClass, String> styleClass : style.entrySet()) {
+            toSave.put("textStyle" + styleClass.getKey().getReadableName(), styleClass.getValue());
+        }
+        
+        setConfigValues("whatsthis:client", toSave);
+    }
+    
 
     public static void setConfigValue(String configId, String key, Object value) {
         GlassYamlFile yamlFile = new GlassYamlFile();
         yamlFile.set(key, value);
+        GCAPI.reloadConfig(configId, yamlFile);
+    }
+    
+    public static void setConfigValues(String configId, HashMap<String, Object> values) {
+        GlassYamlFile yamlFile = new GlassYamlFile();
+        for (Map.Entry<String, Object> entry : values.entrySet()) {
+            yamlFile.set(entry.getKey(), entry.getValue());
+        }
         GCAPI.reloadConfig(configId, yamlFile);
     }
 
@@ -187,10 +153,12 @@ public class ConfigSetup {
     }
 
     public static void setPos(int leftx, int topy, int rightx, int bottomy) {
-        setConfigValue("whatsthis:client", "leftX", leftx);
-        setConfigValue("whatsthis:client", "topY", topy);
-        setConfigValue("whatsthis:client", "rightX", rightx);
-        setConfigValue("whatsthis:client", "bottomy", bottomy);
+        setConfigValues("whatsthis:client", new HashMap<>(){{
+            put("leftX", leftx);
+            put("topY", topy);
+            put("rightX", rightx);
+            put("bottomY", bottomy);
+        }});
         updateDefaultOverlayStyle();
     }
 
@@ -202,70 +170,84 @@ public class ConfigSetup {
     }
 
     public static void setBoxStyle(int thickness, int borderColor, int fillcolor, int offset) {
-        setConfigValue("whatsthis:client", "boxThickness", thickness);
-        setConfigValue("whatsthis:client", "boxBorderColor", Integer.toHexString(borderColor));
-        setConfigValue("whatsthis:client", "boxFillColor", Integer.toHexString(fillcolor));
-        setConfigValue("whatsthis:client", "boxOffset", offset);
+        setConfigValues("whatsthis:client", new HashMap<>(){{
+            put("boxThickness", thickness);
+            put("boxBorderColor", Integer.toHexString(borderColor));
+            put("boxFillColor", Integer.toHexString(fillcolor));
+            put("boxOffset", offset);
+        }});
         updateDefaultOverlayStyle();
     }
 
-    private static Formatting convertFormatting(String input) {
+    private static String convertFormatting(String input) {
         switch (input) {
             case "black" -> {
-                return Formatting.BLACK;
+                return Formatting.BLACK.toString();
             }
             case "dark_blue" -> {
-                return Formatting.DARK_BLUE;
+                return Formatting.DARK_BLUE.toString();
             }
             case "dark_green" -> {
-                return Formatting.DARK_GREEN;
+                return Formatting.DARK_GREEN.toString();
             }
             case "dark_aqua" -> {
-                return Formatting.DARK_AQUA;
+                return Formatting.DARK_AQUA.toString();
             }
             case "dark_red" -> {
-                return Formatting.DARK_RED;
+                return Formatting.DARK_RED.toString();
             }
             case "dark_purple" -> {
-                return Formatting.DARK_PURPLE;
+                return Formatting.DARK_PURPLE.toString();
             }
             case "gold" -> {
-                return Formatting.GOLD;
+                return Formatting.GOLD.toString();
             }
             case "gray" -> {
-                return Formatting.GRAY;
+                return Formatting.GRAY.toString();
             }
             case "dark_gray" -> {
-                return Formatting.DARK_GRAY;
+                return Formatting.DARK_GRAY.toString();
             }
             case "blue" -> {
-                return Formatting.BLUE;
+                return Formatting.BLUE.toString();
             }
             case "green" -> {
-                return Formatting.GREEN;
+                return Formatting.GREEN.toString();
             }
             case "aqua" -> {
-                return Formatting.AQUA;
+                return Formatting.AQUA.toString();
             }
             case "red" -> {
-                return Formatting.RED;
+                return Formatting.RED.toString();
             }
             case "light_purple" -> {
-                return Formatting.LIGHT_PURPLE;
+                return Formatting.LIGHT_PURPLE.toString();
             }
             case "yellow" -> {
-                return Formatting.YELLOW;
+                return Formatting.YELLOW.toString();
             }
             case "white" -> {
-                return Formatting.WHITE;
+                return Formatting.WHITE.toString();
             }
-            // TODO: Implement these
-            case "bold", "italic", "underline, strikethrough" -> {
-                return Formatting.WHITE;
+            case "bold" -> {
+                return ProbeTextRenderer.BOLD;    
             }
+            case "italic" -> {
+                return ProbeTextRenderer.ITALICS;
+            }
+            case "underline" -> {
+                return ProbeTextRenderer.UNDERLINE;
+            }
+            case "strikethrough" -> {
+                return ProbeTextRenderer.STRIKETHROUGH;
+            }
+            case "obfuscated" -> {
+                return ProbeTextRenderer.OBFUSCATED;
+            }
+            
             default -> {
                 WhatsThis.LOGGER.warn("Unhandled formatting: " + input);
-                return Formatting.WHITE;
+                return Formatting.WHITE.toString();
             }
         }
     }
@@ -274,10 +256,11 @@ public class ConfigSetup {
         if ("context".equals(input)) {
             return "context";
         }
+        
         StringBuilder builder = new StringBuilder();
         String[] splitted = StringUtils.split(input, ',');
         for (String s : splitted) {
-            Formatting format = convertFormatting(s);// Formatting.valueOf(s);
+            String format = convertFormatting(s);// Formatting.valueOf(s);
             if (format != null) {
                 builder.append(format);
             }

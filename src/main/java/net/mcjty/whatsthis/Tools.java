@@ -42,7 +42,7 @@ public class Tools {
     }
     
     public static String formatModName(String input) {
-        return Formatting.BLUE + WordUtils.capitalize(input);
+        return WordUtils.capitalize(input);
     }
 
     public static boolean show(ProbeMode mode, IProbeConfig.ConfigMode cfg) {

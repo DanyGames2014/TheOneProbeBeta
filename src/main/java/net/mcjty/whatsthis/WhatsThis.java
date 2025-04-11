@@ -60,7 +60,7 @@ public class WhatsThis {
             event.tooltip.add(Formatting.AQUA + "Probe");
         }
     }
-
+    
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
         probeNote = new ProbeNote(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");

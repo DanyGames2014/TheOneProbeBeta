@@ -6,13 +6,13 @@ public class ClientConfig {
     @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the left side of the screen. Use -1 if you don't want to set this")
     public Integer leftX = 5;
 
-    @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the right side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "rightX", minLength = -1, maxLength = 10000, comment = "The distance to the right side of the screen. Use -1 if you don't want to set this")
     public Integer rightX = -1;
 
-    @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the top side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "topY", minLength = -1, maxLength = 10000, comment = "The distance to the top side of the screen. Use -1 if you don't want to set this")
     public Integer topY = 5;
 
-    @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the bottom side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "bottomY", minLength = -1, maxLength = 10000, comment = "The distance to the bottom side of the screen. Use -1 if you don't want to set this")
     public Integer bottomY = -1;
     
     @ConfigEntry(name = "boxBorderColor", comment = "Color of the border of the box (0 to disable)")
@@ -50,8 +50,36 @@ public class ClientConfig {
     
     @ConfigEntry(name = "harvestStyleVanilla", comment = "true means shows harvestability with vanilla style icons")
     public Boolean harvestStyleVanilla = true;
+
+    @ConfigEntry(name = "textStyleName", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleName = "white";
     
-    // TODO: Text Style Classes
+    @ConfigEntry(name = "textStyleModName", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleModName = "blue";
+
+    @ConfigEntry(name = "textStyleLabel", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleLabel = "gray";
+
+    @ConfigEntry(name = "textStyleOk", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleOk = "green";
+    
+    @ConfigEntry(name = "textStyleInfo", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleInfo = "white";
+
+    @ConfigEntry(name = "textStyleInfoImportant", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleInfoImportant = "blue";
+    
+    @ConfigEntry(name = "textStyleWarning", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleWarning = "yellow";
+
+    @ConfigEntry(name = "textStyleError", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleError = "red,bold";
+
+    @ConfigEntry(name = "textStyleObsolete", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleObsolete = "gray,strikethrough";
+
+    @ConfigEntry(name = "textStyleProgress", comment = "Text style. Use a comma delimited list with colors like: 'red', 'green', 'blue', ... or style codes like 'underline', 'bold', 'italic', 'strikethrough', ...")
+    public String textStyleProgress = "white";
     
     @ConfigEntry(name = "extendedInMain", comment = "If true the probe will automatically show extended information if it is in your main hand (so not required to sneak)")
     public Boolean extendedInMain = false;
