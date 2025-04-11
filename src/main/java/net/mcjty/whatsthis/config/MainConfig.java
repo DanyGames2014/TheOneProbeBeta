@@ -1,17 +1,17 @@
 package net.mcjty.whatsthis.config;
 
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
+import net.glasslauncher.mods.gcapi3.impl.ConfigRootEntry;
+import net.glasslauncher.mods.gcapi3.impl.EventStorage;
+import net.glasslauncher.mods.gcapi3.impl.GCCore;
 import net.mcjty.whatsthis.api.NumberFormat;
 import net.mcjty.whatsthis.apiimpl.ProbeConfig;
 
 public class MainConfig {
-    public static class FuckYouCalm {
-        public static final int PROBE_NOTNEEDED = 0;
-        public static final int PROBE_NEEDED = 1;
-        public static final int PROBE_NEEDEDHARD = 2;
-        public static final int PROBE_NEEDEDFOREXTENDED = 3;
-
-        public static ProbeConfig defaultConfig = new ProbeConfig();
+    @SuppressWarnings("deprecation")
+    public void save() {
+        ConfigRootEntry category = GCCore.MOD_CONFIGS.get("whatsthis:config");
+        GCCore.saveConfig(category.modContainer(), category.configCategoryHandler(), EventStorage.EventSource.USER_SAVE);
     }
 
     public NumberFormat getRfFormat() {
@@ -26,7 +26,7 @@ public class MainConfig {
     public Integer loggingThrowableTimeout = 20000;
 
     @ConfigEntry(name = "needsProbe", minLength = 0, maxLength = 3, comment = "Is the probe needed to show the tooltip? 0 = no, 1 = yes, 2 = yes and clients cannot override, 3 = probe needed for extended info only")
-    public Integer needsProbe = FuckYouCalm.PROBE_NEEDEDFOREXTENDED;
+    public Integer needsProbe = ConfigSetup.PROBE_NEEDEDFOREXTENDED;
 
     @ConfigEntry(name = "extendedInMain", comment = "If true the probe will automatically show extended information if it is in your main hand (so not required to sneak)")
     public Boolean extendedInMain = false;
@@ -38,10 +38,10 @@ public class MainConfig {
     public Boolean spawnNote = true;
 
     @ConfigEntry(name = "showRF", minLength = 0, maxLength = 2, comment = "How to display RF: 0 = do not show, 1 = show in a bar, 2 = show as text")
-    public Integer showRF = FuckYouCalm.defaultConfig.getRFMode();
+    public Integer showRF = ConfigSetup.getDefaultConfig().getRFMode();
 
     @ConfigEntry(name = "showTank", minLength = 0, maxLength = 2, comment = "How to display tank contents: 0 = do not show, 1 = show in a bar, 2 = show as text")
-    public Integer showTank = FuckYouCalm.defaultConfig.getTankMode();
+    public Integer showTank = ConfigSetup.getDefaultConfig().getTankMode();
 
     // TODO: Rewrite this to use the Number format enum natively
     @ConfigEntry(name = "rfFormat", minLength = 0, maxLength = 2, comment = "Format for displaying RF: 0 = full, 1 = compact, 2 = comma separated")
@@ -64,16 +64,16 @@ public class MainConfig {
     public Float probeDistance = 6F;
 
     // TODO: initDefaultConfig()
-    
+
     @ConfigEntry(name = "showDebugInfo", comment = "If true show debug info with creative probe")
     public Boolean showDebugInfo = true;
-    
+
     @ConfigEntry(name = "compactEqualStacks", comment = "If true equal stacks will be compacted in the chest contents overlay")
     public Boolean compactEqualStacks = true;
 
     @ConfigEntry(name = "rfbarFilledColor", comment = "Color for the RF bar")
     public String rfbarFilledColor = Integer.toHexString(0xffdd0000);
-    
+
     @ConfigEntry(name = "rfbarAlternateFilledColor", comment = "Alternate color for the RF bar")
     public String rfbarAlternateFilledColor = Integer.toHexString(0xff430000);
 
@@ -91,16 +91,16 @@ public class MainConfig {
 
     @ConfigEntry(name = "showItemDetailThreshold", minLength = 0, maxLength = 20, comment = "If the number of items in an inventory is lower or equal then this number then more info is shown")
     public Integer showItemDetailThreshold = 4;
-    
+
     @ConfigEntry(name = "showSmallChestContentsWithoutSneaking", minLength = 0, maxLength = 1000, comment = "The maximum amount of slots (empty or not) to show without sneaking")
     public Integer showSmallChestContentsWithoutSneaking = 0;
 
     @ConfigEntry(name = "showContentsWithoutSneaking", maxLength = 6969, comment = "A list of blocks for which we automatically show chest contents even if not sneaking")
-    public String[] showContentsWithoutSneaking = new String[]{ "storagedrawers:basicDrawers", "storagedrawersextra:extra_drawers" };
-    
+    public String[] showContentsWithoutSneaking = new String[]{"storagedrawers:basicDrawers", "storagedrawersextra:extra_drawers"};
+
     @ConfigEntry(name = "dontShowContentsUnlessSneaking", comment = "A list of blocks for which we don't show chest contents automatically except if sneaking")
     public String[] dontShowContentsUnlessSneaking = new String[]{};
-    
+
     @ConfigEntry(name = "dontSendNBT", comment = "A list of blocks for which we don't send NBT over the network. This is mostly useful for blocks that have HUGE NBT in their pickblock (itemstack)")
     public String[] dontSendNBT = new String[]{};
 }

@@ -1,8 +1,10 @@
 package net.mcjty.whatsthis.mixin;
 
+import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.ProbeMode;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.items.ModItems;
+import net.mcjty.whatsthis.keys.KeybindListener;
 import net.mcjty.whatsthis.rendering.OverlayRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -24,7 +26,7 @@ public class InGameHudMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glColor4f(FFFF)V", remap = false))
     public void renderOverlay(float tickDelta, boolean screenOpen, int mouseX, int mouseY, CallbackInfo ci) {
         if (Config.CLIENT_CONFIG.holdKeyToMakeVisible) {
-            if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) { //!KeyBindings.toggleVisible.isKeyDown()) {
+            if (!Keyboard.isKeyDown(KeybindListener.toggleVisible.code)) {
                 return;
             }
         } else {
@@ -33,7 +35,7 @@ public class InGameHudMixin {
             }
         }
 
-        if (hasItemInMainHand(Item.STICK)) {
+        if (hasItemInMainHand(WhatsThis.creativeProbe)) {
             OverlayRenderer.renderHUD(ProbeMode.DEBUG, tickDelta);
         } else {
             switch (Config.MAIN_CONFIG.needsProbe) {
@@ -55,7 +57,7 @@ public class InGameHudMixin {
     private ProbeMode getModeForPlayer() {
         PlayerEntity player = Minecraft.INSTANCE.player;
         if (Config.MAIN_CONFIG.extendedInMain) {
-            if (hasItemInMainHand(Item.BOOK)) {
+            if (hasItemInMainHand(WhatsThis.probe)) {
                 return ProbeMode.EXTENDED;
             }
         }

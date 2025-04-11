@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.apache.commons.lang3.tuple.Pair;
+import org.checkerframework.checker.units.qual.C;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -40,10 +41,11 @@ public class GuiConfig extends Screen {
     private List<HitBox> hitboxes = Collections.emptyList();
 
     static {
-        presets.add(new Preset("Default style", 0xff999999, 0x55006699, 2, 0));
-        presets.add(new Preset("WAILA style", 0xff4503d0, 0xff000000, 1, 1));
-        presets.add(new Preset("Full transparent style", 0x00000000, 0x00000000, 0, 0));
-        presets.add(new Preset("Black & White style", 0xffffffff, 0xff000000, 2, 0,
+        presets.add(new Preset("Default", 0xff999999, 0x55006699, 2, 0));
+        presets.add(new Preset("WAILA", 0xff4503d0, 0xff000000, 1, 1));
+        presets.add(new Preset("Jade", 0xff323331, 0xff20261a, 1, 1));
+        presets.add(new Preset("Full transparent", 0x00000000, 0x00000000, 0, 0));
+        presets.add(new Preset("Black & White", 0xffffffff, 0xff000000, 2, 0,
                 Pair.of(MODNAME, "white,italic"),
                 Pair.of(NAME, "white,bold"),
                 Pair.of(INFO, "white"),
@@ -54,6 +56,21 @@ public class GuiConfig extends Screen {
                 Pair.of(LABEL, "white,underline"),
                 Pair.of(OK, "white"),
                 Pair.of(PROGRESS, "white")
+        ));
+        presets.add(new Preset("Soft Pastels", 0xffe0bbff, 0x00000000, 1, 1,
+                Pair.of(TextStyleClass.MODNAME, "pink,bold,italic")
+        ));
+        presets.add(new Preset("Ocean Blue", 0xff003366, 0x556699cc, 2, 0,
+                Pair.of(TextStyleClass.MODNAME, "cyan"),
+                Pair.of(TextStyleClass.NAME, "light_blue,bold"),
+                Pair.of(TextStyleClass.INFO, "white"),
+                Pair.of(TextStyleClass.INFOIMP, "white,bold"),
+                Pair.of(TextStyleClass.WARNING, "yellow,bold"),
+                Pair.of(TextStyleClass.ERROR, "red,bold"),
+                Pair.of(TextStyleClass.OBSOLETE, "gray,bold,italic"),
+                Pair.of(TextStyleClass.LABEL, "aqua,bold"),
+                Pair.of(TextStyleClass.OK, "green,bold"),
+                Pair.of(TextStyleClass.PROGRESS, "white,bold")
         ));
     }
 
@@ -106,23 +123,23 @@ public class GuiConfig extends Screen {
         RenderHelper.renderText(minecraft, x, y, Formatting.GOLD + "Scale:");
         y += 12;
         addButton(x + 10, y, 30, 14, "--", () -> {
-            Config.CLIENT_CONFIG.tooltipScale = 1.2F;
+            ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale + 0.2F);
         });
         x += 36;
         addButton(x + 10, y, 30, 14, "-", () -> {
-            Config.CLIENT_CONFIG.tooltipScale = 1.1f;
+            ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale + 0.1F);
         });
         x += 36;
         addButton(x + 10, y, 30, 14, "0", () -> {
-            Config.CLIENT_CONFIG.tooltipScale = 1f;
+            ConfigSetup.setTooltipScale(1.0F);
         });
         x += 36;
         addButton(x + 10, y, 30, 14, "+", () -> {
-            Config.CLIENT_CONFIG.tooltipScale = 0.9f;
+            ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale - 0.1F);
         });
         x += 36;
         addButton(x + 10, y, 30, 14, "++", () -> {
-            Config.CLIENT_CONFIG.tooltipScale = 0.8f;
+            ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale - 0.2F);
         });
         x += 36;
 

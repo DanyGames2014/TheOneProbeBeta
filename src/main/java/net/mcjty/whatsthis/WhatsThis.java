@@ -3,10 +3,9 @@ package net.mcjty.whatsthis;
 import net.mcjty.whatsthis.api.IProbeInfoEntityProvider;
 import net.mcjty.whatsthis.api.IProbeInfoProvider;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
-import net.mcjty.whatsthis.apiimpl.elements.*;
 import net.mcjty.whatsthis.apiimpl.providers.*;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.config.ConfigSetup;
+import net.mcjty.whatsthis.items.ModItems;
 import net.mcjty.whatsthis.items.ProbeNote;
 import net.mcjty.whatsthis.network.PacketGetEntityInfo;
 import net.mcjty.whatsthis.network.PacketGetInfo;
@@ -14,15 +13,15 @@ import net.mcjty.whatsthis.network.PacketReturnEntityInfo;
 import net.mcjty.whatsthis.network.PacketReturnInfo;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.Item;
+import net.modificationstation.stationapi.api.client.event.gui.screen.container.TooltipBuildEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
-import net.modificationstation.stationapi.api.event.mod.PreInitEvent;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
+import net.modificationstation.stationapi.api.util.Formatting;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +43,9 @@ public class WhatsThis {
     public static Item probeNote;
     public static Item probe;
     public static Item creativeProbe;
+    public static Item probeGoggles;
+
+    public static boolean accessoryApiCompat = true;
 
     // TODO: BH Creative Support
     // TODO: Give note on spawning
@@ -53,10 +55,21 @@ public class WhatsThis {
     }
 
     @EventListener
+    public void probeTooltip(TooltipBuildEvent event) {
+        if (event.itemStack.getStationNbt().contains(ModItems.PROBETAG)) {
+            event.tooltip.add(Formatting.AQUA + "Probe");
+        }
+    }
+
+    @EventListener
     public void registerItems(ItemRegistryEvent event) {
         probeNote = new ProbeNote(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");
         probe = new TemplateItem(NAMESPACE.id("probe")).setTranslationKey(NAMESPACE, "probe").setMaxCount(1);
         creativeProbe = new TemplateItem(NAMESPACE.id("creative_probe")).setTranslationKey(NAMESPACE, "creative_probe").setMaxCount(1);
+
+        if (accessoryApiCompat) {
+            probeGoggles = new TemplateItem(NAMESPACE.id("probe_goggles")).setTranslationKey(NAMESPACE, "probe_goggles").setMaxCount(1);
+        }
     }
 
     @EventListener

@@ -1,5 +1,6 @@
 package net.mcjty.whatsthis.items;
 
+import net.mcjty.whatsthis.WhatsThis;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
@@ -78,28 +79,30 @@ public class ModItems {
 //    }
 
     public static boolean isProbeInHand(ItemStack stack) {
-//        if (stack.isEmpty()) {
-//            return false;
-//        }
-//        if (stack.getItem() == probe || stack.getItem() == creativeProbe) {
-//            return true;
-//        }
-//        if (stack.getTagCompound() == null) {
-//            return false;
-//        }
-//        return stack.getTagCompound().hasKey(PROBETAG_HAND);
-        return false;
+        if (stack == null || stack.count <= 0) {
+            return false;
+        }
+        
+        if (stack.isOf(WhatsThis.probe) || stack.isOf(WhatsThis.creativeProbe)) {
+            return true;
+        }
+        
+        if (stack.getStationNbt() == null) {
+            return false;
+        }
+        return stack.getStationNbt().contains(PROBETAG_HAND);
     }
 
     private static boolean isProbeHelmet(ItemStack stack) {
-//        if (stack.isEmpty()) {
-//            return false;
-//        }
-//        if (stack.getTagCompound() == null) {
-//            return false;
-//        }
-//        return stack.getTagCompound().hasKey(PROBETAG);
-        return false;
+        if (stack == null || stack.count <= 0) {
+            return false;
+        }
+
+        if (stack.getStationNbt() == null) {
+            return false;
+        }
+
+        return stack.getStationNbt().contains(PROBETAG);
     }
 
     public static boolean hasAProbeSomewhere(PlayerEntity player) {
@@ -107,15 +110,11 @@ public class ModItems {
     }
 
     private static boolean hasProbeInHand(PlayerEntity player) {
-        return false;
-//        ItemStack item = player.getHeldItem(hand);
-//        return isProbeInHand(item);
+        return isProbeInHand(player.getHand());
     }
 
     private static boolean hasProbeInHelmet(PlayerEntity player) {
-        return false;
-//        ItemStack helmet = player.inventory.getStackInSlot(36+3);
-//        return isProbeHelmet(helmet);
+        return isProbeHelmet(player.inventory.armor[3]);
     }
 
     private static boolean hasProbeInBauble(PlayerEntity player) {

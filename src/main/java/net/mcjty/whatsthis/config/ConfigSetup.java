@@ -1,6 +1,8 @@
 package net.mcjty.whatsthis.config;
 
 
+import net.glasslauncher.mods.gcapi3.api.GCAPI;
+import net.glasslauncher.mods.gcapi3.impl.GlassYamlFile;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.IOverlayStyle;
 import net.mcjty.whatsthis.api.IProbeConfig;
@@ -10,10 +12,9 @@ import net.mcjty.whatsthis.apiimpl.ProbeConfig;
 import net.mcjty.whatsthis.apiimpl.styles.DefaultOverlayStyle;
 import net.modificationstation.stationapi.api.util.Formatting;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.math.MathHelper;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,72 +22,16 @@ import java.util.Set;
 
 import static net.mcjty.whatsthis.api.TextStyleClass.*;
 
+// TODO: Move this to config
 public class ConfigSetup {
-
-    //public static Configuration mainConfig;
-
-    public static String CATEGORY_THEONEPROBE = "theoneprobe";
-    public static String CATEGORY_PROVIDERS = "providers";
-    public static String CATEGORY_CLIENT = "client";
-
     public static final int PROBE_NOTNEEDED = 0;
     public static final int PROBE_NEEDED = 1;
     public static final int PROBE_NEEDEDHARD = 2;
     public static final int PROBE_NEEDEDFOREXTENDED = 3;
-    public static int needsProbe = PROBE_NEEDEDFOREXTENDED;
-
-    public static boolean extendedInMain = false;
-    public static NumberFormat rfFormat = NumberFormat.COMPACT;
-    public static NumberFormat tankFormat = NumberFormat.COMPACT;
-    public static int timeout = 300;
-    public static int waitingForServerTimeout = 2000;
-    public static int maxPacketToServer = 20000;
-
-    public static boolean supportBaubles = true;
-    public static boolean spawnNote = true;
-
-    // Chest related settings
-    public static int showSmallChestContentsWithoutSneaking = 0;
-    public static int showItemDetailThresshold = 4;
-    public static String[] showContentsWithoutSneaking = {"storagedrawers:basicDrawers", "storagedrawersextra:extra_drawers"};
-    public static String[] dontShowContentsUnlessSneaking = {};
-    public static String[] dontSendNBT = {};
 
     private static Set<Identifier> inventoriesToShow = null;
     private static Set<Identifier> inventoriesToNotShow = null;
     private static Set<Identifier> dontSendNBTSet = null;
-
-    public static float probeDistance = 6;
-    public static boolean showLiquids = false;
-    public static boolean isVisible = true;
-    public static boolean compactEqualStacks = true;
-    public static boolean holdKeyToMakeVisible = false;
-
-    public static boolean showDebugInfo = true;
-
-    private static int leftX = 5;
-    private static int topY = 5;
-    private static int rightX = -1;
-    private static int bottomY = -1;
-
-    public static int showBreakProgress = 1;    // 0 == off, 1 == bar, 2 == text
-    public static boolean harvestStyleVanilla = true;
-
-    public static int chestContentsBorderColor = 0xff006699;
-    private static int boxBorderColor = 0xff999999;
-    private static int boxFillColor = 0x55006699;
-    private static int boxThickness = 2;
-    private static int boxOffset = 0;
-
-    public static float tooltipScale = 1.0f;
-
-    public static int rfbarFilledColor = 0xffdd0000;
-    public static int rfbarAlternateFilledColor = 0xff430000;
-    public static int rfbarBorderColor = 0xff555555;
-
-    public static int tankbarFilledColor = 0xff0000dd;
-    public static int tankbarAlternateFilledColor = 0xff000043;
-    public static int tankbarBorderColor = 0xff555555;
 
     public static Map<TextStyleClass, String> defaultTextStyleClasses = new HashMap<>();
     public static Map<TextStyleClass, String> textStyleClasses = new HashMap<>();
@@ -223,80 +168,47 @@ public class ConfigSetup {
 //        cfg.save();
     }
 
+    public static void setConfigValue(String configId, String key, Object value) {
+        GlassYamlFile yamlFile = new GlassYamlFile();
+        yamlFile.set(key, value);
+        GCAPI.reloadConfig(configId, yamlFile);
+    }
+    
     public static void setExtendedInMain(boolean extendedInMain) {
-        Config.CLIENT_CONFIG.extendedInMain = extendedInMain;
-//        Configuration cfg = mainConfig;
-//        ConfigSetup.extendedInMain = extendedInMain;
-//        cfg.get(CATEGORY_CLIENT, "extendedInMain", extendedInMain).set(extendedInMain);
-//        cfg.save();
+        setConfigValue("whatsthis:client", "extendedInMain", extendedInMain);
     }
 
-    public static void setLiquids(boolean liquids) {
-        Config.CLIENT_CONFIG.showLiquids = liquids;
-//        Configuration cfg = mainConfig;
-//        ConfigSetup.showLiquids = liquids;
-//        cfg.get(CATEGORY_CLIENT, "showLiquids", showLiquids).set(liquids);
-//        cfg.save();
+    public static void setLiquids(boolean showLiquids) {
+        setConfigValue("whatsthis:client", "showLiquids", showLiquids);
     }
 
-    public static void setVisible(boolean visible) {
-        Config.CLIENT_CONFIG.isVisible = visible;
-//        Configuration cfg = mainConfig;
-//        ConfigSetup.isVisible = visible;
-//        cfg.get(CATEGORY_CLIENT, "isVisible", isVisible).set(visible);
-//        cfg.save();
+    public static void setVisible(boolean isVisible) {
+        setConfigValue("whatsthis:client", "isVisible", isVisible);
     }
 
-    public static void setCompactEqualStacks(boolean compact) {
-        Config.MAIN_CONFIG.compactEqualStacks = compact;
-//        Configuration cfg = mainConfig;
-//        ConfigSetup.compactEqualStacks = compact;
-//        cfg.get(CATEGORY_CLIENT, "compactEqualStacks", compactEqualStacks).set(compact);
-//        cfg.save();
+    public static void setCompactEqualStacks(boolean compactEqualStacks) {
+        setConfigValue("whatsthis:main", "compactEqualStacks", compactEqualStacks);
     }
 
     public static void setPos(int leftx, int topy, int rightx, int bottomy) {
-        Config.CLIENT_CONFIG.leftX = leftx;
-        Config.CLIENT_CONFIG.topY = topy;
-        Config.CLIENT_CONFIG.rightX = rightx;
-        Config.CLIENT_CONFIG.bottomY = bottomy;
-//        Configuration cfg = mainConfig;
-//        ConfigSetup.leftX = leftx;
-//        ConfigSetup.topY = topy;
-//        ConfigSetup.rightX = rightx;
-//        ConfigSetup.bottomY = bottomy;
-//        cfg.get(CATEGORY_CLIENT, "boxLeftX", leftx).set(leftx);
-//        cfg.get(CATEGORY_CLIENT, "boxRightX", rightx).set(rightx);
-//        cfg.get(CATEGORY_CLIENT, "boxTopY", topy).set(topy);
-//        cfg.get(CATEGORY_CLIENT, "boxBottomY", bottomy).set(bottomy);
-//        cfg.save();
+        setConfigValue("whatsthis:client", "leftX", leftx);
+        setConfigValue("whatsthis:client", "topY", topy);
+        setConfigValue("whatsthis:client", "rightX", rightx);
+        setConfigValue("whatsthis:client", "bottomy", bottomy);
         updateDefaultOverlayStyle();
     }
 
-    public static void setScale(float scale) {
-        Config.CLIENT_CONFIG.tooltipScale = scale;
-//        Configuration cfg = mainConfig;
-//        tooltipScale = scale;
-//        cfg.get(CATEGORY_CLIENT, "tooltipScale", tooltipScale).set(tooltipScale);
-//        cfg.save();
+    public static void setTooltipScale(float scale) {
+        scale = MathHelper.clamp(scale, 0.7F, 5.0F);
+        setConfigValue("whatsthis:client", "tooltipScale", scale);
         updateDefaultOverlayStyle();
     }
 
     public static void setBoxStyle(int thickness, int borderColor, int fillcolor, int offset) {
-        Config.CLIENT_CONFIG.boxThickness = thickness;
-        Config.CLIENT_CONFIG.boxBorderColor = Integer.toHexString(borderColor);
-        Config.CLIENT_CONFIG.boxFillColor = Integer.toHexString(fillcolor);
-        Config.CLIENT_CONFIG.boxOffset = offset;
-//        Configuration cfg = mainConfig;
-//        boxThickness = thickness;
-//        boxBorderColor = borderColor;
-//        boxFillColor = fillcolor;
-//        boxOffset = offset;
-//        cfg.get(CATEGORY_CLIENT, "boxThickness", thickness).set(thickness);
-//        cfg.get(CATEGORY_CLIENT, "boxBorderColor", Integer.toHexString(borderColor)).set(Integer.toHexString(borderColor));
-//        cfg.get(CATEGORY_CLIENT, "boxFillColor", Integer.toHexString(fillcolor)).set(Integer.toHexString(fillcolor));
-//        cfg.get(CATEGORY_CLIENT, "boxOffset", offset).set(offset);
-//        cfg.save();
+        setConfigValue("whatsthis:client", "boxThickness", thickness);
+        setConfigValue("whatsthis:client", "boxBorderColor", Integer.toHexString(borderColor));
+        setConfigValue("whatsthis:client", "boxFillColor", Integer.toHexString(fillcolor));
+        setConfigValue("whatsthis:client", "boxOffset", offset);
         updateDefaultOverlayStyle();
     }
 
@@ -350,6 +262,7 @@ public class ConfigSetup {
             case "white" -> {
                 return Formatting.WHITE;
             }
+            // TODO: Implement these
             case "bold", "italic", "underline" -> {
                 return Formatting.WHITE;
             }
@@ -436,18 +349,4 @@ public class ConfigSetup {
         }
         return dontSendNBTSet;
     }
-
-//    public static void init() {
-//        mainConfig = new Configuration(new File(ModSetup.modConfigDir.getPath(), "theoneprobe.cfg"));
-//        Configuration cfg = mainConfig;
-//        try {
-//            cfg.load();
-//            cfg.addCustomCategoryComment(CATEGORY_THEONEPROBE, "The One Probe configuration");
-//            cfg.addCustomCategoryComment(CATEGORY_PROVIDERS, "Provider configuration");
-//            cfg.addCustomCategoryComment(CATEGORY_CLIENT, "Client-side settings");
-//            init(cfg);
-//        } catch (Exception e1) {
-//            TheOneProbe.setup.getLogger().log(Level.ERROR, "Problem loading config file!", e1);
-//        }
-//    }
 }

@@ -93,14 +93,14 @@ public class GuiNote extends Screen {
         mouseY += guiTop;
         if (mouseY >= hitY && mouseY < hitY + BUTTON_HEIGHT) {
             if (mouseX >= hitX && mouseX < hitX + BUTTON_WIDTH) {
-//                ConfigSetup.setProbeNeeded(PROBE_NEEDED);
                 Config.MAIN_CONFIG.needsProbe = PROBE_NEEDED;
+                Config.MAIN_CONFIG.save();
             } else if (mouseX >= hitX+BUTTON_MARGIN && mouseX < hitX + BUTTON_WIDTH+BUTTON_MARGIN) {
-//                ConfigSetup.setProbeNeeded(PROBE_NOTNEEDED);
                 Config.MAIN_CONFIG.needsProbe = PROBE_NOTNEEDED;
+                Config.MAIN_CONFIG.save();
             } else if (mouseX >= hitX+BUTTON_MARGIN*2 && mouseX < hitX + BUTTON_WIDTH+BUTTON_MARGIN*2) {
-//                ConfigSetup.setProbeNeeded(PROBE_NEEDEDFOREXTENDED);
                 Config.MAIN_CONFIG.needsProbe = PROBE_NEEDEDFOREXTENDED;
+                Config.MAIN_CONFIG.save();
             }
         }
     }

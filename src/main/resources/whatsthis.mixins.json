@@ -4,6 +4,7 @@
   "package": "net.mcjty.whatsthis.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "CraftingRecipeManagerMixin"
   ],
   "server": [
   ],

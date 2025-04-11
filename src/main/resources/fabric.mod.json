@@ -18,6 +18,8 @@
       "net.mcjty.whatsthis.WhatsThis"
     ],
     "stationapi:event_bus_client": [
+      "net.mcjty.whatsthis.keys.KeybindListener",
+      "net.mcjty.whatsthis.keys.KeyInputListener"
     ],
     "stationapi:event_bus_server": [
     ],
