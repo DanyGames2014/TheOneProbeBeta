@@ -107,8 +107,6 @@ public class GuiConfig extends Screen {
         RenderHelper.renderText(minecraft, x + 10, y, "Click on corner in screenshot");
         y += 10;
         RenderHelper.renderText(minecraft, x + 10, y, "to move tooltip there");
-        y += 10;
-
         y += 20;
 
         hitboxes = new ArrayList<>();
@@ -117,32 +115,31 @@ public class GuiConfig extends Screen {
         for (Preset preset : presets) {
             y = addPreset(x, y, preset);
         }
-
-        y += 20;
+        y += 10;
 
         RenderHelper.renderText(minecraft, x, y, Formatting.GOLD + "Scale:");
         y += 12;
-        addButton(x + 10, y, 30, 14, "--", () -> {
+        addButton(x + 10, y, 30, 14, " --", () -> {
             ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale + 0.2F);
         });
         x += 36;
-        addButton(x + 10, y, 30, 14, "-", () -> {
+        addButton(x + 10, y, 30, 14, "  -", () -> {
             ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale + 0.1F);
         });
         x += 36;
-        addButton(x + 10, y, 30, 14, "0", () -> {
+        addButton(x + 10, y, 30, 14, "  0", () -> {
             ConfigSetup.setTooltipScale(1.0F);
         });
         x += 36;
-        addButton(x + 10, y, 30, 14, "+", () -> {
+        addButton(x + 10, y, 30, 14, "  +", () -> {
             ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale - 0.1F);
         });
         x += 36;
-        addButton(x + 10, y, 30, 14, "++", () -> {
+        addButton(x + 10, y, 30, 14, "  ++", () -> {
             ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale - 0.2F);
         });
-        x += 36;
 
+        
         int margin = 90;
         hitboxes.add(new HitBox(0, 0, margin, margin, () -> {
             ConfigSetup.setPos(5, 5, -1, -1);
@@ -230,7 +227,6 @@ public class GuiConfig extends Screen {
     }
 
     private void renderElements(ProbeInfo probeInfo, IOverlayStyle style) {
-
         GL11.glPushMatrix();
         GL11.glScalef(1 / Config.CLIENT_CONFIG.tooltipScale, 1 / Config.CLIENT_CONFIG.tooltipScale, 1 / Config.CLIENT_CONFIG.tooltipScale);
 
@@ -249,23 +245,8 @@ public class GuiConfig extends Screen {
             margin = offset + thick + 3;
         }
 
-        int x;
-        int y;
-        if (style.getLeftX() != -1) {
-            x = style.getLeftX();
-        } else if (style.getRightX() != -1) {
-            x = WIDTH - w - style.getRightX();
-        } else {
-            x = (WIDTH - w) / 2;
-        }
-        if (style.getTopY() != -1) {
-            y = style.getTopY();
-        } else if (style.getBottomY() != -1) {
-            y = HEIGHT - h - style.getBottomY();
-        } else {
-            y = (HEIGHT - h) / 2;
-        }
-
+        int x = calculateXPosition(style, w);
+        int y = calculateYPosition(style, h);
 
         x += guiLeft;
         y += guiTop;
@@ -283,13 +264,47 @@ public class GuiConfig extends Screen {
             RenderHelper.drawThickBeveledBox(x + offset, y + offset, x2 - offset, y2 - offset, thick, style.getBorderColor(), style.getBorderColor(), style.getBoxColor());
         }
 
-        if (minecraft.paused) {
+        if (!minecraft.paused) {
             RenderHelper.rot += .5f;
         }
 
         probeInfo.render(x + margin, y + margin);
 
         GL11.glPopMatrix();
+    }
+
+    /**
+     * Calculates the x position for the overlay based on the given style and width.
+     *
+     * @param style The {@link IOverlayStyle} object defining the style of the overlay.
+     * @param width The width of the overlay.
+     * @return The calculated x position.
+     */
+    private int calculateXPosition(IOverlayStyle style, int width) {
+        if (style.getLeftX() != -1) {
+            return style.getLeftX();
+        } else if (style.getRightX() != -1) {
+            return WIDTH - width - style.getRightX();
+        } else {
+            return (WIDTH - width) / 2;
+        }
+    }
+
+    /**
+     * Calculates the y position for the overlay based on the given style and height.
+     *
+     * @param style  The {@link IOverlayStyle} object defining the style of the overlay.
+     * @param height The height of the overlay.
+     * @return The calculated y position.
+     */
+    private int calculateYPosition(IOverlayStyle style, int height) {
+        if (style.getTopY() != -1) {
+            return style.getTopY();
+        } else if (style.getBottomY() != -1) {
+            return HEIGHT - height - style.getBottomY();
+        } else {
+            return (HEIGHT - height) / 2;
+        }
     }
 
 }

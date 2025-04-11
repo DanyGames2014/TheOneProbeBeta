@@ -195,7 +195,8 @@ public class ConfigSetup {
     }
 
     public static void setTooltipScale(float scale) {
-        scale = MathHelper.clamp(scale, 0.7F, 5.0F);
+        scale = MathHelper.clamp(scale, 0.75F, 2.5F);
+        System.err.println(scale);
         setConfigValue("whatsthis:client", "tooltipScale", scale);
         updateDefaultOverlayStyle();
     }
