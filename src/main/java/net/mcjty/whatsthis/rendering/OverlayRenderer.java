@@ -44,6 +44,7 @@ import java.util.UUID;
 
 import static net.mcjty.whatsthis.api.TextStyleClass.ERROR;
 
+@SuppressWarnings("DuplicatedCode")
 public class OverlayRenderer {
 
     private static Map<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> cachedInfo = new HashMap<>();
@@ -130,7 +131,7 @@ public class OverlayRenderer {
 
     public static void setupOverlayRendering(double sw, double sh) {
         GL11.glClear(256);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+//        GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0.0D, sw, sh, 0.0D, 1000.0D, 3000.0D);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);

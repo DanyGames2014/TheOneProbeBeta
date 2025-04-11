@@ -1,7 +1,6 @@
 package net.mcjty.whatsthis.rendering;
 
 import net.mcjty.whatsthis.WhatsThis;
-import net.mcjty.whatsthis.network.ThrowableIdentity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.Tessellator;
@@ -15,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 
+@SuppressWarnings("DuplicatedCode")
 public class RenderHelper {
     public static float rot = 0.0f;
 
@@ -125,66 +125,24 @@ public class RenderHelper {
         }
     }
 
-    public static boolean renderItemStack(Minecraft minecraft, ItemRenderer itemRender, ItemStack stack, int x, int y, String txt, boolean highlight) {
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+    public static boolean renderItemStack(Minecraft minecraft, ItemRenderer itemRenderer, ItemStack stack, int x, int y, String txt, boolean highlight) {
+        if (stack == null || stack.getItem() == null) {
+            return false;
+        }
 
-        boolean rc = false;
         if (highlight) {
             GL11.glDisable(GL11.GL_LIGHTING);
             drawVerticalGradientRect(x, y, x + 16, y + 16, 0x80ffffff, 0xffffffff);
         }
-        if (stack.getItem() != null && stack.count > 0) {
-            rc = true;
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            short short1 = 240;
-            short short2 = 240;
-            enableStandardItemLighting();
-            GL13.glMultiTexCoord2f(GL13.GL_TEXTURE1, short1, short2);
-
-            itemRender.renderGuiItem(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
-            itemRender.renderGuiItemDecoration(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
-
-            GL11.glPopMatrix();
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_LIGHTING);
-        }
-
-        return rc;
+        
+        enableItemLighting();
+        itemRenderer.renderGuiItem(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
+        disableItemLighting();
+        return true;
     }
 
-    public static boolean renderItemStack(Minecraft minecraft, ItemRenderer itemRender, ItemStack stack, int x, int y, String txt) {
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-
-        boolean rc = true;
-        if (stack.getItem() != null && stack.count > 0) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            short short1 = 240;
-            short short2 = 240;
-            enableStandardItemLighting();
-            GL13.glMultiTexCoord2f(GL13.GL_TEXTURE1, short1, short2);
-
-            try {
-                itemRender.renderGuiItem(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
-                itemRender.renderGuiItemDecoration(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
-            } catch (Exception e) {
-                ThrowableIdentity.registerThrowable(e);
-                rc = false; // Report error
-            }
-
-            GL11.glPopMatrix();
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_LIGHTING);
-        }
-
-        return rc;
+    public static boolean renderItemStack(Minecraft minecraft, ItemRenderer itemRenderer, ItemStack stack, int x, int y, String txt) {
+        return renderItemStack(minecraft, itemRenderer, stack, x, y, txt, false);
     }
 
     /**
@@ -385,10 +343,10 @@ public class RenderHelper {
         float f1 = 0.00390625F;
         Tessellator t = Tessellator.INSTANCE;
         t.startQuads();
-        t.vertex((x), (y + height), zLevel,((u) * f), ((v + height) * f1));
-        t.vertex((x + width), (y + height), zLevel,((u + width) * f), ((v + height) * f1));
-        t.vertex((x + width), (y), zLevel,((u + width) * f), ((v) * f1));
-        t.vertex((x), (y), zLevel,((u) * f), ((v) * f1));
+        t.vertex((x), (y + height), zLevel, ((u) * f), ((v + height) * f1));
+        t.vertex((x + width), (y + height), zLevel, ((u + width) * f), ((v + height) * f1));
+        t.vertex((x + width), (y), zLevel, ((u + width) * f), ((v) * f1));
+        t.vertex((x), (y), zLevel, ((u) * f), ((v) * f1));
         t.draw();
     }
 
@@ -472,11 +430,6 @@ public class RenderHelper {
 
     /**
      * Draw a beam with some thickness.
-     *
-     * @param S
-     * @param E
-     * @param P
-     * @param width
      */
     public static void drawBeam(Vector S, Vector E, Vector P, float width) {
 //        Vector PS = Sub(S, P);
@@ -590,6 +543,8 @@ public class RenderHelper {
 //        renderer.pos((x + width), (y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
 //        Tessellator.getInstance().draw();
 //    }
+    
+    
     public static int renderText(Minecraft minecraft, int x, int y, String text) {
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
