@@ -1,6 +1,7 @@
 package net.mcjty.whatsthis.gui;
 
 import net.mcjty.whatsthis.config.Config;
+import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.rendering.RenderHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.modificationstation.stationapi.api.util.Formatting;
@@ -93,14 +94,11 @@ public class GuiNote extends Screen {
         mouseY += guiTop;
         if (mouseY >= hitY && mouseY < hitY + BUTTON_HEIGHT) {
             if (mouseX >= hitX && mouseX < hitX + BUTTON_WIDTH) {
-                Config.MAIN_CONFIG.needsProbe = PROBE_NEEDED;
-                Config.MAIN_CONFIG.save();
+                ConfigSetup.setProbeNeeded(PROBE_NEEDED);
             } else if (mouseX >= hitX+BUTTON_MARGIN && mouseX < hitX + BUTTON_WIDTH+BUTTON_MARGIN) {
-                Config.MAIN_CONFIG.needsProbe = PROBE_NOTNEEDED;
-                Config.MAIN_CONFIG.save();
+                ConfigSetup.setProbeNeeded(PROBE_NOTNEEDED);
             } else if (mouseX >= hitX+BUTTON_MARGIN*2 && mouseX < hitX + BUTTON_WIDTH+BUTTON_MARGIN*2) {
-                Config.MAIN_CONFIG.needsProbe = PROBE_NEEDEDFOREXTENDED;
-                Config.MAIN_CONFIG.save();
+                ConfigSetup.setProbeNeeded(PROBE_NEEDEDFOREXTENDED);
             }
         }
     }
