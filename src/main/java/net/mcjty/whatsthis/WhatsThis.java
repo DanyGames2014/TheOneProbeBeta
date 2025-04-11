@@ -22,6 +22,7 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 import org.apache.logging.log4j.Logger;
@@ -41,8 +42,11 @@ public class WhatsThis {
     public static TheOneProbeImp theOneProbeImp = new TheOneProbeImp();
 
     public static Item probeNote;
+    public static Item probe;
+    public static Item creativeProbe;
 
     // TODO: BH Creative Support
+    // TODO: Give note on spawning
 
     public Logger getLogger() {
         return LOGGER;
@@ -51,6 +55,8 @@ public class WhatsThis {
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
         probeNote = new ProbeNote(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");
+        probe = new TemplateItem(NAMESPACE.id("probe")).setTranslationKey(NAMESPACE, "probe").setMaxCount(1);
+        creativeProbe = new TemplateItem(NAMESPACE.id("creative_probe")).setTranslationKey(NAMESPACE, "creative_probe").setMaxCount(1);
     }
 
     @EventListener
