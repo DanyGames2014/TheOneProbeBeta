@@ -1,4 +1,4 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.entity;
 
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
@@ -10,7 +10,7 @@ public class EntityProbeInfoProvider implements IProbeInfoEntityProvider {
 
     @Override
     public String getID() {
-        return WhatsThis.NAMESPACE.id("entity_entity").toString();
+        return WhatsThis.NAMESPACE.id("entity").toString();
     }
 
     @Override

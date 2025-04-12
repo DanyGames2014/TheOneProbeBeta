@@ -1,8 +1,7 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.block;
 
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.api.IProbeHitData;
 import net.mcjty.whatsthis.api.IProbeInfo;
 import net.mcjty.whatsthis.api.IProbeInfoProvider;
@@ -24,7 +23,7 @@ public class DebugProbeInfoProvider implements IProbeInfoProvider {
 
     @Override
     public String getID() {
-        return WhatsThis.NAMESPACE.id("debug").toString();
+        return WhatsThis.NAMESPACE.id("block_debug").toString();
     }
 
     @Override

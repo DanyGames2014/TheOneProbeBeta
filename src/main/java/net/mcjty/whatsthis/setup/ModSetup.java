@@ -1,18 +1,6 @@
 package net.mcjty.whatsthis.setup;
 
-import net.mcjty.whatsthis.WhatsThis;
-import net.mcjty.whatsthis.api.IProbeInfoEntityProvider;
-import net.mcjty.whatsthis.api.IProbeInfoProvider;
-import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
-import net.mcjty.whatsthis.apiimpl.providers.*;
-import net.mcjty.whatsthis.config.ConfigSetup;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class ModSetup {
 

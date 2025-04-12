@@ -1,29 +1,21 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.block;
 
-import net.mcjty.whatsthis.Tools;
-import net.mcjty.whatsthis.api.ElementAlignment;
 import net.mcjty.whatsthis.api.IProbeConfig;
+import net.mcjty.whatsthis.api.IProbeHitData;
 import net.mcjty.whatsthis.api.IProbeInfo;
 import net.mcjty.whatsthis.api.ProbeMode;
-import net.mcjty.whatsthis.apiimpl.styles.ItemStyle;
-import net.mcjty.whatsthis.apiimpl.styles.LayoutStyle;
-import net.mcjty.whatsthis.config.ConfigSetup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static net.mcjty.whatsthis.api.TextStyleClass.INFO;
-
 public class ChestInfoTools {
 
-    static void showChestInfo(ProbeMode mode, IProbeInfo probeInfo, World world, BlockPos pos, IProbeConfig config) {
+    static void showChestInfo(ProbeMode mode, IProbeInfo probeInfo, World world, BlockPos pos, IProbeHitData data, IProbeConfig config) {
 //        List<ItemStack> stacks = null;
 //        IProbeConfig.ConfigMode chestMode = config.getShowChestContents();
 //        if (chestMode == IProbeConfig.ConfigMode.EXTENDED && (ConfigSetup.showSmallChestContentsWithoutSneaking > 0 || !ConfigSetup.getInventoriesToShow().isEmpty())) {

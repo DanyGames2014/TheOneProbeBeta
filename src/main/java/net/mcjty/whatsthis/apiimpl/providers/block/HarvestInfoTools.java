@@ -1,4 +1,4 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.block;
 
 import net.mcjty.whatsthis.api.IProbeInfo;
 import net.minecraft.block.Block;
@@ -29,7 +29,7 @@ public class HarvestInfoTools {
         testTools.put("pickaxe", new ItemStack(Item.WOODEN_PICKAXE));
     }
 
-    static void showHarvestLevel(IProbeInfo probeInfo, BlockState blockState, Block block) {
+    static void showHarvestLevel(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block) {
 //        String harvestTool = block.getHarvestTool(blockState);
 //        if (harvestTool != null) {
 //            int harvestLevel = block.getHarvestLevel(blockState);
@@ -45,7 +45,7 @@ public class HarvestInfoTools {
 //        }
     }
 
-    static void showCanBeHarvested(IProbeInfo probeInfo, World world, BlockPos pos, Block block, PlayerEntity player) {
+    static void showCanBeHarvested(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, PlayerEntity player) {
 //        if (ModItems.isProbeInHand(player.getHand())) {
 //            // If the player holds the probe there is no need to show harvestability information as the
 //            // probe cannot harvest anything. This is only supposed to work in off hand.
@@ -60,7 +60,7 @@ public class HarvestInfoTools {
 //        }
     }
 
-    static void showHarvestInfo(IProbeInfo probeInfo, World world, BlockPos pos, Block block, BlockState blockState, PlayerEntity player) {
+    static void showHarvestInfo(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, PlayerEntity player) {
 //        boolean harvestable = block.canHarvestBlock(world, pos, player) && world.getBlockState(pos).getBlockHardness(world, pos) >= 0;
 //
 //        String harvestTool = block.getHarvestTool(blockState);

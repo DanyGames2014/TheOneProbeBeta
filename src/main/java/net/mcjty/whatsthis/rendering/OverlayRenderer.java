@@ -7,8 +7,8 @@ import net.mcjty.whatsthis.apiimpl.ProbeHitEntityData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
 import net.mcjty.whatsthis.apiimpl.elements.ElementProgress;
 import net.mcjty.whatsthis.apiimpl.elements.ElementText;
-import net.mcjty.whatsthis.apiimpl.providers.DefaultProbeInfoEntityProvider;
-import net.mcjty.whatsthis.apiimpl.providers.DefaultProbeInfoProvider;
+import net.mcjty.whatsthis.apiimpl.providers.entity.DefaultProbeInfoEntityProvider;
+import net.mcjty.whatsthis.apiimpl.providers.block.DefaultProbeInfoProvider;
 import net.mcjty.whatsthis.apiimpl.styles.ProgressStyle;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
@@ -37,10 +37,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static net.mcjty.whatsthis.api.TextStyleClass.ERROR;
 
@@ -290,18 +288,19 @@ public class OverlayRenderer {
     }
 
     // Information for when the server is laggy
-    private static ProbeInfo getWaitingInfo(ProbeMode mode, HitResult mouseOver, BlockPos blockPos, PlayerEntity player) {
+    private static ProbeInfo getWaitingInfo(ProbeMode mode, HitResult mouseOver, BlockPos pos, PlayerEntity player) {
         ProbeInfo probeInfo = WhatsThis.theOneProbeImp.create();
 
         World world = player.world;
-        BlockState blockState = world.getBlockState(blockPos);
-        Block block = blockState.getBlock();
-        ItemStack pickBlock = null; //block.getPickBlock(blockState, mouseOver, world, blockPos, player);
-        IProbeHitData data = new ProbeHitData(blockPos, Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ), Direction.byId(mouseOver.side), pickBlock);
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        ItemStack pickBlock = new ItemStack(block, 1, world.getBlockMeta(pos.x, pos.y, pos.z));
+        IProbeHitData data = new ProbeHitData(pos, Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ), Direction.byId(mouseOver.side), pickBlock);
 
         IProbeConfig probeConfig = WhatsThis.theOneProbeImp.createProbeConfig();
+        
         try {
-            DefaultProbeInfoProvider.showStandardBlockInfo(probeConfig, mode, probeInfo, blockState, block, world, blockPos, player, data);
+            DefaultProbeInfoProvider.showStandardBlockInfo(mode, probeInfo, world, pos, state, block, player, data, probeConfig);
         } catch (Exception e) {
             ThrowableIdentity.registerThrowable(e);
             probeInfo.text(ERROR + "Error (see log for details)!");

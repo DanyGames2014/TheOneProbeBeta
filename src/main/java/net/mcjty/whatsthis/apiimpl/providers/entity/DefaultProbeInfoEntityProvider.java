@@ -1,4 +1,4 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.entity;
 
 import net.mcjty.whatsthis.Tools;
 import net.mcjty.whatsthis.WhatsThis;
@@ -8,9 +8,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
+import org.objectweb.asm.tree.LocalVariableAnnotationNode;
 
 import java.text.DecimalFormat;
 
@@ -89,25 +91,16 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 //                }
 //            }
 
-        } else if (entity instanceof PaintingEntity painting) {
+        }
+        
+        if (entity instanceof PaintingEntity painting) {
             probeInfo.text(LABEL + "Variant: " + INFO + painting.variant.id);
         }
         
-//        else if (entity instanceof EntityItemFrame) {
-//            EntityItemFrame itemFrame = (EntityItemFrame)entity;
-//            ItemStack stack = itemFrame.getDisplayedItem();
-//            if(!stack.isEmpty()) {
-//                probeInfo.horizontal(new LayoutStyle().spacing(10).alignment(ElementAlignment.ALIGN_CENTER))
-//                        .item(stack, new ItemStyle().width(16).height(16))
-//                        .text(INFO + stack.getDisplayName());
-//                if (mode == ProbeMode.EXTENDED) {
-//                    probeInfo.text(LABEL + "Rotation: " + INFO + itemFrame.getRotation());
-//                }
-//            } else {
-//                probeInfo.text(LABEL + "Empty");
-//            }
-//        }
-
+        if (entity instanceof SheepEntity sheep) { 
+            probeInfo.text(LABEL + "Wool Color: " + INFO + sheep.getColor());
+        }
+        
         if (Tools.show(mode, config.getAnimalOwnerSetting())) {
             if (entity instanceof WolfEntity wolf) {
 

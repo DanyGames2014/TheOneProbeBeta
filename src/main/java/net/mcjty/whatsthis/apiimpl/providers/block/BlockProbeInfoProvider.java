@@ -1,4 +1,4 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.block;
 
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;

@@ -1,4 +1,4 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.block;
 
 import net.mcjty.whatsthis.Tools;
 import net.mcjty.whatsthis.WhatsThis;
@@ -10,6 +10,7 @@ import net.mcjty.whatsthis.config.ConfigSetup;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,66 +24,77 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 
     @Override
     public String getID() {
-        return WhatsThis.NAMESPACE.id("default").toString();
+        return WhatsThis.NAMESPACE.id("block_default").toString();
     }
 
     @Override
-    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
-        Block block = blockState.getBlock();
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState state, IProbeHitData data) {
+        Block block = state.getBlock();
         BlockPos pos = data.getPos();
 
         IProbeConfig config = ConfigSetup.getRealConfig();
 
+        // Standard Information
         boolean handled = false;
         for (IBlockDisplayOverride override : WhatsThis.theOneProbeImp.getBlockOverrides()) {
-            if (override.overrideStandardInfo(mode, probeInfo, player, world, blockState, data)) {
+            if (override.overrideStandardInfo(mode, probeInfo, player, world, state, data)) {
                 handled = true;
                 break;
             }
         }
-        
+
         if (!handled) {
-            showStandardBlockInfo(config, mode, probeInfo, blockState, block, world, pos, player, data);
+            showStandardBlockInfo(mode, probeInfo, world, pos, state, block, player, data, config);
         }
 
-        if (Tools.show(mode, config.getShowCropPercentage())) {
-            showGrowthLevel(probeInfo, blockState);
-        }
-
+        // Harvest Level
         boolean showHarvestLevel = Tools.show(mode, config.getShowHarvestLevel());
         boolean showHarvested = Tools.show(mode, config.getShowCanBeHarvested());
         if (showHarvested && showHarvestLevel) {
-            HarvestInfoTools.showHarvestInfo(probeInfo, world, pos, block, blockState, player);
+            HarvestInfoTools.showHarvestInfo(probeInfo, world, pos, state, block, player);
         } else if (showHarvestLevel) {
-            HarvestInfoTools.showHarvestLevel(probeInfo, blockState, block);
+            HarvestInfoTools.showHarvestLevel(probeInfo, world, pos, state, block);
         } else if (showHarvested) {
-            HarvestInfoTools.showCanBeHarvested(probeInfo, world, pos, block, player);
+            HarvestInfoTools.showCanBeHarvested(probeInfo, world, pos, state, block, player);
         }
 
+        // Crop Growth
+        if (Tools.show(mode, config.getShowCropPercentage())) {
+            showGrowthLevel(probeInfo, world, pos, state, block, data);
+        }
+
+        // Mob Spawner Info
+        if (Tools.show(mode, config.getShowMobSpawnerSetting())) {
+            showMobSpawnerInfo(probeInfo, world, pos, state, block, data);
+        }
+
+        // Redstone Power
         if (Tools.show(mode, config.getShowRedstone())) {
-            showRedstonePower(probeInfo, world, blockState, data, block, Tools.show(mode, config.getShowLeverSetting()));
+            showRedstonePower(probeInfo, world, pos, state, block, data, Tools.show(mode, config.getShowLeverSetting()));
         }
+
+        // Redstone Component
         if (Tools.show(mode, config.getShowLeverSetting())) {
-            showLeverSetting(probeInfo, world, blockState, data, block);
+            showLeverSetting(probeInfo, world, pos, state, block, data);
         }
 
-        ChestInfoTools.showChestInfo(mode, probeInfo, world, pos, config);
+        // Inventory Contents
+        ChestInfoTools.showChestInfo(mode, probeInfo, world, pos, data, config);
 
+        // Energy Info
         if (config.getRFMode() > 0) {
             showRF(probeInfo, world, pos);
         }
+
+        // Fluid Info
         if (Tools.show(mode, config.getShowTankSetting())) {
             if (config.getTankMode() > 0) {
                 showTankInfo(probeInfo, world, pos);
             }
         }
-
-        if (Tools.show(mode, config.getShowMobSpawnerSetting())) {
-            showMobSpawnerInfo(probeInfo, world, data, block);
-        }
     }
 
-    public static void showStandardBlockInfo(IProbeConfig config, ProbeMode mode, IProbeInfo probeInfo, BlockState blockState, Block block, World world, BlockPos pos, PlayerEntity player, IProbeHitData data) {
+    public static void showStandardBlockInfo(ProbeMode mode, IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, PlayerEntity player, IProbeHitData data, IProbeConfig config) {
         String modid = Tools.getModName(block);
 
         ItemStack pickBlock = data.getPickBlock();
@@ -130,52 +142,48 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
             }
         }
     }
-    
-    private void showMobSpawnerInfo(IProbeInfo probeInfo, World world, IProbeHitData data, Block block) {
+
+    private void showMobSpawnerInfo(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, IProbeHitData data) {
         if (block instanceof SpawnerBlock) {
             if (world.getBlockEntity(data.getPos().x, data.getPos().y, data.getPos().z) instanceof MobSpawnerBlockEntity spawner) {
-                String mobName = spawner.spawnedEntityId;
                 probeInfo.horizontal(probeInfo.defaultLayoutStyle()
-                    .alignment(ElementAlignment.ALIGN_CENTER))
-                    .text(LABEL + "Mob: " + INFO + mobName);
+                                .alignment(ElementAlignment.ALIGN_CENTER))
+                        .text(LABEL + "Entity: " + INFO + spawner.spawnedEntityId);
             }
         }
     }
 
-    private void showRedstonePower(IProbeInfo probeInfo, World world, BlockState blockState, IProbeHitData data, Block block, boolean showLever) {
-//        if (showLever && block instanceof LeverBlock) {
-//            // We are showing the lever setting so we don't show redstone in that case
-//            return;
-//        }
-//        int redstonePower;
-//        if (block instanceof RedstoneWireBlock) {
-//            redstonePower = blockState.getValue(BlockRedstoneWire.POWER);
-//        } else {
-//            redstonePower = world.getRedstonePower(data.getPos(), data.getSideHit().getOpposite());
-//        }
-//        if (redstonePower > 0) {
-//            probeInfo.horizontal()
-//                    .item(new ItemStack(Items.REDSTONE), probeInfo.defaultItemStyle().width(14).height(14))
-//                    .text(LABEL + "Power: " + INFO + redstonePower);
-//        }
+    private void showRedstonePower(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, IProbeHitData data, boolean showLever) {
+        if (showLever && block instanceof LeverBlock) {
+            // We are showing the lever setting so we don't show redstone in that case
+            return;
+        }
+
+        int redstonePower;
+
+        if (block instanceof RedstoneWireBlock) {
+            redstonePower = world.getBlockMeta(pos.x, pos.y, pos.z);
+        } else {
+            redstonePower = world.isEmittingRedstonePower(pos.x, pos.y, pos.z) ? 15 : 0;
+        }
+
+        if (redstonePower > 0) {
+            probeInfo.horizontal()
+                    .item(new ItemStack(Item.REDSTONE), probeInfo.defaultItemStyle().width(14).height(14))
+                    .text(LABEL + "Power: " + INFO + redstonePower);
+        }
     }
 
-    private void showLeverSetting(IProbeInfo probeInfo, World world, BlockState blockState, IProbeHitData data, Block block) {
-//        if (block instanceof BlockLever) {
-//            Boolean powered = blockState.getValue(BlockLever.POWERED);
-//            probeInfo.horizontal().item(new ItemStack(Items.REDSTONE), probeInfo.defaultItemStyle().width(14).height(14))
-//                    .text(LABEL + "State: " + INFO + (powered ? "On" : "Off"));
-//        } else if (block instanceof BlockRedstoneComparator) {
-//            BlockRedstoneComparator.Mode mode = blockState.getValue(BlockRedstoneComparator.MODE);
-//            probeInfo.text(LABEL + "Mode: " + INFO + mode.getName());
-//        } else if (block instanceof BlockRedstoneRepeater) {
-//            Boolean locked = blockState.getValue(BlockRedstoneRepeater.LOCKED);
-//            Integer delay = blockState.getValue(BlockRedstoneRepeater.DELAY);
-//            probeInfo.text(LABEL + "Delay: " + INFO + delay + " ticks");
-//            if (locked) {
-//                probeInfo.text(INFO + "Locked");
-//            }
-//        }
+    private void showLeverSetting(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, IProbeHitData data) {
+        if (block instanceof LeverBlock lever) {
+            boolean powered = lever.isEmittingRedstonePowerInDirection(world, pos.x, pos.y, pos.z, 0);
+            probeInfo.horizontal().item(new ItemStack(Item.REDSTONE), probeInfo.defaultItemStyle().width(14).height(14))
+                    .text(LABEL + "State: " + INFO + (powered ? "On" : "Off"));
+
+        } else if (block instanceof RepeaterBlock) {
+            int delay = ((world.getBlockMeta(pos.x, pos.y, pos.z) & 12) >> 2) + 1;
+            probeInfo.text(LABEL + "Delay: " + INFO + delay + " ticks");
+        }
     }
 
     private void showTankInfo(IProbeInfo probeInfo, World world, BlockPos pos) {
@@ -253,21 +261,17 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
     }
 
-    private void showGrowthLevel(IProbeInfo probeInfo, BlockState blockState) {
-//        for (IProperty<?> property : blockState.getProperties().keySet()) {
-//            if(!"age".equals(property.getName())) continue;
-//            if(property.getValueClass() == Integer.class) {
-//                IProperty<Integer> integerProperty = (IProperty<Integer>)property;
-//                int age = blockState.getValue(integerProperty);
-//                int maxAge = Collections.max(integerProperty.getAllowedValues());
-//                if (age == maxAge) {
-//                    probeInfo.text(OK + "Fully grown");
-//                } else {
-//                    probeInfo.text(LABEL + "Growth: " + WARNING + (age * 100) / maxAge + "%");
-//                }
-//            }
-//            return;
-//        }
+    private void showGrowthLevel(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, IProbeHitData data) {
+        if (blockState.isOf(Block.WHEAT)) {
+            int age = world.getBlockMeta(pos.x, pos.y, pos.z);
+            int maxAge = 7;
+
+            if (age == maxAge) {
+                probeInfo.text(OK + "Fully grown");
+            } else {
+                probeInfo.text(LABEL + "Growth: " + WARNING + (age * 100) / maxAge + "%");
+            }
+        }
     }
 
     private static String getBlockUnlocalizedName(Block block) {

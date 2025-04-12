@@ -1,9 +1,8 @@
-package net.mcjty.whatsthis.apiimpl.providers;
+package net.mcjty.whatsthis.apiimpl.providers.entity;
 
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.config.ConfigSetup;
 import net.mcjty.whatsthis.apiimpl.styles.LayoutStyle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
