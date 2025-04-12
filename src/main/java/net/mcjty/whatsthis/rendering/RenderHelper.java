@@ -139,7 +139,9 @@ public class RenderHelper {
 
         enableItemLighting();
         itemRenderer.renderGuiItem(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
+        itemRenderer.renderGuiItemDecoration(minecraft.textRenderer, minecraft.textureManager, stack, x,y);
         disableItemLighting();
+        GL11.glEnable(GL11.GL_BLEND);
         return true;
     }
 

@@ -79,7 +79,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
 
         // Inventory Contents
-        ChestInfoTools.showChestInfo(mode, probeInfo, world, pos, data, config);
+        ChestInfoTools.showChestInfo(mode, probeInfo, world, pos, state, block, data, config);
 
         // Energy Info
         if (config.getRFMode() > 0) {
