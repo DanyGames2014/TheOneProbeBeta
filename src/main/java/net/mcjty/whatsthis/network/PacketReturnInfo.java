@@ -20,7 +20,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
     private BlockPos pos;
     private ProbeInfo probeInfo;
 
-    private int size = 0;
+    private int size;
 
     public PacketReturnInfo() {
     }
@@ -56,6 +56,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
             stream.writeInt(pos.getX());
             stream.writeInt(pos.getY());
             stream.writeInt(pos.getZ());
+            
             if (probeInfo != null) {
                 stream.writeBoolean(true);
                 probeInfo.toBytes(stream);
@@ -63,7 +64,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
                 stream.writeBoolean(false);
             }
 
-            size = stream.size() - streamInitialSize;
+            this.size = stream.size() - streamInitialSize;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,7 +78,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
 
     @Override
     public int size() {
-        return size;
+        return this.size;
     }
 
     @Override

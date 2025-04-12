@@ -7,6 +7,8 @@ import net.mcjty.whatsthis.config.ConfigSetup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.painting.PaintingEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
@@ -18,7 +20,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 
     @Override
     public String getID() {
-        return WhatsThis.NAMESPACE.getName() + ":entity.default";
+        return WhatsThis.NAMESPACE.id("entity_default").toString();
     }
 
     private static DecimalFormat dfCommas = new DecimalFormat("##.#");
@@ -34,15 +36,15 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
                 break;
             }
         }
+
         if (!handled) {
             showStandardInfo(mode, probeInfo, entity, config);
         }
 
-        if (entity instanceof LivingEntity livingBase) {
+        if (entity instanceof LivingEntity livingEntity) {
             if (Tools.show(mode, config.getShowMobHealth())) {
-                int health = (int) livingBase.health;
-                int maxHealth = (int) livingBase.maxHealth;
-                //int armor = livingBase.getTotalArmorValue();
+                int health = livingEntity.health;
+                int maxHealth = livingEntity.maxHealth;
 
                 probeInfo.progress(health, maxHealth, probeInfo.defaultProgressStyle().lifeBar(true).showText(false).width(150).height(10));
 
@@ -50,18 +52,18 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
                     probeInfo.text(LABEL + "Health: " + INFOIMP + health + " / " + maxHealth);
                 }
 
-//                if (armor > 0) {
-//                    probeInfo.progress(armor, armor, probeInfo.defaultProgressStyle().armorBar(true).showText(false).width(80).height(10));
-//                }
+                if (entity instanceof PlayerEntity playerEntity) {
+                    if (playerEntity.inventory != null) {
+                        int armor = playerEntity.inventory.getTotalArmorDurability();
+
+                        if (armor > 0) {
+                            probeInfo.progress(armor, armor, probeInfo.defaultProgressStyle().armorBar(true).showText(false).width(80).height(10));
+                        }
+                    }
+                }
             }
 
-//            if (Tools.show(mode, config.getShowMobGrowth()) && entity instanceof EntityAgeable) {
-//               int age = ((EntityAgeable) entity).getGrowingAge();
-//               if (age < 0) {
-//                   probeInfo.text(LABEL + "Growing time: " + ((age * -1) / 20) + "s");
-//               }
-//            }
-
+            // TODO: Effects API Integration
 //            if (Tools.show(mode, config.getShowMobPotionEffects())) {
 //                Collection<PotionEffect> effects = livingBase.getActivePotionEffects();
 //                if (!effects.isEmpty()) {
@@ -86,8 +88,11 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 //                    }
 //                }
 //            }
-            
-        } 
+
+        } else if (entity instanceof PaintingEntity painting) {
+            probeInfo.text(LABEL + "Variant: " + INFO + painting.variant.id);
+        }
+        
 //        else if (entity instanceof EntityItemFrame) {
 //            EntityItemFrame itemFrame = (EntityItemFrame)entity;
 //            ItemStack stack = itemFrame.getDisplayedItem();
@@ -104,33 +109,21 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 //        }
 
         if (Tools.show(mode, config.getAnimalOwnerSetting())) {
-//            UUID ownerId = null;
-//            if (entity instanceof IEntityOwnable) {
-//                ownerId = ((IEntityOwnable) entity).getOwnerId();
-//            } else if (entity instanceof EntityHorse) {
-//                ownerId = ((EntityHorse) entity).getOwnerUniqueId();
-//            }
-//
-//            if (ownerId != null) {
-//                String username = UsernameCache.getLastKnownUsername(ownerId);
-//                if (username == null) {
-//                    probeInfo.text(WARNING + "Unknown owner");
-//                } else {
-//                    probeInfo.text(LABEL + "Owned by: " + INFO + username);
-//                }
-//            } else if (entity instanceof EntityTameable) {
-//                probeInfo.text(LABEL + "Tameable");
-//            }
-        }
+            if (entity instanceof WolfEntity wolf) {
 
-        if (Tools.show(mode, config.getHorseStatSetting())) {
-//            if (entity instanceof EntityHorse) {
-//                double jumpStrength = ((EntityHorse) entity).getHorseJumpStrength();
-//                double jumpHeight = -0.1817584952 * jumpStrength * jumpStrength * jumpStrength + 3.689713992 * jumpStrength * jumpStrength + 2.128599134 * jumpStrength - 0.343930367;
-//                probeInfo.text(LABEL + "Jump height: " + INFO + dfCommas.format(jumpHeight));
-//                IAttributeInstance iattributeinstance = ((EntityHorse) entity).getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-//                probeInfo.text(LABEL + "Speed: " + INFO + dfCommas.format(iattributeinstance.getAttributeValue()));
-//            }
+                if (wolf.isTamed()) {
+                    String ownerName = wolf.getOwnerName();
+
+                    if (ownerName == null || ownerName.isEmpty()) {
+                        probeInfo.text(WARNING + "Unknown owner");
+                    } else {
+                        probeInfo.text(LABEL + "Owned by: " + INFO + ownerName);
+                    }
+                } else {
+                    probeInfo.text(LABEL + "Tameable");
+                }
+
+            }
         }
     }
 
@@ -158,9 +151,9 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
             probeInfo.horizontal()
                     .entity(entity)
                     .vertical()
-                        .text(NAME + EntityRegistry.getId(entity))
+                    .text(NAME + EntityRegistry.getId(entity))
                     // TODO : Proper Entity Names
-                        .text(MODNAME + modid);
+                    .text(MODNAME + modid);
         } else {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                     .entity(entity)

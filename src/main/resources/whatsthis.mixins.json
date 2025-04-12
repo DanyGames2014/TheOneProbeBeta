@@ -9,7 +9,8 @@
   "server": [
   ],
   "client": [
-    "InGameHudMixin"
+    "InGameHudMixin",
+    "ClientNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

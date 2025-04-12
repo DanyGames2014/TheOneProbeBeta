@@ -23,7 +23,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 
     @Override
     public String getID() {
-        return WhatsThis.NAMESPACE.getName() + ":default";
+        return WhatsThis.NAMESPACE.id("default").toString();
     }
 
     @Override
@@ -40,6 +40,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
                 break;
             }
         }
+        
         if (!handled) {
             showStandardBlockInfo(config, mode, probeInfo, blockState, block, world, pos, player, data);
         }
@@ -76,32 +77,60 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
             }
         }
 
-        if (Tools.show(mode, config.getShowBrewStandSetting())) {
-            showBrewingStandInfo(probeInfo, world, data, block);
-        }
-
         if (Tools.show(mode, config.getShowMobSpawnerSetting())) {
             showMobSpawnerInfo(probeInfo, world, data, block);
         }
     }
 
-    private void showBrewingStandInfo(IProbeInfo probeInfo, World world, IProbeHitData data, Block block) {
-//        if (block instanceof BlockBrewingStand) {
-//            TileEntity te = world.getTileEntity(data.getPos());
-//            if (te instanceof TileEntityBrewingStand) {
-//                int brewtime = ((TileEntityBrewingStand) te).getField(0);
-//                int fuel = ((TileEntityBrewingStand) te).getField(1);
-//                probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
-//                        .item(new ItemStack(Items.BLAZE_POWDER), probeInfo.defaultItemStyle().width(16).height(16))
-//                        .text(LABEL + "Fuel: " + INFO + fuel);
-//                if (brewtime > 0) {
-//                    probeInfo.text(LABEL + "Time: " + INFO + brewtime + " ticks");
+    public static void showStandardBlockInfo(IProbeConfig config, ProbeMode mode, IProbeInfo probeInfo, BlockState blockState, Block block, World world, BlockPos pos, PlayerEntity player, IProbeHitData data) {
+        String modid = Tools.getModName(block);
+
+        ItemStack pickBlock = data.getPickBlock();
+
+        if (block instanceof LiquidBlock) {
+//            Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
+//            if (fluid != null) {
+//                FluidStack fluidStack = new FluidStack(fluid, Fluid.BUCKET_VOLUME);
+//                ItemStack bucketStack = FluidUtil.getFilledBucket(fluidStack);
+//
+//                IProbeInfo horizontal = probeInfo.horizontal();
+//                if (fluidStack.isFluidEqual(FluidUtil.getFluidContained(bucketStack))) {
+//                    horizontal.item(bucketStack);
+//                } else {
+//                    horizontal.icon(fluid.getStill(), -1, -1, 16, 16, probeInfo.defaultIconStyle().width(20));
 //                }
 //
+//                horizontal.vertical()
+//                        .text(NAME + fluidStack.getLocalizedName())
+//                        .text(MODNAME + modid);
+//                return;
 //            }
-//        }
-    }
+        }
 
+        if (pickBlock != null) {
+            if (Tools.show(mode, config.getShowModName())) {
+                probeInfo.horizontal()
+                        .item(pickBlock)
+                        .vertical()
+                        .itemLabel(pickBlock)
+                        .text(MODNAME + modid);
+            } else {
+                probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                        .item(pickBlock)
+                        .itemLabel(pickBlock);
+            }
+        } else {
+            if (Tools.show(mode, config.getShowModName())) {
+                probeInfo.vertical()
+                        .text(NAME + getBlockUnlocalizedName(block))
+                        .text(MODNAME + modid);
+            } else {
+                probeInfo.vertical()
+                        .text(NAME + getBlockUnlocalizedName(block));
+            }
+        }
+    }
+    
     private void showMobSpawnerInfo(IProbeInfo probeInfo, World world, IProbeHitData data, Block block) {
         if (block instanceof SpawnerBlock) {
             if (world.getBlockEntity(data.getPos().x, data.getPos().y, data.getPos().z) instanceof MobSpawnerBlockEntity spawner) {
@@ -239,55 +268,6 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 //            }
 //            return;
 //        }
-    }
-
-    public static void showStandardBlockInfo(IProbeConfig config, ProbeMode mode, IProbeInfo probeInfo, BlockState blockState, Block block, World world, BlockPos pos, PlayerEntity player, IProbeHitData data) {
-        String modid = Tools.getModName(block);
-
-        ItemStack pickBlock = data.getPickBlock();
-
-        if (block instanceof LiquidBlock) {
-//            Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
-//            if (fluid != null) {
-//                FluidStack fluidStack = new FluidStack(fluid, Fluid.BUCKET_VOLUME);
-//                ItemStack bucketStack = FluidUtil.getFilledBucket(fluidStack);
-//
-//                IProbeInfo horizontal = probeInfo.horizontal();
-//                if (fluidStack.isFluidEqual(FluidUtil.getFluidContained(bucketStack))) {
-//                    horizontal.item(bucketStack);
-//                } else {
-//                    horizontal.icon(fluid.getStill(), -1, -1, 16, 16, probeInfo.defaultIconStyle().width(20));
-//                }
-//
-//                horizontal.vertical()
-//                        .text(NAME + fluidStack.getLocalizedName())
-//                        .text(MODNAME + modid);
-//                return;
-//            }
-        }
-
-        if (pickBlock != null) {
-            if (Tools.show(mode, config.getShowModName())) {
-                probeInfo.horizontal()
-                        .item(pickBlock)
-                        .vertical()
-                        .itemLabel(pickBlock)
-                        .text(MODNAME + modid);
-            } else {
-                probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
-                        .item(pickBlock)
-                        .itemLabel(pickBlock);
-            }
-        } else {
-            if (Tools.show(mode, config.getShowModName())) {
-                probeInfo.vertical()
-                        .text(NAME + getBlockUnlocalizedName(block))
-                        .text(MODNAME + modid);
-            } else {
-                probeInfo.vertical()
-                        .text(NAME + getBlockUnlocalizedName(block));
-            }
-        }
     }
 
     private static String getBlockUnlocalizedName(Block block) {

@@ -1,9 +1,20 @@
 accessWidener v2 named
 
+# Minecraft Instance
 accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
-accessible field net/minecraft/block/entity/MobSpawnerBlockEntity spawnedEntityId Ljava/lang/String;
+
+# Packet Processing
+accessible field net/minecraft/server/network/ServerPlayNetworkHandler player Lnet/minecraft/entity/player/ServerPlayerEntity;
+
+# Probe Helmet Crafting
+accessible field net/minecraft/inventory/CraftingInventory stacks [Lnet/minecraft/item/ItemStack;
+
+# Text Rendering
+accessible field net/minecraft/client/font/TextRenderer characterWidths [I
+
+# Probe Info
 accessible field net/minecraft/client/MultiplayerInteractionManager blockBreakingProgress F
 accessible field net/minecraft/client/SingleplayerInteractionManager blockBreakingProgress F
-accessible field net/minecraft/server/network/ServerPlayNetworkHandler player Lnet/minecraft/entity/player/ServerPlayerEntity;
-accessible field net/minecraft/inventory/CraftingInventory stacks [Lnet/minecraft/item/ItemStack;
-accessible field net/minecraft/client/font/TextRenderer characterWidths [I
+accessible field net/minecraft/entity/Entity maxAir I
+accessible field net/minecraft/entity/LivingEntity damageAmount F
+accessible field net/minecraft/block/entity/MobSpawnerBlockEntity spawnedEntityId Ljava/lang/String;

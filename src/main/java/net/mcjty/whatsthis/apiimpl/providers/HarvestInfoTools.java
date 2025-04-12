@@ -1,11 +1,6 @@
 package net.mcjty.whatsthis.apiimpl.providers;
 
-import net.mcjty.whatsthis.api.ElementAlignment;
-import net.mcjty.whatsthis.api.IIconStyle;
-import net.mcjty.whatsthis.api.ILayoutStyle;
 import net.mcjty.whatsthis.api.IProbeInfo;
-import net.mcjty.whatsthis.config.ConfigSetup;
-import net.mcjty.whatsthis.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -13,12 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import static net.mcjty.whatsthis.api.TextStyleClass.*;
 
 public class HarvestInfoTools {
 

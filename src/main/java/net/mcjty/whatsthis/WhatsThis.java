@@ -5,7 +5,7 @@ import net.mcjty.whatsthis.api.IProbeInfoProvider;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.providers.*;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.items.ModItems;
+import net.mcjty.whatsthis.items.ProbeUtils;
 import net.mcjty.whatsthis.items.ProbeNote;
 import net.mcjty.whatsthis.network.PacketGetEntityInfo;
 import net.mcjty.whatsthis.network.PacketGetInfo;
@@ -44,7 +44,7 @@ public class WhatsThis {
     public static Item probe;
     public static Item creativeProbe;
     public static Item probeGoggles;
-
+    
     public static boolean accessoryApiCompat = true;
 
     // TODO: BH Creative Support
@@ -56,7 +56,7 @@ public class WhatsThis {
 
     @EventListener
     public void probeTooltip(TooltipBuildEvent event) {
-        if (event.itemStack.getStationNbt().contains(ModItems.PROBETAG)) {
+        if (event.itemStack.getStationNbt().contains(ProbeUtils.PROBETAG)) {
             event.tooltip.add(Formatting.AQUA + "Probe");
         }
     }
@@ -88,7 +88,7 @@ public class WhatsThis {
         theOneProbeImp.registerProvider(new BlockProbeInfoProvider());
         theOneProbeImp.registerEntityProvider(new DefaultProbeInfoEntityProvider());
         theOneProbeImp.registerEntityProvider(new DebugProbeInfoEntityProvider());
-        theOneProbeImp.registerEntityProvider(new EntityProbeInfoEntityProvider());
+        theOneProbeImp.registerEntityProvider(new EntityProbeInfoProvider());
 
         setupModCompat();
     }

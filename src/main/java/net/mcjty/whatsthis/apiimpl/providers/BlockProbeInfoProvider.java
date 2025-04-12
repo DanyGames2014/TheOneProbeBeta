@@ -11,15 +11,14 @@ public class BlockProbeInfoProvider implements IProbeInfoProvider {
 
     @Override
     public String getID() {
-        return WhatsThis.NAMESPACE.getName() + ":block";
+        return WhatsThis.NAMESPACE.id("block").toString();
     }
 
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
         Block block = blockState.getBlock();
-        if (block instanceof IProbeInfoAccessor) {
-            IProbeInfoAccessor accessor = (IProbeInfoAccessor) block;
-            accessor.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+        if (block instanceof IProbeInfoAccessor probeInfoAccessor) {
+            probeInfoAccessor.addProbeInfo(mode, probeInfo, player, world, blockState, data);
         }
     }
 }

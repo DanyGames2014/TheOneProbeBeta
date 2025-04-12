@@ -1,16 +1,13 @@
 package net.mcjty.whatsthis.mixin;
 
-import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.ProbeMode;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.items.ModItems;
+import net.mcjty.whatsthis.items.ProbeUtils;
 import net.mcjty.whatsthis.keys.KeybindListener;
 import net.mcjty.whatsthis.rendering.OverlayRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,7 +32,7 @@ public class InGameHudMixin {
             }
         }
 
-        if (hasItemInMainHand(WhatsThis.creativeProbe)) {
+        if (ProbeUtils.isDebugProbe(Minecraft.INSTANCE.player.getHand())) {
             OverlayRenderer.renderHUD(ProbeMode.DEBUG, tickDelta);
         } else {
             switch (Config.MAIN_CONFIG.needsProbe) {
@@ -45,7 +42,7 @@ public class InGameHudMixin {
                     break;
                 case PROBE_NEEDED:
                 case PROBE_NEEDEDHARD:
-                    if (ModItems.hasAProbeSomewhere(Minecraft.INSTANCE.player)) {
+                    if (ProbeUtils.hasAProbeSomewhere(Minecraft.INSTANCE.player)) {
                         OverlayRenderer.renderHUD(getModeForPlayer(), tickDelta);
                     }
                     break;
@@ -56,18 +53,15 @@ public class InGameHudMixin {
     @Unique
     private ProbeMode getModeForPlayer() {
         PlayerEntity player = Minecraft.INSTANCE.player;
-        if (Config.MAIN_CONFIG.extendedInMain) {
-            if (hasItemInMainHand(WhatsThis.probe)) {
+
+        // If the mode is extended by default or the player is holding a probe
+        if (Config.MAIN_CONFIG.extendedInMain || ProbeUtils.isHandProbe(player.getHand())) {
+            // If the player has a probe somewhere, switch to extended mode
+            if (ProbeUtils.hasAProbeSomewhere(player)) {
                 return ProbeMode.EXTENDED;
             }
         }
+
         return player.isSneaking() ? ProbeMode.EXTENDED : ProbeMode.NORMAL;
-    }
-
-
-    @Unique
-    private boolean hasItemInMainHand(Item item) {
-        ItemStack mainHeldItem = Minecraft.INSTANCE.player.getHand();
-        return mainHeldItem != null && mainHeldItem.getItem() == item;
     }
 }

@@ -56,7 +56,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
                 stream.writeBoolean(false);
             }
             
-            size = stream.size() - initialStreamSize;
+            this.size = stream.size() - initialStreamSize;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,7 +69,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
 
     @Override
     public int size() {
-        return size;
+        return this.size;
     }
 
     @Override

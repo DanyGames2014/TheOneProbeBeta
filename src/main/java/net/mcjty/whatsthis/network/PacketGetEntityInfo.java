@@ -9,7 +9,7 @@ import net.mcjty.whatsthis.apiimpl.ProbeHitEntityData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
-import net.mcjty.whatsthis.items.ModItems;
+import net.mcjty.whatsthis.items.ProbeUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -70,21 +70,23 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
     }
 
     @Override
-    public void write(DataOutputStream buf) {
+    public void write(DataOutputStream stream) {
         try {
-            buf.writeInt(dim); // 4
-            buf.writeInt(entityId); // 4
-            buf.writeByte(mode.ordinal()); // 1
+            int initialStreamSize = stream.size();
+            
+            stream.writeInt(dim); // 4b
+            stream.writeInt(entityId); // 4b
+            stream.writeByte(mode.ordinal()); // 1b
             if (hitVec == null) {
-                buf.writeBoolean(false); // 1
-                size = 10;
+                stream.writeBoolean(false); // 1b
             } else {
-                buf.writeBoolean(true); // 1
-                buf.writeDouble(hitVec.x); // 8
-                buf.writeDouble(hitVec.y); // 8
-                buf.writeDouble(hitVec.z); // 8
-                size = 35;
+                stream.writeBoolean(true); // 1b
+                stream.writeDouble(hitVec.x); // 8b
+                stream.writeDouble(hitVec.y); // 8b
+                stream.writeDouble(hitVec.z); // 8b
             }
+            
+            this.size = stream.size() - initialStreamSize;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -130,19 +132,19 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
 
     @Override
     public int size() {
-        return size;
+        return this.size;
     }
 
     private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, Entity entity, Vec3d hitVec) {
         if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
             // We need a probe only for extended information
-            if (!ModItems.hasAProbeSomewhere(player)) {
+            if (!ProbeUtils.hasAProbeSomewhere(player)) {
                 // No probe anywhere, switch EXTENDED to NORMAL
                 if (mode == ProbeMode.EXTENDED) {
                     mode = ProbeMode.NORMAL;
                 }
             }
-        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ModItems.hasAProbeSomewhere(player)) {
+        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ProbeUtils.hasAProbeSomewhere(player)) {
             // The server says we need a probe but we don't have one in our hands or on our head
             return null;
         }

@@ -9,7 +9,7 @@ import net.mcjty.whatsthis.apiimpl.ProbeHitData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
-import net.mcjty.whatsthis.items.ModItems;
+import net.mcjty.whatsthis.items.ProbeUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -86,6 +86,8 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     @Override
     public void write(DataOutputStream stream) {
         try {
+            int initialStreamSize = stream.size();
+            
             stream.writeInt(dim); // 4b
             stream.writeInt(pos.getX()); // 4b
             stream.writeInt(pos.getY()); // 4b
@@ -94,19 +96,16 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
             stream.writeByte(sideHit == null ? 127 : sideHit.ordinal()); // 1b
             if (hitVec == null) {
                 stream.writeBoolean(false); // 1b
-
-                this.size = 19;
             } else {
                 stream.writeBoolean(true); // 1b
                 stream.writeDouble(hitVec.x); // 8b 
                 stream.writeDouble(hitVec.y); // 8b
                 stream.writeDouble(hitVec.z); // 8b
-
-                this.size = 43;
             }
+
+            this.size = stream.size() - initialStreamSize;
             
             // TODO: Write the item
-
 //            ByteBuff buffer = Unpooled.buffer();
 //            ByteBufUtils.writeItemStack(buffer, pickBlock);
 //            if (buffer.writerIndex() <= ConfigSetup.maxPacketToServer) {
@@ -183,13 +182,13 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, BlockPos blockPos, Direction sideHit, Vec3d hitVec, ItemStack pickBlock) {
         if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
             // We need a probe only for extended information
-            if (!ModItems.hasAProbeSomewhere(player)) {
+            if (!ProbeUtils.hasAProbeSomewhere(player)) {
                 // No probe anywhere, switch EXTENDED to NORMAL
                 if (mode == ProbeMode.EXTENDED) {
                     mode = ProbeMode.NORMAL;
                 }
             }
-        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ModItems.hasAProbeSomewhere(player)) {
+        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ProbeUtils.hasAProbeSomewhere(player)) {
             // The server says we need a probe but we don't have one in our hands
             return null;
         }
