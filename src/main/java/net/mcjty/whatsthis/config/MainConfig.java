@@ -14,14 +14,6 @@ public class MainConfig {
         GCCore.saveConfig(category.modContainer(), category.configCategoryHandler(), EventStorage.EventSource.USER_SAVE);
     }
 
-    public NumberFormat getRfFormat() {
-        return NumberFormat.values()[rfFormat];
-    }
-
-    public NumberFormat getTankFormat() {
-        return NumberFormat.values()[tankFormat];
-    }
-
     @ConfigEntry(name = "loggingThrowableTimeout", minLength = 1, maxLength = 10000000, comment = "How much time (ms) to wait before reporting an exception again")
     public Integer loggingThrowableTimeout = 20000;
 
@@ -43,13 +35,11 @@ public class MainConfig {
     @ConfigEntry(name = "showTank", minLength = 0, maxLength = 2, comment = "How to display tank contents: 0 = do not show, 1 = show in a bar, 2 = show as text")
     public Integer showTank = ConfigSetup.getDefaultConfig().getTankMode();
 
-    // TODO: Rewrite this to use the Number format enum natively
     @ConfigEntry(name = "rfFormat", minLength = 0, maxLength = 2, comment = "Format for displaying RF: 0 = full, 1 = compact, 2 = comma separated")
-    public Integer rfFormat = 1;
+    public NumberFormat rfFormat = NumberFormat.COMPACT;
 
-    // TODO: Rewrite this to use the Number format enum natively
     @ConfigEntry(name = "tankFormat", minLength = 0, maxLength = 2, comment = "Format for displaying tank contents: 0 = full, 1 = compact, 2 = comma separated")
-    public Integer tankFormat = 1;
+    public NumberFormat tankFormat = NumberFormat.COMPACT;
 
     @ConfigEntry(name = "timeout", minLength = 10, maxLength = 100000, comment = "The amount of milliseconds to wait before updating probe information from the server (this is a client-side config)")
     public Integer timeout = 300;
@@ -93,7 +83,7 @@ public class MainConfig {
     public Integer showItemDetailThreshold = 4;
 
     @ConfigEntry(name = "showSmallChestContentsWithoutSneaking", minLength = 0, maxLength = 1000, comment = "The maximum amount of slots (empty or not) to show without sneaking")
-    public Integer showSmallChestContentsWithoutSneaking = 0;
+    public Integer showSmallChestContentsWithoutSneaking = 3;
 
     @ConfigEntry(name = "showContentsWithoutSneaking", maxLength = 6969, comment = "A list of blocks for which we automatically show chest contents even if not sneaking")
     public String[] showContentsWithoutSneaking = new String[]{"storagedrawers:basicDrawers", "storagedrawersextra:extra_drawers"};
