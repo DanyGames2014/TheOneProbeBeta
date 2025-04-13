@@ -79,7 +79,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
 
         // Inventory Contents
-        ChestInfoTools.showChestInfo(mode, probeInfo, world, pos, state, block, data, config);
+        InventoryInfo.showInventoryInfo(mode, probeInfo, world, pos, state, block, data, config);
 
         // Energy Info
         if (config.getRFMode() > 0) {
@@ -255,9 +255,9 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
                             .filledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarFilledColor))
                             .alternateFilledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarAlternateFilledColor))
                             .borderColor(Config.parseColor(Config.MAIN_CONFIG.rfbarBorderColor))
-                            .numberFormat(Config.MAIN_CONFIG.getRfFormat()));
+                            .numberFormat(Config.MAIN_CONFIG.rfFormat));
         } else {
-            probeInfo.text(PROGRESS + "RF: " + ElementProgress.format(energy, Config.MAIN_CONFIG.getRfFormat(), "RF"));
+            probeInfo.text(PROGRESS + "RF: " + ElementProgress.format(energy, Config.MAIN_CONFIG.rfFormat, "RF"));
         }
     }
 
