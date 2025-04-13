@@ -173,7 +173,7 @@ public class TheOneProbeImp implements ITheOneProbe {
 
     @Override
     public IProbeConfig createProbeConfig() {
-        return ConfigSetup.getDefaultConfig().lazyCopy();
+        return ConfigSetup.getProbeConfig();
     }
 
     @Override

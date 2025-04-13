@@ -12,7 +12,6 @@ import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
-import org.objectweb.asm.tree.LocalVariableAnnotationNode;
 
 import java.text.DecimalFormat;
 
@@ -29,7 +28,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 
     @Override
     public void addProbeEntityInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
-        IProbeConfig config = ConfigSetup.getRealConfig();
+        IProbeConfig config = ConfigSetup.getProbeConfig();
 
         boolean handled = false;
         for (IEntityDisplayOverride override : WhatsThis.theOneProbeImp.getEntityOverrides()) {

@@ -32,7 +32,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         Block block = state.getBlock();
         BlockPos pos = data.getPos();
 
-        IProbeConfig config = ConfigSetup.getRealConfig();
+        IProbeConfig config = ConfigSetup.getProbeConfig();
 
         // Standard Information
         boolean handled = false;

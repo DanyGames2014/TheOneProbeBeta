@@ -1,233 +1,76 @@
 package net.mcjty.whatsthis.apiimpl;
 
 import net.mcjty.whatsthis.api.IProbeConfig;
-
-import static net.mcjty.whatsthis.api.IProbeConfig.ConfigMode.EXTENDED;
-import static net.mcjty.whatsthis.api.IProbeConfig.ConfigMode.NORMAL;
-import static net.mcjty.whatsthis.api.IProbeConfig.ConfigMode.NOT;
+import net.mcjty.whatsthis.config.Config;
 
 public class ProbeConfig implements IProbeConfig {
-
-    private int showRF = 1;
-    private int showTank = 1;
-
-    private IProbeConfig.ConfigMode showHarvestLevel = NORMAL;
-    private IProbeConfig.ConfigMode showCanBeHarvested = NORMAL;
-    private IProbeConfig.ConfigMode showModName = NORMAL;
-    private IProbeConfig.ConfigMode showCropPercentage = NORMAL;
-    private IProbeConfig.ConfigMode showChestContents = EXTENDED;
-    private IProbeConfig.ConfigMode showChestContentsDetailed = EXTENDED;
-    private IProbeConfig.ConfigMode showRedstone = NORMAL;
-    private IProbeConfig.ConfigMode showMobHealth = NORMAL;
-    private IProbeConfig.ConfigMode showMobGrowth = NORMAL;
-    private IProbeConfig.ConfigMode showMobPotionEffects = EXTENDED;
-    private IProbeConfig.ConfigMode showLeverSetting = NORMAL;
-    private IProbeConfig.ConfigMode showTankSetting = EXTENDED;
-    private IProbeConfig.ConfigMode showBrewStand = NORMAL;
-    private IProbeConfig.ConfigMode showMobSpawner = NORMAL;
-    private IProbeConfig.ConfigMode showMobOwner = EXTENDED;
-    private IProbeConfig.ConfigMode showHorseStats = EXTENDED;
-
-    /// Make a lazy copy of this probe config.
-    public IProbeConfig lazyCopy() {
-        return new LazyProbeConfig(this);
-    }
-
-    @Override
-    public IProbeConfig setTankMode(int mode) {
-        this.showTank = mode;
-        return this;
-    }
-
     @Override
     public int getTankMode() {
-        return showTank;
-    }
-
-    @Override
-    public IProbeConfig setRFMode(int showRF) {
-        this.showRF = showRF;
-        return this;
+        return Config.MAIN_CONFIG.showTank;
     }
 
     @Override
     public int getRFMode() {
-        return showRF;
-    }
-
-    @Override
-    public IProbeConfig showHorseStatSetting(ConfigMode mode) {
-        showHorseStats = mode;
-        return this;
-    }
-
-    @Override
-    public ConfigMode getHorseStatSetting() {
-        return showHorseStats;
-    }
-
-    @Override
-    public IProbeConfig showAnimalOwnerSetting(ConfigMode mode) {
-        showMobOwner = mode;
-        return this;
+        return Config.MAIN_CONFIG.showRF;
     }
 
     @Override
     public ConfigMode getAnimalOwnerSetting() {
-        return showMobOwner;
-    }
-
-    @Override
-    public IProbeConfig showBrewStandSetting(ConfigMode mode) {
-        showBrewStand = mode;
-        return this;
-    }
-
-    @Override
-    public ConfigMode getShowBrewStandSetting() {
-        return showBrewStand;
-    }
-
-    @Override
-    public IProbeConfig showMobSpawnerSetting(ConfigMode mode) {
-        showMobSpawner = mode;
-        return this;
+        return Config.PROBE_CONFIG.showMobOwner;
     }
 
     @Override
     public ConfigMode getShowMobSpawnerSetting() {
-        return showMobSpawner;
-    }
-
-    @Override
-    public IProbeConfig showModName(ConfigMode mode) {
-        showModName = mode;
-        return this;
+        return Config.PROBE_CONFIG.showMobSpawner;
     }
 
     @Override
     public ConfigMode getShowModName() {
-        return showModName;
-    }
-
-    @Override
-    public IProbeConfig showHarvestLevel(ConfigMode mode) {
-        showHarvestLevel = mode;
-        return this;
+        return Config.PROBE_CONFIG.showModName;
     }
 
     @Override
     public ConfigMode getShowHarvestLevel() {
-        return showHarvestLevel;
-    }
-
-    @Override
-    public IProbeConfig showCanBeHarvested(ConfigMode mode) {
-        showCanBeHarvested = mode;
-        return this;
+        return Config.PROBE_CONFIG.showHarvestLevel;
     }
 
     @Override
     public ConfigMode getShowCanBeHarvested() {
-        return showCanBeHarvested;
-    }
-
-    @Override
-    public IProbeConfig showCropPercentage(ConfigMode mode) {
-        showCropPercentage = mode;
-        return this;
+        return Config.PROBE_CONFIG.showCanBeHarvested;
     }
 
     @Override
     public ConfigMode getShowCropPercentage() {
-        return showCropPercentage;
-    }
-
-    @Override
-    public IProbeConfig showChestContents(ConfigMode mode) {
-        showChestContents = mode;
-        return this;
+        return Config.PROBE_CONFIG.showCropPercentage;
     }
 
     @Override
     public ConfigMode getShowChestContents() {
-        return showChestContents;
-    }
-
-    @Override
-    public IProbeConfig showChestContentsDetailed(ConfigMode mode) {
-        showChestContentsDetailed = mode;
-        return this;
+        return Config.PROBE_CONFIG.showChestContents;
     }
 
     @Override
     public ConfigMode getShowChestContentsDetailed() {
-        return showChestContentsDetailed;
-    }
-
-    @Override
-    public IProbeConfig showRedstone(ConfigMode mode) {
-        showRedstone = mode;
-        return this;
+        return Config.PROBE_CONFIG.showChestContentsDetailed;
     }
 
     @Override
     public ConfigMode getShowRedstone() {
-        return showRedstone;
-    }
-
-    @Override
-    public IProbeConfig showMobHealth(ConfigMode mode) {
-        showMobHealth = mode;
-        return this;
+        return Config.PROBE_CONFIG.showRedstone;
     }
 
     @Override
     public ConfigMode getShowMobHealth() {
-        return showMobHealth;
-    }
-
-    @Override
-    public IProbeConfig showMobGrowth(ConfigMode mode) {
-        showMobGrowth = mode;
-        return this;
-    }
-
-    @Override
-    public ConfigMode getShowMobGrowth() {
-        return showMobGrowth;
-    }
-
-    @Override
-    public IProbeConfig showMobPotionEffects(ConfigMode mode) {
-        showMobPotionEffects = mode;
-        return this;
-    }
-
-    @Override
-    public ConfigMode getShowMobPotionEffects() {
-        return showMobPotionEffects;
-    }
-
-    @Override
-    public IProbeConfig showLeverSetting(ConfigMode mode) {
-        showLeverSetting = mode;
-        return this;
+        return Config.PROBE_CONFIG.showMobHealth;
     }
 
     @Override
     public ConfigMode getShowLeverSetting() {
-        return showLeverSetting;
-    }
-
-    @Override
-    public IProbeConfig showTankSetting(ConfigMode mode) {
-        showTankSetting = mode;
-        return this;
+        return Config.PROBE_CONFIG.showLeverSetting;
     }
 
     @Override
     public ConfigMode getShowTankSetting() {
-        return showTankSetting;
+        return Config.PROBE_CONFIG.showTankSetting;
     }
 }

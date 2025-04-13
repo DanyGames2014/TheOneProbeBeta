@@ -157,7 +157,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
         for (IProbeConfigProvider configProvider : configProviders) {
             configProvider.getProbeConfig(probeConfig, player, world, entity, data);
         }
-        ConfigSetup.setRealConfig(probeConfig);
+        ConfigSetup.setProbeConfig(probeConfig);
 
         List<IProbeInfoEntityProvider> entityProviders = WhatsThis.theOneProbeImp.getEntityProviders();
         for (IProbeInfoEntityProvider provider : entityProviders) {

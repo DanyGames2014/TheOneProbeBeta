@@ -202,7 +202,7 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
         for (IProbeConfigProvider configProvider : configProviders) {
             configProvider.getProbeConfig(probeConfig, player, world, state, data);
         }
-        ConfigSetup.setRealConfig(probeConfig);
+        ConfigSetup.setProbeConfig(probeConfig);
 
         List<IProbeInfoProvider> providers = WhatsThis.theOneProbeImp.getProviders();
         for (IProbeInfoProvider provider : providers) {

@@ -28,6 +28,9 @@
     ],
     "gcapi3:postload": [
       "net.mcjty.whatsthis.config.ConfigListener"
+    ],
+    "gcapi3:factory_provider": [
+      "net.mcjty.whatsthis.config.Config"
     ]
   },
   "mixins": [

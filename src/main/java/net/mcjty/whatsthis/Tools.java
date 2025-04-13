@@ -1,13 +1,11 @@
 package net.mcjty.whatsthis;
 
-import jdk.dynalink.beans.StaticClass;
 import net.mcjty.whatsthis.api.IProbeConfig;
 import net.mcjty.whatsthis.api.ProbeMode;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
-import net.modificationstation.stationapi.api.util.Formatting;
 import net.modificationstation.stationapi.api.util.Identifier;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -41,6 +39,7 @@ public class Tools {
         return formatModName(modName);
     }
     
+    @SuppressWarnings("deprecation")
     public static String formatModName(String input) {
         return WordUtils.capitalize(input);
     }

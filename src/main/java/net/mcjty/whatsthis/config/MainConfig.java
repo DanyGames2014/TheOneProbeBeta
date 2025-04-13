@@ -5,7 +5,6 @@ import net.glasslauncher.mods.gcapi3.impl.ConfigRootEntry;
 import net.glasslauncher.mods.gcapi3.impl.EventStorage;
 import net.glasslauncher.mods.gcapi3.impl.GCCore;
 import net.mcjty.whatsthis.api.NumberFormat;
-import net.mcjty.whatsthis.apiimpl.ProbeConfig;
 
 public class MainConfig {
     @SuppressWarnings("deprecation")
@@ -30,10 +29,10 @@ public class MainConfig {
     public Boolean spawnNote = true;
 
     @ConfigEntry(name = "showRF", minLength = 0, maxLength = 2, comment = "How to display RF: 0 = do not show, 1 = show in a bar, 2 = show as text")
-    public Integer showRF = ConfigSetup.getDefaultConfig().getRFMode();
+    public Integer showRF = 1;
 
     @ConfigEntry(name = "showTank", minLength = 0, maxLength = 2, comment = "How to display tank contents: 0 = do not show, 1 = show in a bar, 2 = show as text")
-    public Integer showTank = ConfigSetup.getDefaultConfig().getTankMode();
+    public Integer showTank = 1;
 
     @ConfigEntry(name = "rfFormat", minLength = 0, maxLength = 2, comment = "Format for displaying RF: 0 = full, 1 = compact, 2 = comma separated")
     public NumberFormat rfFormat = NumberFormat.COMPACT;
@@ -52,8 +51,6 @@ public class MainConfig {
 
     @ConfigEntry(name = "probeDistance", minLength = 1, maxLength = 50, comment = "Distance at which the probe works")
     public Float probeDistance = 6F;
-
-    // TODO: initDefaultConfig()
 
     @ConfigEntry(name = "showDebugInfo", comment = "If true show debug info with creative probe")
     public Boolean showDebugInfo = true;
