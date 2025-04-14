@@ -15,30 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractElementPanel implements IElement, IProbeInfo {
-
     protected List<IElement> children = new ArrayList<>();
     protected Integer borderColor;
     protected int spacing;
     protected ElementAlignment alignment;
 
-    @Override
-    public void render(int x, int y) {
-        if (borderColor != null) {
-            int w = getWidth();
-            int h = getHeight();
-            RenderHelper.drawHorizontalLine(x, y, x + w - 1, borderColor);
-            RenderHelper.drawHorizontalLine(x, y + h - 1, x + w - 1, borderColor);
-            RenderHelper.drawVerticalLine(x, y, y + h - 1, borderColor);
-            RenderHelper.drawVerticalLine(x + w - 1, y, y + h, borderColor);
-        }
-    }
-
+    // Constructor
     public AbstractElementPanel(Integer borderColor, int spacing, ElementAlignment alignment) {
         this.borderColor = borderColor;
         this.spacing = spacing;
         this.alignment = alignment;
     }
 
+    // Networking
     public AbstractElementPanel(DataInputStream stream) {
         try {
             children = ProbeInfo.createElements(stream);
@@ -69,6 +58,20 @@ public abstract class AbstractElementPanel implements IElement, IProbeInfo {
         }
     }
 
+    // Rendering
+    @Override
+    public void render(int x, int y) {
+        if (borderColor != null) {
+            int w = getWidth();
+            int h = getHeight();
+            RenderHelper.drawHorizontalLine(x, y, x + w - 1, borderColor);
+            RenderHelper.drawHorizontalLine(x, y + h - 1, x + w - 1, borderColor);
+            RenderHelper.drawVerticalLine(x, y, y + h - 1, borderColor);
+            RenderHelper.drawVerticalLine(x + w - 1, y, y + h, borderColor);
+        }
+    }
+
+    // Elements
     @Override
     public IProbeInfo icon(Identifier icon, int u, int v, int w, int h) {
         return icon(icon, u, v, w, h, new IconStyle());
@@ -193,6 +196,7 @@ public abstract class AbstractElementPanel implements IElement, IProbeInfo {
         return this;
     }
 
+    // Styling
     @Override
     public ILayoutStyle defaultLayoutStyle() {
         return new LayoutStyle();

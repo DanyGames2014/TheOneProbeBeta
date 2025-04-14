@@ -10,22 +10,30 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ElementText implements IElement {
-
     private final String text;
 
+    // Constructor
     public ElementText(String text) {
         this.text = text;
     }
 
+    // Networking
     public ElementText(DataInputStream stream) throws IOException {
         text = NetworkTools.readStringUTF8(stream);
     }
 
     @Override
+    public void toBytes(DataOutputStream stream) throws IOException {
+        NetworkTools.writeStringUTF8(stream, text);
+    }
+
+    // Rendering
+    @Override
     public void render(int x, int y) {
         ElementTextRender.render(text, x, y);
     }
 
+    // Styling
     @Override
     public int getWidth() {
         return ElementTextRender.getWidth(text);
@@ -36,11 +44,7 @@ public class ElementText implements IElement {
         return 10;
     }
 
-    @Override
-    public void toBytes(DataOutputStream stream) throws IOException {
-        NetworkTools.writeStringUTF8(stream, text);
-    }
-
+    // ID
     @Override
     public int getID() {
         return TheOneProbeImp.ELEMENT_TEXT;

@@ -14,17 +14,20 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class ElementProgress implements IElement {
-
     private final long current;
     private final long max;
     private final IProgressStyle style;
 
+    private static final DecimalFormat dfCommas = new DecimalFormat("###,###");
+
+    // Constructor
     public ElementProgress(long current, long max, IProgressStyle style) {
         this.current = current;
         this.max = max;
         this.style = style;
     }
-
+    
+    // Networking
     public ElementProgress(DataInputStream stream) throws IOException {
         current = stream.readLong();
         max = stream.readLong();
@@ -43,8 +46,55 @@ public class ElementProgress implements IElement {
                 .armorBar(stream.readBoolean());
     }
 
-    private static DecimalFormat dfCommas = new DecimalFormat("###,###");
+    @Override
+    public void toBytes(DataOutputStream stream) throws IOException {
+        stream.writeLong(current);
+        stream.writeLong(max);
+        stream.writeInt(style.getWidth());
+        stream.writeInt(style.getHeight());
+        NetworkTools.writeStringUTF8(stream, style.getPrefix());
+        NetworkTools.writeStringUTF8(stream, style.getSuffix());
+        stream.writeInt(style.getBorderColor());
+        stream.writeInt(style.getFilledColor());
+        stream.writeInt(style.getAlternatefilledColor());
+        stream.writeInt(style.getBackgroundColor());
+        stream.writeBoolean(style.isShowText());
+        stream.writeByte(style.getNumberFormat().ordinal());
+        stream.writeBoolean(style.isLifeBar());
+        stream.writeBoolean(style.isArmorBar());
+    }
 
+    // Rendering
+    @Override
+    public void render(int x, int y) {
+        ElementProgressRender.render(style, current, max, x, y, getWidth(), getHeight());
+    }
+
+    // Styling
+    @Override
+    public int getWidth() {
+        if (style.isLifeBar()) {
+            if (current * 4 >= style.getWidth()) {
+                return 100;
+            } else {
+                return (int) (current * 4 + 2);
+            }
+        }
+        return style.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return style.getHeight();
+    }
+
+    // ID
+    @Override
+    public int getID() {
+        return TheOneProbeImp.ELEMENT_PROGRESS;
+    }
+
+    // Util
     /**
      * If the suffix starts with 'm' we can possibly drop that
      */
@@ -78,50 +128,5 @@ public class ElementProgress implements IElement {
                 return suffix;
         }
         return Long.toString(in);
-    }
-
-    @Override
-    public void render(int x, int y) {
-        ElementProgressRender.render(style, current, max, x, y, getWidth(), getHeight());
-    }
-
-    @Override
-    public int getWidth() {
-        if (style.isLifeBar()) {
-            if (current * 4 >= style.getWidth()) {
-                return 100;
-            } else {
-                return (int) (current * 4 + 2);
-            }
-        }
-        return style.getWidth();
-    }
-
-    @Override
-    public int getHeight() {
-        return style.getHeight();
-    }
-
-    @Override
-    public void toBytes(DataOutputStream stream) throws IOException {
-        stream.writeLong(current);
-        stream.writeLong(max);
-        stream.writeInt(style.getWidth());
-        stream.writeInt(style.getHeight());
-        NetworkTools.writeStringUTF8(stream, style.getPrefix());
-        NetworkTools.writeStringUTF8(stream, style.getSuffix());
-        stream.writeInt(style.getBorderColor());
-        stream.writeInt(style.getFilledColor());
-        stream.writeInt(style.getAlternatefilledColor());
-        stream.writeInt(style.getBackgroundColor());
-        stream.writeBoolean(style.isShowText());
-        stream.writeByte(style.getNumberFormat().ordinal());
-        stream.writeBoolean(style.isLifeBar());
-        stream.writeBoolean(style.isArmorBar());
-    }
-
-    @Override
-    public int getID() {
-        return TheOneProbeImp.ELEMENT_PROGRESS;
     }
 }

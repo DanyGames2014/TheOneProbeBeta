@@ -5,19 +5,27 @@ import net.mcjty.whatsthis.api.IElement;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 public class ElementVertical extends AbstractElementPanel {
-
     public static final int SPACING = 2;
 
+    // Constructor
     public ElementVertical(Integer borderColor, int spacing, ElementAlignment alignment) {
         super(borderColor, spacing, alignment);
     }
 
+    // Networking
     public ElementVertical(DataInputStream stream) {
         super(stream);
     }
 
+    @Override
+    public void toBytes(DataOutputStream stream) {
+        super.toBytes(stream);
+    }
+
+    // Rendering
     @Override
     public void render(int x, int y) {
         super.render(x, y);
@@ -44,6 +52,7 @@ public class ElementVertical extends AbstractElementPanel {
         }
     }
 
+    // Styling
     private int getBorderSpacing() {
         return borderColor == null ? 0 : 6;
     }
@@ -69,6 +78,7 @@ public class ElementVertical extends AbstractElementPanel {
         return w + getBorderSpacing();
     }
 
+    // ID
     @Override
     public int getID() {
         return TheOneProbeImp.ELEMENT_VERTICAL;

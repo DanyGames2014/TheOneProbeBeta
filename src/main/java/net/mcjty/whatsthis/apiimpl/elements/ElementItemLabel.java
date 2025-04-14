@@ -11,13 +11,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ElementItemLabel implements IElement {
-
     private final ItemStack stack;
 
+    // Constructor
     public ElementItemLabel(ItemStack stack) {
         this.stack = stack;
     }
 
+    // Networking
     public ElementItemLabel(DataInputStream stream) throws IOException {
         if (stream.readBoolean()) {
             stack = NetworkTools.readItemStack(stream);
@@ -27,6 +28,17 @@ public class ElementItemLabel implements IElement {
     }
 
     @Override
+    public void toBytes(DataOutputStream stream) throws IOException {
+        if (stack != null && stack.count > 0) {
+            stream.writeBoolean(true);
+            NetworkTools.writeItemStack(stream, stack);
+        } else {
+            stream.writeBoolean(false);
+        }
+    }
+
+    // Rendering
+    @Override
     public void render(int x, int y) {
         if (stack != null && stack.count > 0) {
             String text = stack.getItem().getTranslatedName();
@@ -34,6 +46,7 @@ public class ElementItemLabel implements IElement {
         }
     }
 
+    // Styling
     @Override
     public int getWidth() {
         if (stack != null && stack.count > 0) {
@@ -49,16 +62,7 @@ public class ElementItemLabel implements IElement {
         return 10;
     }
 
-    @Override
-    public void toBytes(DataOutputStream stream) throws IOException {
-        if (stack != null && stack.count > 0) {
-            stream.writeBoolean(true);
-            NetworkTools.writeItemStack(stream, stack);
-        } else {
-            stream.writeBoolean(false);
-        }
-    }
-
+    // ID
     @Override
     public int getID() {
         return TheOneProbeImp.ELEMENT_ITEMLABEL;

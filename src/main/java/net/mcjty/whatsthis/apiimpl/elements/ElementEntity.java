@@ -16,12 +16,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ElementEntity implements IElement {
-
     private final String entityName;
     private final Integer playerID;
     private final NbtCompound entityNbt;
     private final IEntityStyle style;
 
+    // Constructor
     public ElementEntity(String entityName, IEntityStyle style) {
         this.entityName = entityName;
         this.entityNbt = new NbtCompound();
@@ -42,6 +42,7 @@ public class ElementEntity implements IElement {
         this.style = style;
     }
 
+    // Networking
     public ElementEntity(DataInputStream stream) throws IOException {
         entityName = NetworkTools.readString(stream);
         style = new EntityStyle()
@@ -60,25 +61,6 @@ public class ElementEntity implements IElement {
         } else {
             playerID = null;
         }
-    }
-
-    @Override
-    public void render(int x, int y) {
-        if (playerID != null) {
-            ElementEntityRender.renderPlayer(entityName, playerID, style, x, y);
-        } else {
-            ElementEntityRender.render(entityName, entityNbt, style, x, y);
-        }
-    }
-
-    @Override
-    public int getWidth() {
-        return style.getWidth();
-    }
-
-    @Override
-    public int getHeight() {
-        return style.getHeight();
     }
 
     @Override
@@ -103,6 +85,28 @@ public class ElementEntity implements IElement {
         }
     }
 
+    // Rendering
+    @Override
+    public void render(int x, int y) {
+        if (playerID != null) {
+            ElementEntityRender.renderPlayer(entityName, playerID, style, x, y);
+        } else {
+            ElementEntityRender.render(entityName, entityNbt, style, x, y);
+        }
+    }
+
+    // Styling
+    @Override
+    public int getWidth() {
+        return style.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return style.getHeight();
+    }
+
+    // ID
     @Override
     public int getID() {
         return TheOneProbeImp.ELEMENT_ENTITY;

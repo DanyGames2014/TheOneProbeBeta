@@ -14,7 +14,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ElementIcon implements IElement {
-
     private final Identifier icon;
     private final int u;
     private final int v;
@@ -22,6 +21,7 @@ public class ElementIcon implements IElement {
     private final int h;
     private final IIconStyle style;
 
+    // Constructor
     public ElementIcon(Identifier icon, int u, int v, int w, int h, IIconStyle style) {
         this.icon = icon;
         this.u = u;
@@ -31,32 +31,18 @@ public class ElementIcon implements IElement {
         this.style = style;
     }
 
-    public ElementIcon(DataInputStream buf) throws IOException {
-        icon = Identifier.of(Namespace.of(NetworkTools.readString(buf)), NetworkTools.readString(buf));
-        u = buf.readInt();
-        v = buf.readInt();
-        w = buf.readInt();
-        h = buf.readInt();
+    // Networking
+    public ElementIcon(DataInputStream stream) throws IOException {
+        icon = Identifier.of(Namespace.of(NetworkTools.readString(stream)), NetworkTools.readString(stream));
+        u = stream.readInt();
+        v = stream.readInt();
+        w = stream.readInt();
+        h = stream.readInt();
         style = new IconStyle()
-                .width(buf.readInt())
-                .height(buf.readInt())
-                .textureWidth(buf.readInt())
-                .textureHeight(buf.readInt());
-    }
-
-    @Override
-    public void render(int x, int y) {
-        ElementIconRender.render(icon, x, y, w, h, u, v, style.getTextureWidth(), style.getTextureHeight());
-    }
-
-    @Override
-    public int getWidth() {
-        return style.getWidth();
-    }
-
-    @Override
-    public int getHeight() {
-        return style.getHeight();
+                .width(stream.readInt())
+                .height(stream.readInt())
+                .textureWidth(stream.readInt())
+                .textureHeight(stream.readInt());
     }
 
     @Override
@@ -73,6 +59,24 @@ public class ElementIcon implements IElement {
         stream.writeInt(style.getTextureHeight());
     }
 
+    // Rendering
+    @Override
+    public void render(int x, int y) {
+        ElementIconRender.render(icon, x, y, w, h, u, v, style.getTextureWidth(), style.getTextureHeight());
+    }
+
+    // Styling
+    @Override
+    public int getWidth() {
+        return style.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return style.getHeight();
+    }
+
+    // ID
     @Override
     public int getID() {
         return TheOneProbeImp.ELEMENT_ICON;

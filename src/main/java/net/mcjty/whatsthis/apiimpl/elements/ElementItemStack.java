@@ -13,15 +13,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ElementItemStack implements IElement {
-
     private final ItemStack stack;
     private final IItemStyle style;
 
+    // Constructor
     public ElementItemStack(ItemStack stack, IItemStyle style) {
         this.stack = stack;
         this.style = style;
     }
 
+    // Networking
     public ElementItemStack(DataInputStream stream) throws IOException {
         if (stream.readBoolean()) {
             stack = NetworkTools.readItemStack(stream);
@@ -31,21 +32,6 @@ public class ElementItemStack implements IElement {
         style = new ItemStyle()
                 .width(stream.readInt())
                 .height(stream.readInt());
-    }
-
-    @Override
-    public void render(int x, int y) {
-        ElementItemStackRender.render(stack, style, x, y);
-    }
-
-    @Override
-    public int getWidth() {
-        return style.getWidth();
-    }
-
-    @Override
-    public int getHeight() {
-        return style.getHeight();
     }
 
     @Override
@@ -60,6 +46,24 @@ public class ElementItemStack implements IElement {
         stream.writeInt(style.getHeight());
     }
 
+    // Rendering
+    @Override
+    public void render(int x, int y) {
+        ElementItemStackRender.render(stack, style, x, y);
+    }
+
+    // Styling
+    @Override
+    public int getWidth() {
+        return style.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return style.getHeight();
+    }
+
+    // ID
     @Override
     public int getID() {
         return TheOneProbeImp.ELEMENT_ITEM;
