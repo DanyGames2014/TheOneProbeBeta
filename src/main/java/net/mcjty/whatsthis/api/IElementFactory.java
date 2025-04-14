@@ -13,5 +13,5 @@ public interface IElementFactory {
      * Create an element from a network buffer. This should be
      * symmetrical to what IElement.toBytes() creates.
      */
-    IElement createElement(DataInputStream buf) throws IOException;
+    IElement createElement(DataInputStream stream) throws IOException;
 }

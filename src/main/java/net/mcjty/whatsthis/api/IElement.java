@@ -27,7 +27,7 @@ public interface IElement {
      * Persist this element to the given network buffer. This should be symmetrical to
      * what IElementFactory.createElement() expects.
      */
-    void toBytes(DataOutputStream buf) throws IOException;
+    void toBytes(DataOutputStream stream) throws IOException;
 
     /**
      * Get the identifier for this element (as returned by ITheOneProbe.registerElementFactory()

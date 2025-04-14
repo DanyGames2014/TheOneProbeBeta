@@ -14,13 +14,13 @@ public class ElementItemLabel implements IElement {
 
     private final ItemStack itemStack;
 
-    public ElementItemLabel(ItemStack itemStack) {
-        this.itemStack = itemStack;
+    public ElementItemLabel(ItemStack stack) {
+        this.itemStack = stack;
     }
 
-    public ElementItemLabel(DataInputStream buf) throws IOException {
-        if (buf.readBoolean()) {
-            itemStack = NetworkTools.readItemStack(buf);
+    public ElementItemLabel(DataInputStream stream) throws IOException {
+        if (stream.readBoolean()) {
+            itemStack = NetworkTools.readItemStack(stream);
         } else {
             itemStack = null;
         }
@@ -50,12 +50,12 @@ public class ElementItemLabel implements IElement {
     }
 
     @Override
-    public void toBytes(DataOutputStream buf) throws IOException {
+    public void toBytes(DataOutputStream stream) throws IOException {
         if (itemStack != null && itemStack.count > 0) {
-            buf.writeBoolean(true);
-            NetworkTools.writeItemStack(buf, itemStack);
+            stream.writeBoolean(true);
+            NetworkTools.writeItemStack(stream, itemStack);
         } else {
-            buf.writeBoolean(false);
+            stream.writeBoolean(false);
         }
     }
 

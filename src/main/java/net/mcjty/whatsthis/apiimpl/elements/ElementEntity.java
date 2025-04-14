@@ -19,26 +19,26 @@ public class ElementEntity implements IElement {
 
     private final String entityName;
     private final Integer playerID;
-    private final NbtCompound entityNBT;
+    private final NbtCompound entityNbt;
     private final IEntityStyle style;
 
     public ElementEntity(String entityName, IEntityStyle style) {
         this.entityName = entityName;
-        this.entityNBT = new NbtCompound();
+        this.entityNbt = new NbtCompound();
         this.style = style;
         this.playerID = null;
     }
 
     public ElementEntity(Entity entity, IEntityStyle style) {
+        this.entityName = EntityRegistry.getId(entity);
         if (entity instanceof PlayerEntity player) {
-            entityNBT = new NbtCompound();
+            entityNbt = new NbtCompound();
             playerID = player.id;
         } else {
-            entityNBT = new NbtCompound();
-            entity.write(entityNBT);
+            entityNbt = new NbtCompound();
+            entity.write(entityNbt);
             playerID = null;
         }
-        this.entityName = EntityRegistry.getId(entity);
         this.style = style;
     }
 
@@ -48,11 +48,13 @@ public class ElementEntity implements IElement {
                 .width(stream.readInt())
                 .height(stream.readInt())
                 .scale(stream.readFloat());
+        
         if (stream.readBoolean()) {
-            entityNBT = NetworkTools.readNBT(stream);
+            entityNbt = NetworkTools.readNBT(stream);
         } else {
-            entityNBT = null;
+            entityNbt = null;
         }
+        
         if (stream.readBoolean()) {
             playerID = stream.readInt();
         } else {
@@ -65,7 +67,7 @@ public class ElementEntity implements IElement {
         if (playerID != null) {
             ElementEntityRender.renderPlayer(entityName, playerID, style, x, y);
         } else {
-            ElementEntityRender.render(entityName, entityNBT, style, x, y);
+            ElementEntityRender.render(entityName, entityNbt, style, x, y);
         }
     }
 
@@ -85,12 +87,14 @@ public class ElementEntity implements IElement {
         stream.writeInt(style.getWidth());
         stream.writeInt(style.getHeight());
         stream.writeFloat(style.getScale());
-        if (entityNBT != null) {
+        
+        if (entityNbt != null) {
             stream.writeBoolean(true);
-            NetworkTools.writeNBT(stream, entityNBT);
+            NetworkTools.writeNBT(stream, entityNbt);
         } else {
             stream.writeBoolean(false);
         }
+        
         if (playerID != null) {
             stream.writeBoolean(true);
             stream.writeInt(playerID);

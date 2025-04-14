@@ -37,8 +37,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
             dim = stream.readInt();
             pos = new BlockPos(stream.readInt(), stream.readInt(), stream.readInt());
             if (stream.readBoolean()) {
-                probeInfo = new ProbeInfo();
-                probeInfo.fromBytes(stream);
+                probeInfo = new ProbeInfo(stream);
             } else {
                 probeInfo = null;
             }

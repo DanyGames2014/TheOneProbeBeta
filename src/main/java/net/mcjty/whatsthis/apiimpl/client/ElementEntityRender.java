@@ -17,14 +17,14 @@ public class ElementEntityRender {
         }
     }
 
-    public static void render(String entityName, NbtCompound entityNBT, IEntityStyle style, int x, int y) {
+    public static void render(String entityName, NbtCompound entityNbt, IEntityStyle style, int x, int y) {
         if (entityName != null && !entityName.isEmpty()) {
-            Entity entity = null;
+            Entity entity;
+
+            entity = EntityRegistry.create(entityName, Minecraft.INSTANCE.world);
             
-            if (entityNBT != null && entityNBT.contains("id")) {
-                entity = EntityRegistry.getEntityFromNbt(entityNBT, Minecraft.INSTANCE.world);
-            } else {
-                entity = EntityRegistry.create(entityName, Minecraft.INSTANCE.world);
+            if (entityNbt != null) {
+                entity.read(entityNbt);
             }
             
             if (entity != null) {

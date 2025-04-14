@@ -18,12 +18,12 @@ public class ProbeInfo extends ElementVertical {
         return children;
     }
 
-    public void fromBytes(DataInputStream stream) throws IOException {
-        children = createElements(stream);
-    }
-
     public ProbeInfo() {
-        super((Integer) null, 2, ElementAlignment.ALIGN_TOPLEFT);
+        super(null, 2, ElementAlignment.ALIGN_TOPLEFT);
+    }
+    
+    public ProbeInfo(DataInputStream stream) {
+        super(stream);
     }
 
     public static List<IElement> createElements(DataInputStream stream) throws IOException {

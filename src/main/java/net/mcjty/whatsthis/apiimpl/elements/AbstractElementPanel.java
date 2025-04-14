@@ -20,7 +20,6 @@ public abstract class AbstractElementPanel implements IElement, IProbeInfo {
     protected Integer borderColor;
     protected int spacing;
     protected ElementAlignment alignment;
-    protected IProbeConfig overriddenConfig;
 
     @Override
     public void render(int x, int y) {

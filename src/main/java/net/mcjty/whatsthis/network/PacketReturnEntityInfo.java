@@ -33,8 +33,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
         try {
             entityId = stream.readInt();
             if (stream.readBoolean()) {
-                probeInfo = new ProbeInfo();
-                probeInfo.fromBytes(stream);
+                probeInfo = new ProbeInfo(stream);
             } else {
                 probeInfo = null;
             }

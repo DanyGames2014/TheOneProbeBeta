@@ -60,17 +60,17 @@ public class ElementIcon implements IElement {
     }
 
     @Override
-    public void toBytes(DataOutputStream buf) throws IOException {
-        NetworkTools.writeString(buf, icon.namespace.toString());
-        NetworkTools.writeString(buf, icon.path);
-        buf.writeInt(u);
-        buf.writeInt(v);
-        buf.writeInt(w);
-        buf.writeInt(h);
-        buf.writeInt(style.getWidth());
-        buf.writeInt(style.getHeight());
-        buf.writeInt(style.getTextureWidth());
-        buf.writeInt(style.getTextureHeight());
+    public void toBytes(DataOutputStream stream) throws IOException {
+        NetworkTools.writeString(stream, icon.namespace.toString());
+        NetworkTools.writeString(stream, icon.path);
+        stream.writeInt(u);
+        stream.writeInt(v);
+        stream.writeInt(w);
+        stream.writeInt(h);
+        stream.writeInt(style.getWidth());
+        stream.writeInt(style.getHeight());
+        stream.writeInt(style.getTextureWidth());
+        stream.writeInt(style.getTextureHeight());
     }
 
     @Override

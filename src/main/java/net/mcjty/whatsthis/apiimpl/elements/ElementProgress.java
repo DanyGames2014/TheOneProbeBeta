@@ -25,22 +25,22 @@ public class ElementProgress implements IElement {
         this.style = style;
     }
 
-    public ElementProgress(DataInputStream buf) throws IOException {
-        current = buf.readLong();
-        max = buf.readLong();
+    public ElementProgress(DataInputStream stream) throws IOException {
+        current = stream.readLong();
+        max = stream.readLong();
         style = new ProgressStyle()
-                .width(buf.readInt())
-                .height(buf.readInt())
-                .prefix(NetworkTools.readStringUTF8(buf))
-                .suffix(NetworkTools.readStringUTF8(buf))
-                .borderColor(buf.readInt())
-                .filledColor(buf.readInt())
-                .alternateFilledColor(buf.readInt())
-                .backgroundColor(buf.readInt())
-                .showText(buf.readBoolean())
-                .numberFormat(NumberFormat.values()[buf.readByte()])
-                .lifeBar(buf.readBoolean())
-                .armorBar(buf.readBoolean());
+                .width(stream.readInt())
+                .height(stream.readInt())
+                .prefix(NetworkTools.readStringUTF8(stream))
+                .suffix(NetworkTools.readStringUTF8(stream))
+                .borderColor(stream.readInt())
+                .filledColor(stream.readInt())
+                .alternateFilledColor(stream.readInt())
+                .backgroundColor(stream.readInt())
+                .showText(stream.readBoolean())
+                .numberFormat(NumberFormat.values()[stream.readByte()])
+                .lifeBar(stream.readBoolean())
+                .armorBar(stream.readBoolean());
     }
 
     private static DecimalFormat dfCommas = new DecimalFormat("###,###");
@@ -103,21 +103,21 @@ public class ElementProgress implements IElement {
     }
 
     @Override
-    public void toBytes(DataOutputStream buf) throws IOException {
-        buf.writeLong(current);
-        buf.writeLong(max);
-        buf.writeInt(style.getWidth());
-        buf.writeInt(style.getHeight());
-        NetworkTools.writeStringUTF8(buf, style.getPrefix());
-        NetworkTools.writeStringUTF8(buf, style.getSuffix());
-        buf.writeInt(style.getBorderColor());
-        buf.writeInt(style.getFilledColor());
-        buf.writeInt(style.getAlternatefilledColor());
-        buf.writeInt(style.getBackgroundColor());
-        buf.writeBoolean(style.isShowText());
-        buf.writeByte(style.getNumberFormat().ordinal());
-        buf.writeBoolean(style.isLifeBar());
-        buf.writeBoolean(style.isArmorBar());
+    public void toBytes(DataOutputStream stream) throws IOException {
+        stream.writeLong(current);
+        stream.writeLong(max);
+        stream.writeInt(style.getWidth());
+        stream.writeInt(style.getHeight());
+        NetworkTools.writeStringUTF8(stream, style.getPrefix());
+        NetworkTools.writeStringUTF8(stream, style.getSuffix());
+        stream.writeInt(style.getBorderColor());
+        stream.writeInt(style.getFilledColor());
+        stream.writeInt(style.getAlternatefilledColor());
+        stream.writeInt(style.getBackgroundColor());
+        stream.writeBoolean(style.isShowText());
+        stream.writeByte(style.getNumberFormat().ordinal());
+        stream.writeBoolean(style.isLifeBar());
+        stream.writeBoolean(style.isArmorBar());
     }
 
     @Override

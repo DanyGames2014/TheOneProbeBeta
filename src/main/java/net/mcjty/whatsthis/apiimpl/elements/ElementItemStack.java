@@ -14,28 +14,28 @@ import java.io.IOException;
 
 public class ElementItemStack implements IElement {
 
-    private final ItemStack itemStack;
+    private final ItemStack stack;
     private final IItemStyle style;
 
-    public ElementItemStack(ItemStack itemStack, IItemStyle style) {
-        this.itemStack = itemStack;
+    public ElementItemStack(ItemStack stack, IItemStyle style) {
+        this.stack = stack;
         this.style = style;
     }
 
-    public ElementItemStack(DataInputStream buf) throws IOException {
-        if (buf.readBoolean()) {
-            itemStack = NetworkTools.readItemStack(buf);
+    public ElementItemStack(DataInputStream stream) throws IOException {
+        if (stream.readBoolean()) {
+            stack = NetworkTools.readItemStack(stream);
         } else {
-            itemStack = null;
+            stack = null;
         }
         style = new ItemStyle()
-                .width(buf.readInt())
-                .height(buf.readInt());
+                .width(stream.readInt())
+                .height(stream.readInt());
     }
 
     @Override
     public void render(int x, int y) {
-        ElementItemStackRender.render(itemStack, style, x, y);
+        ElementItemStackRender.render(stack, style, x, y);
     }
 
     @Override
@@ -49,15 +49,15 @@ public class ElementItemStack implements IElement {
     }
 
     @Override
-    public void toBytes(DataOutputStream buf) throws IOException {
-        if (itemStack != null) {
-            buf.writeBoolean(true);
-            NetworkTools.writeItemStack(buf, itemStack);
+    public void toBytes(DataOutputStream stream) throws IOException {
+        if (stack != null) {
+            stream.writeBoolean(true);
+            NetworkTools.writeItemStack(stream, stack);
         } else {
-            buf.writeBoolean(false);
+            stream.writeBoolean(false);
         }
-        buf.writeInt(style.getWidth());
-        buf.writeInt(style.getHeight());
+        stream.writeInt(style.getWidth());
+        stream.writeInt(style.getHeight());
     }
 
     @Override

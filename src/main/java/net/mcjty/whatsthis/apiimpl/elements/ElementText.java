@@ -17,8 +17,8 @@ public class ElementText implements IElement {
         this.text = text;
     }
 
-    public ElementText(DataInputStream buf) throws IOException {
-        text = NetworkTools.readStringUTF8(buf);
+    public ElementText(DataInputStream stream) throws IOException {
+        text = NetworkTools.readStringUTF8(stream);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class ElementText implements IElement {
     }
 
     @Override
-    public void toBytes(DataOutputStream buf) throws IOException {
-        NetworkTools.writeStringUTF8(buf, text);
+    public void toBytes(DataOutputStream stream) throws IOException {
+        NetworkTools.writeStringUTF8(stream, text);
     }
 
     @Override

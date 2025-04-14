@@ -14,8 +14,8 @@ public class ElementVertical extends AbstractElementPanel {
         super(borderColor, spacing, alignment);
     }
 
-    public ElementVertical(DataInputStream buf) {
-        super(buf);
+    public ElementVertical(DataInputStream stream) {
+        super(stream);
     }
 
     @Override

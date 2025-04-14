@@ -3,62 +3,33 @@ package net.mcjty.whatsthis.network;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.util.math.BlockPos;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.util.Collection;
 
 public class NetworkTools {
 
-    public static NbtCompound readNBT(DataInputStream dataIn) {
-//        PacketBuffer buf = new PacketBuffer(dataIn);
-//        try {
-//            return buf.readCompoundTag();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        return null;
+    public static NbtCompound readNBT(DataInputStream stream) {
+        return (NbtCompound) NbtElement.readTag(stream);
     }
 
-    public static void writeNBT(DataOutputStream dataOut, NbtCompound nbt) {
-//        PacketBuffer buf = new PacketBuffer(dataOut);
-//        try {
-//            buf.writeCompoundTag(nbt);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public static void writeNBT(DataOutputStream stream, NbtCompound nbt) {
+        NbtElement.writeTag(nbt, stream);
     }
 
 
     /// This function supports itemstacks with more then 64 items.
-    public static ItemStack readItemStack(DataInputStream dataIn) {
-//        PacketBuffer buf = new PacketBuffer(dataIn);
-//        try {
-//            NBTTagCompound nbt = buf.readCompoundTag();
-//            ItemStack stack = new ItemStack(nbt);
-//            stack.setCount(buf.readInt());
-//            return stack;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        return null;
+    public static ItemStack readItemStack(DataInputStream stream) throws IOException {
+        return new ItemStack(stream.readShort(), stream.readShort(), stream.readShort());
     }
 
     /// This function supports itemstacks with more then 64 items.
-    public static void writeItemStack(DataOutputStream dataOut, ItemStack itemStack) {
-//        PacketBuffer buf = new PacketBuffer(dataOut);
-//        NBTTagCompound nbt = new NBTTagCompound();
-//        itemStack.writeToNBT(nbt);
-//        try {
-//            buf.writeCompoundTag(nbt);
-//            buf.writeInt(itemStack.getCount());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public static void writeItemStack(DataOutputStream stream, ItemStack stack) throws IOException {
+        stream.writeShort(stack.itemId);
+        stream.writeShort(stack.count);
+        stream.writeShort(stack.getDamage());
     }
 
     public static String readString(DataInputStream dataIn) throws IOException {

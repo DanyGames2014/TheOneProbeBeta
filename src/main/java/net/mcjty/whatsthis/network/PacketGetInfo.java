@@ -62,22 +62,25 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     }
 
     @Override
-    public void read(DataInputStream buf) {
+    public void read(DataInputStream stream) {
         try {
-            dim = buf.readInt();
-            pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
-            mode = ProbeMode.values()[buf.readByte()];
-            byte sideByte = buf.readByte();
+            dim = stream.readInt();
+            pos = new BlockPos(stream.readInt(), stream.readInt(), stream.readInt());
+            mode = ProbeMode.values()[stream.readByte()];
+            byte sideByte = stream.readByte();
             if (sideByte == 127) {
                 sideHit = null;
             } else {
                 sideHit = Direction.values()[sideByte];
             }
-            if (buf.readBoolean()) {
-                hitVec = Vec3d.create(buf.readDouble(), buf.readDouble(), buf.readDouble());
+            
+            if (stream.readBoolean()) {
+                hitVec = Vec3d.create(stream.readDouble(), stream.readDouble(), stream.readDouble());
             }
-
-            //pickBlock = ByteBufUtils.readItemStack(buf);
+            
+            if(stream.readBoolean()) {
+                pickBlock = NetworkTools.readItemStack(stream);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -87,7 +90,7 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     public void write(DataOutputStream stream) {
         try {
             int initialStreamSize = stream.size();
-            
+
             stream.writeInt(dim); // 4b
             stream.writeInt(pos.getX()); // 4b
             stream.writeInt(pos.getY()); // 4b
@@ -103,18 +106,14 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
                 stream.writeDouble(hitVec.z); // 8b
             }
 
-            this.size = stream.size() - initialStreamSize;
-            
-            // TODO: Write the item
-//            ByteBuff buffer = Unpooled.buffer();
-//            ByteBufUtils.writeItemStack(buffer, pickBlock);
-//            if (buffer.writerIndex() <= ConfigSetup.maxPacketToServer) {
-//                buf.writeBytes(buffer);
-//            } else {
-//                ItemStack copy = new ItemStack(pickBlock.getItem(), pickBlock.getCount(), pickBlock.getMetadata());
-//                ByteBufUtils.writeItemStack(buf, copy);
-//            }
+            if (pickBlock != null) {
+                stream.writeBoolean(true);
+                NetworkTools.writeItemStack(stream, pickBlock);
+            } else {
+                stream.writeBoolean(false);
+            }
 
+            this.size = stream.size() - initialStreamSize;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -161,23 +160,6 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     public @NotNull PacketType<PacketGetInfo> getType() {
         return TYPE;
     }
-
-//    public static class Handler implements IMessageHandler<PacketGetInfo, IMessage> {
-//        @Override
-//        public IMessage onMessage(PacketGetInfo message, MessageContext ctx) {
-//            FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> handle(message, ctx));
-//            return null;
-//        }
-//
-//        private void handle(PacketGetInfo message, MessageContext ctx) {
-//            WorldServer world = DimensionManager.getWorld(message.dim);
-//            if (world != null) {
-//                ProbeInfo probeInfo = getProbeInfo(ctx.getServerHandler().player,
-//                        message.mode, world, message.pos, message.sideHit, message.hitVec, message.pickBlock);
-//                PacketHandler.INSTANCE.sendTo(new PacketReturnInfo(message.dim, message.pos, probeInfo), ctx.getServerHandler().player);
-//            }
-//        }
-//    }
 
     private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, BlockPos blockPos, Direction sideHit, Vec3d hitVec, ItemStack pickBlock) {
         if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
