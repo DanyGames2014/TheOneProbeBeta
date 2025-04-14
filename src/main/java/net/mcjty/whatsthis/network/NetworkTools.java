@@ -70,7 +70,7 @@ public class NetworkTools {
             return "";
         }
         byte[] dst = new byte[s];
-        dataIn.read(dst);
+        dataIn.readFully(dst);
         return new String(dst);
     }
 
