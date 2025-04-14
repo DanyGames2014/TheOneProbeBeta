@@ -54,9 +54,9 @@ public interface IProbeInfo {
      * Create an icon. If u and v are -1 then the default texture atlas is used
      * and TheOneProbe will try to find the resource location on that atlas
      */
-    IProbeInfo icon(Identifier icon, int u, int v, int w, int h, IIconStyle style);
+    IProbeInfo icon(String icon, int u, int v, int w, int h, IIconStyle style);
 
-    IProbeInfo icon(Identifier icon, int u, int v, int w, int h);
+    IProbeInfo icon(String icon, int u, int v, int w, int h);
 
     /**
      * entityName can be an old-style entity name (like 'Zombie') or the string

@@ -73,12 +73,12 @@ public abstract class AbstractElementPanel implements IElement, IProbeInfo {
 
     // Elements
     @Override
-    public IProbeInfo icon(Identifier icon, int u, int v, int w, int h) {
+    public IProbeInfo icon(String icon, int u, int v, int w, int h) {
         return icon(icon, u, v, w, h, new IconStyle());
     }
 
     @Override
-    public IProbeInfo icon(Identifier icon, int u, int v, int w, int h, IIconStyle style) {
+    public IProbeInfo icon(String icon, int u, int v, int w, int h, IIconStyle style) {
         children.add(new ElementIcon(icon, u, v, w, h, style));
         return this;
     }

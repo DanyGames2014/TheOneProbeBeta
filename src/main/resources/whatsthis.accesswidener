@@ -18,3 +18,4 @@ accessible field net/minecraft/client/SingleplayerInteractionManager blockBreaki
 accessible field net/minecraft/entity/Entity maxAir I
 accessible field net/minecraft/entity/LivingEntity damageAmount F
 accessible field net/minecraft/block/entity/MobSpawnerBlockEntity spawnedEntityId Ljava/lang/String;
+accessible field net/minecraft/item/ToolItem toolMaterial Lnet/minecraft/item/ToolMaterial;

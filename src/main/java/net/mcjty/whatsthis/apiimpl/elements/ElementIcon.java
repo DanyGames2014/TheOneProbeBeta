@@ -14,7 +14,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ElementIcon implements IElement {
-    private final Identifier icon;
+    private final String icon;
     private final int u;
     private final int v;
     private final int w;
@@ -22,7 +22,7 @@ public class ElementIcon implements IElement {
     private final IIconStyle style;
 
     // Constructor
-    public ElementIcon(Identifier icon, int u, int v, int w, int h, IIconStyle style) {
+    public ElementIcon(String icon, int u, int v, int w, int h, IIconStyle style) {
         this.icon = icon;
         this.u = u;
         this.v = v;
@@ -33,7 +33,7 @@ public class ElementIcon implements IElement {
 
     // Networking
     public ElementIcon(DataInputStream stream) throws IOException {
-        icon = Identifier.of(Namespace.of(NetworkTools.readString(stream)), NetworkTools.readString(stream));
+        icon = NetworkTools.readString(stream);
         u = stream.readInt();
         v = stream.readInt();
         w = stream.readInt();
@@ -47,8 +47,7 @@ public class ElementIcon implements IElement {
 
     @Override
     public void toBytes(DataOutputStream stream) throws IOException {
-        NetworkTools.writeString(stream, icon.namespace.toString());
-        NetworkTools.writeString(stream, icon.path);
+        NetworkTools.writeString(stream, icon);
         stream.writeInt(u);
         stream.writeInt(v);
         stream.writeInt(w);

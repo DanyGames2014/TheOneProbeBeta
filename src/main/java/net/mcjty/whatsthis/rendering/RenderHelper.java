@@ -316,14 +316,14 @@ public class RenderHelper {
      */
     public static void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, int twidth, int theight) {
         float zLevel = 0.01f;
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
+        float xScale = 1.0F / twidth;
+        float yScale = 1.0F / theight;
         Tessellator t = Tessellator.INSTANCE;
         t.startQuads();
-        t.vertex((x), (y + height), zLevel, ((u) * f), ((v + height) * f1));
-        t.vertex((x + width), (y + height), zLevel, ((u + width) * f), ((v + height) * f1));
-        t.vertex((x + width), (y), zLevel, ((u + width) * f), ((v) * f1));
-        t.vertex((x), (y), zLevel, ((u) * f), ((v) * f1));
+        t.vertex((x), (y + height), zLevel, ((u) * xScale), ((v + height) * yScale));
+        t.vertex((x + width), (y + height), zLevel, ((u + width) * xScale), ((v + height) * yScale));
+        t.vertex((x + width), (y), zLevel, ((u + width) * xScale), ((v) * yScale));
+        t.vertex((x), (y), zLevel, ((u) * xScale), ((v) * yScale));
         t.draw();
     }
 
@@ -332,14 +332,14 @@ public class RenderHelper {
      */
     public static void drawTexturedModalRect(int x, int y, int u, int v, int width, int height) {
         float zLevel = 0.01f;
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
+        float xScale = 0.00390625F;
+        float yScale = 0.00390625F;
         Tessellator t = Tessellator.INSTANCE;
         t.startQuads();
-        t.vertex((x), (y + height), zLevel, ((u) * f), ((v + height) * f1));
-        t.vertex((x + width), (y + height), zLevel, ((u + width) * f), ((v + height) * f1));
-        t.vertex((x + width), (y), zLevel, ((u + width) * f), ((v) * f1));
-        t.vertex((x), (y), zLevel, ((u) * f), (v) * f1);
+        t.vertex((x), (y + height), zLevel, ((u) * xScale), ((v + height) * yScale));
+        t.vertex((x + width), (y + height), zLevel, ((u + width) * xScale), ((v + height) * yScale));
+        t.vertex((x + width), (y), zLevel, ((u + width) * xScale), ((v) * yScale));
+        t.vertex((x), (y), zLevel, ((u) * xScale), (v) * yScale);
         t.draw();
     }
 

@@ -47,15 +47,20 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
             showStandardBlockInfo(mode, probeInfo, world, pos, state, block, player, data, config);
         }
 
+        // If its a liquid, we don't need to do further processing
+        if (block instanceof LiquidBlock) {
+            return;
+        }
+
         // Harvest Level
         boolean showHarvestLevel = Tools.show(mode, config.getShowHarvestLevel());
         boolean showHarvested = Tools.show(mode, config.getShowCanBeHarvested());
         if (showHarvested && showHarvestLevel) {
-            HarvestInfoTools.showHarvestInfo(probeInfo, world, pos, state, block, player);
+            HarvestabilityInfo.showHarvestInfo(probeInfo, world, pos, state, block, player);
         } else if (showHarvestLevel) {
-            HarvestInfoTools.showHarvestLevel(probeInfo, world, pos, state, block);
+            HarvestabilityInfo.showHarvestLevel(probeInfo, world, pos, state, block);
         } else if (showHarvested) {
-            HarvestInfoTools.showCanBeHarvested(probeInfo, world, pos, state, block, player);
+            HarvestabilityInfo.showCanBeHarvested(probeInfo, world, pos, state, block, player);
         }
 
         // Crop Growth
@@ -96,28 +101,9 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 
     public static void showStandardBlockInfo(ProbeMode mode, IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, PlayerEntity player, IProbeHitData data, IProbeConfig config) {
         String modid = Tools.getModName(block);
-
         ItemStack pickBlock = data.getPickBlock();
-
-        if (block instanceof LiquidBlock) {
-//            Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
-//            if (fluid != null) {
-//                FluidStack fluidStack = new FluidStack(fluid, Fluid.BUCKET_VOLUME);
-//                ItemStack bucketStack = FluidUtil.getFilledBucket(fluidStack);
-//
-//                IProbeInfo horizontal = probeInfo.horizontal();
-//                if (fluidStack.isFluidEqual(FluidUtil.getFluidContained(bucketStack))) {
-//                    horizontal.item(bucketStack);
-//                } else {
-//                    horizontal.icon(fluid.getStill(), -1, -1, 16, 16, probeInfo.defaultIconStyle().width(20));
-//                }
-//
-//                horizontal.vertical()
-//                        .text(NAME + fluidStack.getLocalizedName())
-//                        .text(MODNAME + modid);
-//                return;
-//            }
-        }
+        
+        // TODO: Special handling for liquids when the time comes
 
         if (pickBlock != null) {
             if (Tools.show(mode, config.getShowModName())) {
@@ -134,11 +120,11 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         } else {
             if (Tools.show(mode, config.getShowModName())) {
                 probeInfo.vertical()
-                        .text(NAME + getBlockUnlocalizedName(block))
+                        .text(NAME + block.getTranslatedName())
                         .text(MODNAME + modid);
             } else {
                 probeInfo.vertical()
-                        .text(NAME + getBlockUnlocalizedName(block));
+                        .text(NAME + block.getTranslatedName());
             }
         }
     }
@@ -272,9 +258,5 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
                 probeInfo.text(LABEL + "Growth: " + WARNING + (age * 100) / maxAge + "%");
             }
         }
-    }
-
-    private static String getBlockUnlocalizedName(Block block) {
-        return STARTLOC + block.getTranslationKey() + ".name" + ENDLOC;
     }
 }
