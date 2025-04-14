@@ -112,7 +112,7 @@ public class RenderHelper {
 
         enableItemLighting();
         itemRenderer.renderGuiItem(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
-        itemRenderer.renderGuiItemDecoration(minecraft.textRenderer, minecraft.textureManager, stack, x,y);
+        itemRenderer.renderGuiItemDecoration(minecraft.textRenderer, minecraft.textureManager, stack, x, y);
         disableItemLighting();
         GL11.glEnable(GL11.GL_BLEND);
         return true;
@@ -342,32 +342,32 @@ public class RenderHelper {
         t.vertex((x), (y), zLevel, ((u) * f), (v) * f1);
         t.draw();
     }
-    
+
     public static int renderText(Minecraft minecraft, int x, int y, String text) {
         int width = ProbeTextRenderer.INSTANCE.getWidth(text);
 
         GL11.glDisable(GL11.GL_BLEND);
-        renderStringAtPos(text, x+1, y+1, Color.WHITE, true);
+        renderStringAtPos(text, x + 1, y + 1, Color.WHITE, true);
         renderStringAtPos(text, x, y, Color.WHITE, false);
         GL11.glEnable(GL11.GL_BLEND);
-        
+
         return width;
     }
 
     public static void renderStringAtPos(String text, int x, int y, Color color, boolean shadow) {
         int intColor = color.getRGB();
-        
+
         if (shadow) {
             int shadowOffset = intColor & -16777216;
             intColor = (intColor & 16579836) >> 2;
             intColor += shadowOffset;
         }
 
-        float red = (float)(intColor >> 16 & 255) / 255;
-        float green = (float)(intColor >> 8 & 255) / 255;
-        float blue = (float)(intColor & 255) / 255;
-        float alpha = (float)(intColor >> 24 & 255) / 255;
-        
+        float red = (float) (intColor >> 16 & 255) / 255;
+        float green = (float) (intColor >> 8 & 255) / 255;
+        float blue = (float) (intColor & 255) / 255;
+        float alpha = (float) (intColor >> 24 & 255) / 255;
+
         if (alpha == 0) {
             alpha = 1;
         }

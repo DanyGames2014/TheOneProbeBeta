@@ -29,7 +29,7 @@ public class ElementTextRender {
                 String middle = text.substring(start + 2, end);
                 middle = I18n.getTranslation(middle).trim();
                 //middle = I18n.format(middle).trim();
-                String right = text.substring(end+2);
+                String right = text.substring(end + 2);
                 text = left + middle + right;
             } else {
                 break;

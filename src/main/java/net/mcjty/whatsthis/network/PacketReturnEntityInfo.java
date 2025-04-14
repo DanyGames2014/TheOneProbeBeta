@@ -14,10 +14,10 @@ import java.io.IOException;
 
 public class PacketReturnEntityInfo extends Packet implements ManagedPacket<PacketReturnEntityInfo> {
     public static final PacketType<PacketReturnEntityInfo> TYPE = PacketType.builder(true, false, PacketReturnEntityInfo::new).build();
-    
+
     private int entityId;
     private ProbeInfo probeInfo;
-    
+
     private int size;
 
     public PacketReturnEntityInfo() {
@@ -27,7 +27,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
         this.entityId = entityId;
         this.probeInfo = probeInfo;
     }
-    
+
     @Override
     public void read(DataInputStream stream) {
         try {
@@ -46,7 +46,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
     public void write(DataOutputStream stream) {
         try {
             int initialStreamSize = stream.size();
-            
+
             stream.writeInt(entityId);
             if (probeInfo != null) {
                 stream.writeBoolean(true);
@@ -54,7 +54,7 @@ public class PacketReturnEntityInfo extends Packet implements ManagedPacket<Pack
             } else {
                 stream.writeBoolean(false);
             }
-            
+
             this.size = stream.size() - initialStreamSize;
         } catch (IOException e) {
             throw new RuntimeException(e);

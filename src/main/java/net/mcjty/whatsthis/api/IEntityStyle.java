@@ -7,12 +7,12 @@ public interface IEntityStyle {
     /**
      * Change the width of the element. Default is 25
      */
-    IEntityStyle width(int w);
+    IEntityStyle width(int width);
 
     /**
      * Change the height of the element. Default is 25
      */
-    IEntityStyle height(int h);
+    IEntityStyle height(int height);
 
     /**
      * Change the scale of the entity inside the element. Default is 1.0 which

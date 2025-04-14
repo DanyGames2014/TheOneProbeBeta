@@ -42,10 +42,10 @@ public class ElementProgressRender {
 
     private static void renderLifeBar(long current, int x, int y, int w, int h) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
         int textureId = Minecraft.INSTANCE.textureManager.getTextureId(ICONS);
         Minecraft.INSTANCE.textureManager.bindTexture(textureId);
-        
+
         if (current * 4 >= w) {
             // Shortened view
             RenderHelper.drawTexturedModalRect(x, y, 52, 0, 9, 9);
@@ -63,10 +63,10 @@ public class ElementProgressRender {
 
     private static void renderArmorBar(long current, int x, int y, int w, int h) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
         int textureId = Minecraft.INSTANCE.textureManager.getTextureId(ICONS);
         Minecraft.INSTANCE.textureManager.bindTexture(textureId);
-        
+
         if (current * 4 >= w) {
             // Shortened view
             RenderHelper.drawTexturedModalRect(x, y, 43, 9, 9, 9);

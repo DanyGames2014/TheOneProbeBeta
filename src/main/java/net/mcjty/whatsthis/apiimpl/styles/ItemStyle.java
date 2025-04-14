@@ -7,14 +7,14 @@ public class ItemStyle implements IItemStyle {
     private int height = 20;
 
     @Override
-    public IItemStyle width(int w) {
-        width = w;
+    public IItemStyle width(int width) {
+        this.width = width;
         return this;
     }
 
     @Override
-    public IItemStyle height(int h) {
-        height = h;
+    public IItemStyle height(int height) {
+        this.height = height;
         return this;
     }
 

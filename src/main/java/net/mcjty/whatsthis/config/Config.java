@@ -18,13 +18,13 @@ import java.util.function.Function;
 public class Config implements ConfigFactoryProvider {
     @ConfigRoot(value = "config", visibleName = "Config")
     public static final MainConfig MAIN_CONFIG = new MainConfig();
-    
+
     @ConfigRoot(value = "provider", visibleName = "Provider Config")
     public static final ProviderConfig PROVIDER_CONFIG = new ProviderConfig();
-    
+
     @ConfigRoot(value = "client", visibleName = "Client Config")
     public static final ClientConfig CLIENT_CONFIG = new ClientConfig();
-    
+
     @ConfigRoot(value = "probe", visibleName = "Probe Config")
     public static final ProbeConfig PROBE_CONFIG = new ProbeConfig();
 
@@ -41,7 +41,7 @@ public class Config implements ConfigFactoryProvider {
     public void provideLoadFactories(ImmutableMap.Builder<Type, SeptFunction<String, ConfigEntry, Field, Object, Boolean, Object, Object, ConfigEntryHandler<?>>> immutableBuilder) {
         immutableBuilder.put(NumberFormat.class, ((id, configEntry, parentField, parentObject, isMultiplayerSynced, enumOrOrdinal, defaultEnum) -> new EnumConfigEntryHandler<NumberFormat>(id, configEntry, parentField, parentObject, isMultiplayerSynced, DefaultFactoryProvider.enumOrOrdinalToOrdinal(enumOrOrdinal), ((NumberFormat) defaultEnum).ordinal(), NumberFormat.class)));
         immutableBuilder.put(IProbeConfig.ConfigMode.class, ((id, configEntry, parentField, parentObject, isMultiplayerSynced, enumOrOrdinal, defaultEnum) -> new EnumConfigEntryHandler<IProbeConfig.ConfigMode>(id, configEntry, parentField, parentObject, isMultiplayerSynced, DefaultFactoryProvider.enumOrOrdinalToOrdinal(enumOrOrdinal), ((IProbeConfig.ConfigMode) defaultEnum).ordinal(), IProbeConfig.ConfigMode.class)));
-        
+
     }
 
     @Override

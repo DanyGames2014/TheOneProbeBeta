@@ -30,7 +30,7 @@ public class ProbeUtils {
         if (stack.getStationNbt() == null) {
             return false;
         }
-        
+
         // Return whether the ItemStack has the required tag
         return stack.getStationNbt().contains(PROBETAG_HAND);
     }
@@ -58,7 +58,7 @@ public class ProbeUtils {
         if (stack.getStationNbt() == null) {
             return false;
         }
-        
+
         // Return whether the ItemStack has the required tag
         return stack.getStationNbt().contains(PROBETAG);
     }

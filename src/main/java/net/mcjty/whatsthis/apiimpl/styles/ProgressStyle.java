@@ -23,43 +23,43 @@ public class ProgressStyle implements IProgressStyle {
 
     /// The color that is used for the border of the progress bar
     @Override
-    public ProgressStyle borderColor(int c) {
-        borderColor = c;
+    public ProgressStyle borderColor(int borderColor) {
+        this.borderColor = borderColor;
         return this;
     }
 
     /// The color that is used for the background of the progress bar
     @Override
-    public ProgressStyle backgroundColor(int c) {
-        backgroundColor = c;
+    public ProgressStyle backgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
         return this;
     }
 
     /// The color that is used for the filled part of the progress bar
     @Override
-    public ProgressStyle filledColor(int c) {
-        filledColor = c;
+    public ProgressStyle filledColor(int filledColor) {
+        this.filledColor = filledColor;
         return this;
     }
 
     /// If this is different from the filledColor then the fill color will alternate
     @Override
-    public ProgressStyle alternateFilledColor(int c) {
-        alternatefilledColor = c;
+    public ProgressStyle alternateFilledColor(int alternateFilledColor) {
+        alternatefilledColor = alternateFilledColor;
         return this;
     }
 
     /// If true then text is shown inside the progress bar
     @Override
-    public ProgressStyle showText(boolean b) {
-        showText = b;
+    public ProgressStyle showText(boolean showText) {
+        this.showText = showText;
         return this;
     }
 
     /// The number format to use for the text inside the progress bar
     @Override
-    public ProgressStyle numberFormat(NumberFormat f) {
-        numberFormat = f;
+    public ProgressStyle numberFormat(NumberFormat format) {
+        numberFormat = format;
         return this;
     }
 
@@ -76,26 +76,26 @@ public class ProgressStyle implements IProgressStyle {
     }
 
     @Override
-    public ProgressStyle width(int w) {
-        this.width = w;
+    public ProgressStyle width(int width) {
+        this.width = width;
         return this;
     }
 
     @Override
-    public ProgressStyle height(int h) {
-        this.height = h;
+    public ProgressStyle height(int height) {
+        this.height = height;
         return this;
     }
 
     @Override
-    public IProgressStyle lifeBar(boolean b) {
-        this.lifeBar = b;
+    public IProgressStyle lifeBar(boolean isLifeBar) {
+        this.lifeBar = isLifeBar;
         return this;
     }
 
     @Override
-    public IProgressStyle armorBar(boolean b) {
-        this.armorBar = b;
+    public IProgressStyle armorBar(boolean isArmorBar) {
+        this.armorBar = isArmorBar;
         return this;
     }
 

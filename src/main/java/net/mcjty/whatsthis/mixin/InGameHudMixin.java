@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.mcjty.whatsthis.config.ConfigSetup.*;
-import static net.mcjty.whatsthis.config.ConfigSetup.PROBE_NEEDEDHARD;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {

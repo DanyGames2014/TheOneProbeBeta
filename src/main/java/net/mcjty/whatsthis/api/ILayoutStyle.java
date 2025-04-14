@@ -5,7 +5,7 @@ package net.mcjty.whatsthis.api;
  */
 public interface ILayoutStyle {
     /// The color that is used for the border of the progress bar
-    ILayoutStyle borderColor(Integer c);
+    ILayoutStyle borderColor(Integer borderColor);
 
     /**
      * The spacing to use between elements in this panel. -1 means to use default depending

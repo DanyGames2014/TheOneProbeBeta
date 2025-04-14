@@ -4,9 +4,9 @@ package net.mcjty.whatsthis.api;
  * Style for the item element.
  */
 public interface IItemStyle {
-    IItemStyle width(int w);
+    IItemStyle width(int width);
 
-    IItemStyle height(int h);
+    IItemStyle height(int height);
 
     int getWidth();
 

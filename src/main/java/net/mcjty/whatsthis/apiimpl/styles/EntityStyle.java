@@ -8,14 +8,14 @@ public class EntityStyle implements IEntityStyle {
     private float scale = 1.0f;
 
     @Override
-    public IEntityStyle width(int w) {
-        this.width = w;
+    public IEntityStyle width(int width) {
+        this.width = width;
         return this;
     }
 
     @Override
-    public IEntityStyle height(int h) {
-        this.height = h;
+    public IEntityStyle height(int height) {
+        this.height = height;
         return this;
     }
 

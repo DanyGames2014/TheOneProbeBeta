@@ -13,13 +13,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.apache.commons.lang3.tuple.Pair;
-import org.checkerframework.checker.units.qual.C;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static net.mcjty.whatsthis.api.TextStyleClass.*;
 
@@ -59,7 +57,7 @@ public class GuiConfig extends Screen {
         ));
         presets.add(new Preset("Soft Pastels", 0xffe0bbff, 0x00000000, 1, 1,
                 Pair.of(MODNAME, "aqua")
-                ));
+        ));
         presets.add(new Preset("Ocean Blue", 0xff003366, 0x556699cc, 2, 0,
                 Pair.of(TextStyleClass.MODNAME, "cyan"),
                 Pair.of(TextStyleClass.NAME, "light_blue,bold"),
@@ -139,7 +137,7 @@ public class GuiConfig extends Screen {
             ConfigSetup.setTooltipScale(Config.CLIENT_CONFIG.tooltipScale - 0.2F);
         });
 
-        
+
         int margin = 90;
         hitboxes.add(new HitBox(0, 0, margin, margin, () -> {
             ConfigSetup.setPos(5, 5, -1, -1);

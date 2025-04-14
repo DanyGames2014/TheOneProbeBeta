@@ -48,13 +48,13 @@ public class ElementEntity implements IElement {
                 .width(stream.readInt())
                 .height(stream.readInt())
                 .scale(stream.readFloat());
-        
+
         if (stream.readBoolean()) {
             entityNbt = NetworkTools.readNBT(stream);
         } else {
             entityNbt = null;
         }
-        
+
         if (stream.readBoolean()) {
             playerID = stream.readInt();
         } else {
@@ -87,14 +87,14 @@ public class ElementEntity implements IElement {
         stream.writeInt(style.getWidth());
         stream.writeInt(style.getHeight());
         stream.writeFloat(style.getScale());
-        
+
         if (entityNbt != null) {
             stream.writeBoolean(true);
             NetworkTools.writeNBT(stream, entityNbt);
         } else {
             stream.writeBoolean(false);
         }
-        
+
         if (playerID != null) {
             stream.writeBoolean(true);
             stream.writeInt(playerID);

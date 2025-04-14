@@ -7,8 +7,8 @@ import net.mcjty.whatsthis.apiimpl.ProbeHitEntityData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
 import net.mcjty.whatsthis.apiimpl.elements.ElementProgress;
 import net.mcjty.whatsthis.apiimpl.elements.ElementText;
-import net.mcjty.whatsthis.apiimpl.providers.entity.DefaultProbeInfoEntityProvider;
 import net.mcjty.whatsthis.apiimpl.providers.block.DefaultProbeInfoProvider;
+import net.mcjty.whatsthis.apiimpl.providers.entity.DefaultProbeInfoEntityProvider;
 import net.mcjty.whatsthis.apiimpl.styles.ProgressStyle;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
@@ -208,11 +208,11 @@ public class OverlayRenderer {
 
     private static void renderHUDBlock(ProbeMode mode, HitResult mouseOver, double sw, double sh) {
         BlockPos blockPos = new BlockPos(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ);
-        
+
         if (blockPos == null) {
             return;
         }
-        
+
         PlayerEntity player = Minecraft.INSTANCE.player;
         if (player.world.isAir(blockPos.x, blockPos.y, blockPos.z)) {
             return;
@@ -223,7 +223,7 @@ public class OverlayRenderer {
         IElement damageElement = null;
         if (Config.CLIENT_CONFIG.showBreakProgress > 0) {
             float damage = 0.0F;
-            
+
             if (Minecraft.INSTANCE.interactionManager instanceof MultiplayerInteractionManager multiplayerInteractionManager) {
                 damage = multiplayerInteractionManager.blockBreakingProgress;
             } else if (Minecraft.INSTANCE.interactionManager instanceof SingleplayerInteractionManager singleplayerInteractionManager) {
@@ -298,7 +298,7 @@ public class OverlayRenderer {
         IProbeHitData data = new ProbeHitData(pos, Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ), Direction.byId(mouseOver.side), pickBlock);
 
         IProbeConfig probeConfig = WhatsThis.theOneProbeImp.createProbeConfig();
-        
+
         try {
             DefaultProbeInfoProvider.showStandardBlockInfo(mode, probeInfo, world, pos, state, block, player, data, probeConfig);
         } catch (Exception e) {
@@ -391,7 +391,7 @@ public class OverlayRenderer {
         if (extra != null) {
             probeInfo.element(extra);
         }
-        
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
 

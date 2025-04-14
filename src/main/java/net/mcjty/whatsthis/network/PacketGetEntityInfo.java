@@ -73,7 +73,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
     public void write(DataOutputStream stream) {
         try {
             int initialStreamSize = stream.size();
-            
+
             stream.writeInt(dim); // 4b
             stream.writeInt(entityId); // 4b
             stream.writeByte(mode.ordinal()); // 1b
@@ -85,7 +85,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
                 stream.writeDouble(hitVec.y); // 8b
                 stream.writeDouble(hitVec.z); // 8b
             }
-            
+
             this.size = stream.size() - initialStreamSize;
         } catch (IOException e) {
             throw new RuntimeException(e);

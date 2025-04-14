@@ -38,7 +38,7 @@ public class Tools {
 
         return formatModName(modName);
     }
-    
+
     @SuppressWarnings("deprecation")
     public static String formatModName(String input) {
         return WordUtils.capitalize(input);

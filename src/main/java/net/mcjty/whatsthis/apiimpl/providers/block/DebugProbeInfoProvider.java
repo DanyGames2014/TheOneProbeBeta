@@ -1,12 +1,12 @@
 package net.mcjty.whatsthis.apiimpl.providers.block;
 
 import net.mcjty.whatsthis.WhatsThis;
-import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.api.IProbeHitData;
 import net.mcjty.whatsthis.api.IProbeInfo;
 import net.mcjty.whatsthis.api.IProbeInfoProvider;
 import net.mcjty.whatsthis.api.ProbeMode;
 import net.mcjty.whatsthis.apiimpl.styles.LayoutStyle;
+import net.mcjty.whatsthis.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,9 +42,8 @@ public class DebugProbeInfoProvider implements IProbeInfoProvider {
                 .text(LABEL + "Meta: " + INFO + world.getBlockMeta(pos.x, pos.y, pos.z))
                 .text(LABEL + "Class: " + INFO + block.getClass().getSimpleName())
                 .text(LABEL + "Hardness: " + INFO + block.getHardness(blockState, world, pos))
-                .text(LABEL + "Light: " + INFO + world.getLightLevel(pos.x, pos.y, pos.z))
-                ;
-        
+                .text(LABEL + "Light: " + INFO + world.getLightLevel(pos.x, pos.y, pos.z));
+
         BlockEntity blockEntity = world.getBlockEntity(pos.x, pos.y, pos.z);
         if (blockEntity != null) {
             vertical.text(LABEL + "Block Entity: " + INFO + blockEntity.getClass().getSimpleName());

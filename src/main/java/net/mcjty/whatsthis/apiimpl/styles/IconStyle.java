@@ -9,14 +9,14 @@ public class IconStyle implements IIconStyle {
     private int txth = 256;
 
     @Override
-    public IIconStyle width(int w) {
-        width = w;
+    public IIconStyle width(int width) {
+        this.width = width;
         return this;
     }
 
     @Override
-    public IIconStyle height(int h) {
-        height = h;
+    public IIconStyle height(int height) {
+        this.height = height;
         return this;
     }
 
@@ -31,14 +31,14 @@ public class IconStyle implements IIconStyle {
     }
 
     @Override
-    public IIconStyle textureWidth(int w) {
-        txtw = w;
+    public IIconStyle textureWidth(int textureWidth) {
+        txtw = textureWidth;
         return this;
     }
 
     @Override
-    public IIconStyle textureHeight(int h) {
-        txth = h;
+    public IIconStyle textureHeight(int textureHeight) {
+        txth = textureHeight;
         return this;
     }
 

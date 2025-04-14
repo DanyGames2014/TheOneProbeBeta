@@ -1,9 +1,12 @@
 package net.mcjty.whatsthis.apiimpl.providers.entity;
 
 import net.mcjty.whatsthis.WhatsThis;
-import net.mcjty.whatsthis.api.*;
-import net.mcjty.whatsthis.config.Config;
+import net.mcjty.whatsthis.api.IProbeHitEntityData;
+import net.mcjty.whatsthis.api.IProbeInfo;
+import net.mcjty.whatsthis.api.IProbeInfoEntityProvider;
+import net.mcjty.whatsthis.api.ProbeMode;
 import net.mcjty.whatsthis.apiimpl.styles.LayoutStyle;
+import net.mcjty.whatsthis.config.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.LivingEntity;
@@ -31,19 +34,19 @@ public class DebugProbeInfoEntityProvider implements IProbeInfoEntityProvider {
             int entityId = entity.id;
 
             vertical
-                .text(LABEL + "Registry ID: " + INFO + registryId)
-                .text(LABEL + "Entity ID: " + INFO + entityId)
+                    .text(LABEL + "Registry ID: " + INFO + registryId)
+                    .text(LABEL + "Entity ID: " + INFO + entityId)
             ;
-            
+
             // Living Entity Info
             if (entity instanceof LivingEntity livingEntity) {
                 int health = livingEntity.health;
                 int maxHealth = livingEntity.maxHealth;
                 float damageAmount = livingEntity.damageAmount;
-                
+
                 vertical
-                    .text(LABEL + "Health: " + health + " / " + maxHealth)
-                    .text(LABEL + "Damage: " + damageAmount)
+                        .text(LABEL + "Health: " + health + " / " + maxHealth)
+                        .text(LABEL + "Damage: " + damageAmount)
                 ;
             }
 
@@ -54,13 +57,13 @@ public class DebugProbeInfoEntityProvider implements IProbeInfoEntityProvider {
             int fireTicks = entity.fireTicks;
             int air = entity.air;
             int maxAir = entity.maxAir;
-            
+
             vertical
-                .text(LABEL + "Age: " + INFO + age)
-                .text(LABEL + "Width: " + INFO + width)
-                .text(LABEL + "Height: " + INFO + height)
-                .text(LABEL + "FireTicks: " + INFO + fireTicks)
-                .text(LABEL + "Air: " + INFO + air + " / " + maxAir)
+                    .text(LABEL + "Age: " + INFO + age)
+                    .text(LABEL + "Width: " + INFO + width)
+                    .text(LABEL + "Height: " + INFO + height)
+                    .text(LABEL + "FireTicks: " + INFO + fireTicks)
+                    .text(LABEL + "Air: " + INFO + air + " / " + maxAir)
             ;
         }
     }

@@ -14,8 +14,8 @@ public class KeyInputListener {
                 if (Keyboard.isKeyDown(KeybindListener.toggleVisible.code)) {
                     ConfigSetup.setVisible(!Config.CLIENT_CONFIG.isVisible);
                 }
-                
-                if(Keyboard.isKeyDown(KeybindListener.toggleLiquids.code)) {
+
+                if (Keyboard.isKeyDown(KeybindListener.toggleLiquids.code)) {
                     ConfigSetup.setLiquids(!Config.CLIENT_CONFIG.showLiquids);
                 }
             }

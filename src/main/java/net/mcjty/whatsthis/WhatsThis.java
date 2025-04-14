@@ -10,8 +10,8 @@ import net.mcjty.whatsthis.apiimpl.providers.entity.DebugProbeInfoEntityProvider
 import net.mcjty.whatsthis.apiimpl.providers.entity.DefaultProbeInfoEntityProvider;
 import net.mcjty.whatsthis.apiimpl.providers.entity.EntityProbeInfoProvider;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.items.ProbeUtils;
 import net.mcjty.whatsthis.items.ProbeNote;
+import net.mcjty.whatsthis.items.ProbeUtils;
 import net.mcjty.whatsthis.network.PacketGetEntityInfo;
 import net.mcjty.whatsthis.network.PacketGetInfo;
 import net.mcjty.whatsthis.network.PacketReturnEntityInfo;
@@ -49,7 +49,7 @@ public class WhatsThis {
     public static Item probe;
     public static Item creativeProbe;
     public static Item probeGoggles;
-    
+
     public static boolean accessoryApiCompat = true;
 
     // TODO: BH Creative Support
@@ -65,7 +65,7 @@ public class WhatsThis {
             event.tooltip.add(Formatting.AQUA + "Probe");
         }
     }
-    
+
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
         probeNote = new ProbeNote(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");

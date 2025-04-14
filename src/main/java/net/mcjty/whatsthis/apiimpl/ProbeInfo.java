@@ -21,7 +21,7 @@ public class ProbeInfo extends ElementVertical {
     public ProbeInfo() {
         super(null, 2, ElementAlignment.ALIGN_TOPLEFT);
     }
-    
+
     public ProbeInfo(DataInputStream stream) {
         super(stream);
     }
@@ -29,7 +29,7 @@ public class ProbeInfo extends ElementVertical {
     public static List<IElement> createElements(DataInputStream stream) throws IOException {
         int size = stream.readShort();
         List<IElement> elements = new ArrayList<>(size);
-        for (int i = 0 ; i < size ; i++) {
+        for (int i = 0; i < size; i++) {
             int id = stream.readInt();
             IElementFactory factory = WhatsThis.theOneProbeImp.getElementFactory(id);
             IElement element = factory.createElement(stream);

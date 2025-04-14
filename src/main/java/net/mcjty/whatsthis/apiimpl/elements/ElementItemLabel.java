@@ -12,32 +12,32 @@ import java.io.IOException;
 
 public class ElementItemLabel implements IElement {
 
-    private final ItemStack itemStack;
+    private final ItemStack stack;
 
     public ElementItemLabel(ItemStack stack) {
-        this.itemStack = stack;
+        this.stack = stack;
     }
 
     public ElementItemLabel(DataInputStream stream) throws IOException {
         if (stream.readBoolean()) {
-            itemStack = NetworkTools.readItemStack(stream);
+            stack = NetworkTools.readItemStack(stream);
         } else {
-            itemStack = null;
+            stack = null;
         }
     }
 
     @Override
     public void render(int x, int y) {
-        if (itemStack != null && itemStack.count > 0) {
-            String text = itemStack.getItem().getTranslatedName();
+        if (stack != null && stack.count > 0) {
+            String text = stack.getItem().getTranslatedName();
             ElementTextRender.render(text, x, y);
         }
     }
 
     @Override
     public int getWidth() {
-        if (itemStack != null && itemStack.count > 0) {
-            String text = itemStack.getItem().getTranslatedName();
+        if (stack != null && stack.count > 0) {
+            String text = stack.getItem().getTranslatedName();
             return ElementTextRender.getWidth(text);
         } else {
             return 10;
@@ -51,9 +51,9 @@ public class ElementItemLabel implements IElement {
 
     @Override
     public void toBytes(DataOutputStream stream) throws IOException {
-        if (itemStack != null && itemStack.count > 0) {
+        if (stack != null && stack.count > 0) {
             stream.writeBoolean(true);
-            NetworkTools.writeItemStack(stream, itemStack);
+            NetworkTools.writeItemStack(stream, stack);
         } else {
             stream.writeBoolean(false);
         }

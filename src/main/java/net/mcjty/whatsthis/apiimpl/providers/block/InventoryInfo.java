@@ -102,12 +102,12 @@ public class InventoryInfo {
 
         // If we want to compact equal stacks, we initialize the HashSet. If not, we leave it null
         Set<Item> foundItems = Config.CLIENT_CONFIG.compactEqualStacks ? new HashSet<>() : null;
-        
+
         int inventorySize = 0;
-        
+
         try {
             // TODO: ItemHandler capability
-            
+
             // If the block entity is an inventory, fetch its contents
             if (blockEntity instanceof Inventory inventory) {
                 inventorySize = inventory.size();
@@ -118,17 +118,17 @@ public class InventoryInfo {
         } catch (RuntimeException e) {
             throw new RuntimeException("Getting the contents of a " + BlockRegistry.INSTANCE.getId(world.getBlockState(pos).getBlock()) + " (" + blockEntity.getClass().getName() + ")", e);
         }
-        
+
         return inventorySize;
     }
 
     /**
      * Adds the given stack to the List of stacks provided.
      * <p>If the given List of foundItems is not null, it will try to match the stack with an already existing stack and if that fails, it will append a new one
-     * 
-     * @param stacks The List of stacks to add the stack to
+     *
+     * @param stacks     The List of stacks to add the stack to
      * @param foundItems The list of already found items
-     * @param stack The stack to add to the list of stacks
+     * @param stack      The stack to add to the list of stacks
      */
     private static void addItemStack(List<ItemStack> stacks, Set<Item> foundItems, ItemStack stack) {
         // Check the validity of the stack

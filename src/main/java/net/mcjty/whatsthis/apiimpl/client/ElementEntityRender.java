@@ -22,17 +22,16 @@ public class ElementEntityRender {
             Entity entity;
 
             entity = EntityRegistry.create(entityName, Minecraft.INSTANCE.world);
-            
+
             if (entityNbt != null) {
                 entity.read(entityNbt);
             }
-            
+
             if (entity != null) {
                 renderEntity(style, x, y, entity);
             }
         }
     }
-
 
 
     private static void renderEntity(IEntityStyle style, int x, int y, Entity entity) {

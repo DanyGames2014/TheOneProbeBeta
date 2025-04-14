@@ -30,7 +30,6 @@ public class ModSetup {
 //        setupModCompat();
 //    }
 
-    
 
     private void setupModCompat() {
 //        tesla = Loader.isModLoaded("tesla");
@@ -54,7 +53,7 @@ public class ModSetup {
 //        }
     }
 
-    private static void registerCapabilities(){
+    private static void registerCapabilities() {
 //        CapabilityManager.INSTANCE.register(PlayerGotNote.class, new Capability.IStorage<PlayerGotNote>() {
 //
 //            @Override

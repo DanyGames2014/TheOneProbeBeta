@@ -5,35 +5,35 @@ package net.mcjty.whatsthis.api;
  */
 public interface IProgressStyle {
     /// The color that is used for the border of the progress bar
-    IProgressStyle borderColor(int c);
+    IProgressStyle borderColor(int borderColor);
 
     /// The color that is used for the background of the progress bar
-    IProgressStyle backgroundColor(int c);
+    IProgressStyle backgroundColor(int backgroundColor);
 
     /// The color that is used for the filled part of the progress bar
-    IProgressStyle filledColor(int c);
+    IProgressStyle filledColor(int filledColor);
 
     /// If this is different from the filledColor then the fill color will alternate
-    IProgressStyle alternateFilledColor(int c);
+    IProgressStyle alternateFilledColor(int alternateFilledColor);
 
     /// If true then text is shown inside the progress bar
-    IProgressStyle showText(boolean b);
+    IProgressStyle showText(boolean showText);
 
     /// The number format to use for the text inside the progress bar
-    IProgressStyle numberFormat(NumberFormat f);
+    IProgressStyle numberFormat(NumberFormat format);
 
     IProgressStyle prefix(String prefix);
 
     IProgressStyle suffix(String suffix);
 
     /// If the progressbar is a lifebar then this is the maximum width
-    IProgressStyle width(int w);
+    IProgressStyle width(int width);
 
-    IProgressStyle height(int h);
+    IProgressStyle height(int height);
 
-    IProgressStyle lifeBar(boolean b);
-    
-    IProgressStyle armorBar(boolean b);
+    IProgressStyle lifeBar(boolean isLifeBar);
+
+    IProgressStyle armorBar(boolean isArmorBar);
 
     int getBorderColor();
 

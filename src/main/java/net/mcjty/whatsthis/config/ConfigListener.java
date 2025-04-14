@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.mcjty.whatsthis.api.TextStyleClass.*;
-import static net.mcjty.whatsthis.api.TextStyleClass.PROGRESS;
 
 public class ConfigListener implements PostConfigLoadedListener {
     @Override
@@ -24,7 +23,7 @@ public class ConfigListener implements PostConfigLoadedListener {
         styles.put(ERROR, Config.CLIENT_CONFIG.textStyleError);
         styles.put(OBSOLETE, Config.CLIENT_CONFIG.textStyleObsolete);
         styles.put(PROGRESS, Config.CLIENT_CONFIG.textStyleProgress);
-        
+
         ConfigSetup.textStyleClasses = styles;
     }
 }

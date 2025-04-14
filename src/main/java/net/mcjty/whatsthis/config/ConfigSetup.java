@@ -59,7 +59,7 @@ public class ConfigSetup {
     public static ProbeConfig getProbeConfig() {
         return probeConfig;
     }
-    
+
     public static void setProbeConfig(IProbeConfig config) {
         probeConfig = (ProbeConfig) config;
     }
@@ -72,7 +72,7 @@ public class ConfigSetup {
         for (Map.Entry<TextStyleClass, String> styleClass : defaultStyle.entrySet()) {
             toSave.put("textStyle" + styleClass.getKey().getReadableName(), styleClass.getValue());
         }
-        
+
         // After loading the defaults, overwrite any changed values
         textStyleClasses.putAll(style);
         for (Map.Entry<TextStyleClass, String> styleClass : style.entrySet()) {
@@ -81,25 +81,25 @@ public class ConfigSetup {
 
         setConfigValues("whatsthis:client", toSave);
     }
-    
+
     public static void setTextStyle(Map<TextStyleClass, String> style) {
         HashMap<String, Object> toSave = new HashMap<>();
-        
+
         textStyleClasses.putAll(style);
         for (Map.Entry<TextStyleClass, String> styleClass : style.entrySet()) {
             toSave.put("textStyle" + styleClass.getKey().getReadableName(), styleClass.getValue());
         }
-        
+
         setConfigValues("whatsthis:client", toSave);
     }
-    
+
 
     public static void setConfigValue(String configId, String key, Object value) {
         GlassYamlFile yamlFile = new GlassYamlFile();
         yamlFile.set(key, value);
         GCAPI.reloadConfig(configId, yamlFile);
     }
-    
+
     public static void setConfigValues(String configId, HashMap<String, Object> values) {
         GlassYamlFile yamlFile = new GlassYamlFile();
         for (Map.Entry<String, Object> entry : values.entrySet()) {
@@ -111,7 +111,7 @@ public class ConfigSetup {
     public static void setProbeNeeded(int needsProbe) {
         setConfigValue("whatsthis:config", "needsProbe", needsProbe);
     }
-    
+
     public static void setExtendedInMain(boolean extendedInMain) {
         setConfigValue("whatsthis:client", "extendedInMain", extendedInMain);
     }
@@ -129,7 +129,7 @@ public class ConfigSetup {
     }
 
     public static void setPos(int leftx, int topy, int rightx, int bottomy) {
-        setConfigValues("whatsthis:client", new HashMap<>(){{
+        setConfigValues("whatsthis:client", new HashMap<>() {{
             put("leftX", leftx);
             put("topY", topy);
             put("rightX", rightx);
@@ -146,7 +146,7 @@ public class ConfigSetup {
     }
 
     public static void setBoxStyle(int thickness, int borderColor, int fillcolor, int offset) {
-        setConfigValues("whatsthis:client", new HashMap<>(){{
+        setConfigValues("whatsthis:client", new HashMap<>() {{
             put("boxThickness", thickness);
             put("boxBorderColor", Integer.toHexString(borderColor));
             put("boxFillColor", Integer.toHexString(fillcolor));
@@ -206,7 +206,7 @@ public class ConfigSetup {
                 return Formatting.WHITE.toString();
             }
             case "bold" -> {
-                return ProbeTextRenderer.BOLD;    
+                return ProbeTextRenderer.BOLD;
             }
             case "italic" -> {
                 return ProbeTextRenderer.ITALICS;
@@ -220,7 +220,7 @@ public class ConfigSetup {
             case "obfuscated" -> {
                 return ProbeTextRenderer.OBFUSCATED;
             }
-            
+
             default -> {
                 WhatsThis.LOGGER.warn("Unhandled formatting: " + input);
                 return Formatting.WHITE.toString();
@@ -232,7 +232,7 @@ public class ConfigSetup {
         if ("context".equals(input)) {
             return "context";
         }
-        
+
         StringBuilder builder = new StringBuilder();
         String[] splitted = StringUtils.split(input, ',');
         for (String s : splitted) {

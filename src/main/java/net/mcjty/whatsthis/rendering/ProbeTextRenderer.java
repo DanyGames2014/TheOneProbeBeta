@@ -10,7 +10,7 @@ import net.modificationstation.stationapi.api.util.Formatting;
 import org.jetbrains.annotations.ApiStatus;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -66,18 +66,18 @@ public class ProbeTextRenderer extends TextRenderer {
         int j = character / 16 * 8;
         int k = shadow ? 1 : 0;
         int l = charWidth(character);
-        float f = (float)l - 0.01F;
+        float f = (float) l - 0.01F;
         GL11.glBegin(5);
-        GL11.glTexCoord2f((float)i / 128.0F, (float)j / 128.0F);
-        GL11.glVertex3f(posX + (float)k, posY, 0.0F);
-        GL11.glTexCoord2f((float)i / 128.0F, ((float)j + 7.99F) / 128.0F);
-        GL11.glVertex3f(posX - (float)k, posY + 7.99F, 0.0F);
-        GL11.glTexCoord2f(((float)i + f - 1.0F) / 128.0F, (float)j / 128.0F);
-        GL11.glVertex3f(posX + f - 1.0F + (float)k, posY, 0.0F);
-        GL11.glTexCoord2f(((float)i + f - 1.0F) / 128.0F, ((float)j + 7.99F) / 128.0F);
-        GL11.glVertex3f(posX + f - 1.0F - (float)k, posY + 7.99F, 0.0F);
+        GL11.glTexCoord2f((float) i / 128.0F, (float) j / 128.0F);
+        GL11.glVertex3f(posX + (float) k, posY, 0.0F);
+        GL11.glTexCoord2f((float) i / 128.0F, ((float) j + 7.99F) / 128.0F);
+        GL11.glVertex3f(posX - (float) k, posY + 7.99F, 0.0F);
+        GL11.glTexCoord2f(((float) i + f - 1.0F) / 128.0F, (float) j / 128.0F);
+        GL11.glVertex3f(posX + f - 1.0F + (float) k, posY, 0.0F);
+        GL11.glTexCoord2f(((float) i + f - 1.0F) / 128.0F, ((float) j + 7.99F) / 128.0F);
+        GL11.glVertex3f(posX + f - 1.0F - (float) k, posY + 7.99F, 0.0F);
         GL11.glEnd();
-        return (float)l;
+        return (float) l;
     }
 
     public int charWidth(int character) {
@@ -102,7 +102,7 @@ public class ProbeTextRenderer extends TextRenderer {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, boundTexture);
         setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 
-        for(int i = 0; i < text.length(); ++i) {
+        for (int i = 0; i < text.length(); ++i) {
             char c0 = text.charAt(i);
             int i1;
             int j1;
@@ -123,7 +123,7 @@ public class ProbeTextRenderer extends TextRenderer {
                     }
 
                     j1 = COLOR_CODES[i1];
-                    setColor((float)(j1 >> 16), (float)(j1 >> 8 & 255), (float)(j1 & 255), color.getAlpha());
+                    setColor((float) (j1 >> 16), (float) (j1 >> 8 & 255), (float) (j1 & 255), color.getAlpha());
                 } else if (i1 == 16) {
                     randomStyle = true;
                 } else if (i1 == 17) {
@@ -153,7 +153,7 @@ public class ProbeTextRenderer extends TextRenderer {
                     do {
                         i1 = fontRandom.nextInt(RANDOM_CHARS_PALLETTE.length());
                         c1 = RANDOM_CHARS_PALLETTE.charAt(i1);
-                    } while(j1 != charWidth(c1));
+                    } while (j1 != charWidth(c1));
 
                     c0 = c1;
                 }
@@ -214,27 +214,27 @@ public class ProbeTextRenderer extends TextRenderer {
             tessellator1 = Tessellator.INSTANCE;
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             tessellator1.startQuads();
-            tessellator1.vertex(posX, posY + (float)(FONT_HEIGHT / 2), 0.0);
-            tessellator1.vertex(posX + charWidth, posY + (float)(FONT_HEIGHT / 2), 0.0);
-            tessellator1.vertex(posX + charWidth, posY + (float)(FONT_HEIGHT / 2) - 1.0F, 0.0);
-            tessellator1.vertex(posX, posY + (float)(FONT_HEIGHT / 2) - 1.0F, 0.0);
+            tessellator1.vertex(posX, posY + (float) (FONT_HEIGHT / 2), 0.0);
+            tessellator1.vertex(posX + charWidth, posY + (float) (FONT_HEIGHT / 2), 0.0);
+            tessellator1.vertex(posX + charWidth, posY + (float) (FONT_HEIGHT / 2) - 1.0F, 0.0);
+            tessellator1.vertex(posX, posY + (float) (FONT_HEIGHT / 2) - 1.0F, 0.0);
             tessellator1.draw();
-            if(!underlineStyle) {
+            if (!underlineStyle) {
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
             }
         }
 
         if (underlineStyle) {
-            if(!strikethroughStyle) {
+            if (!strikethroughStyle) {
                 tessellator1 = Tessellator.INSTANCE;
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
             }
             tessellator1.startQuads();
             int underlineOffset = -1;
-            tessellator1.vertex(posX + (float)underlineOffset, posY + (float)FONT_HEIGHT, 0.0);
-            tessellator1.vertex(posX + charWidth, posY + (float)FONT_HEIGHT, 0.0);
-            tessellator1.vertex(posX + charWidth, posY + (float)FONT_HEIGHT - 1.0F, 0.0);
-            tessellator1.vertex(posX + (float)underlineOffset, posY + (float)FONT_HEIGHT - 1.0F, 0.0);
+            tessellator1.vertex(posX + (float) underlineOffset, posY + (float) FONT_HEIGHT, 0.0);
+            tessellator1.vertex(posX + charWidth, posY + (float) FONT_HEIGHT, 0.0);
+            tessellator1.vertex(posX + charWidth, posY + (float) FONT_HEIGHT - 1.0F, 0.0);
+            tessellator1.vertex(posX + (float) underlineOffset, posY + (float) FONT_HEIGHT - 1.0F, 0.0);
             tessellator1.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
@@ -264,7 +264,7 @@ public class ProbeTextRenderer extends TextRenderer {
         int k = 0;
         int l = -1;
 
-        for(boolean flag = false; k < i; ++k) {
+        for (boolean flag = false; k < i; ++k) {
             char c0 = p_sizeStringToWidth_1_.charAt(k);
             switch (c0) {
                 case '\n':
@@ -311,7 +311,7 @@ public class ProbeTextRenderer extends TextRenderer {
         int i = -1;
         int j = p_getFormatFromString_0_.length();
 
-        while((i = p_getFormatFromString_0_.indexOf(167, i + 1)) != -1) {
+        while ((i = p_getFormatFromString_0_.indexOf(167, i + 1)) != -1) {
             if (i < j - 1) {
                 char c0 = p_getFormatFromString_0_.charAt(i + 1);
                 if (isFormatColor(c0)) {

@@ -55,7 +55,7 @@ public class PacketReturnInfo extends Packet implements ManagedPacket<PacketRetu
             stream.writeInt(pos.getX());
             stream.writeInt(pos.getY());
             stream.writeInt(pos.getZ());
-            
+
             if (probeInfo != null) {
                 stream.writeBoolean(true);
                 probeInfo.toBytes(stream);

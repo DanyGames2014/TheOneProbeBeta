@@ -73,12 +73,12 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
             } else {
                 sideHit = Direction.values()[sideByte];
             }
-            
+
             if (stream.readBoolean()) {
                 hitVec = Vec3d.create(stream.readDouble(), stream.readDouble(), stream.readDouble());
             }
-            
-            if(stream.readBoolean()) {
+
+            if (stream.readBoolean()) {
                 pickBlock = NetworkTools.readItemStack(stream);
             }
         } catch (IOException e) {

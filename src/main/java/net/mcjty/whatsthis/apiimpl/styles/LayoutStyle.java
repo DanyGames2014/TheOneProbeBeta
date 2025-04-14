@@ -24,8 +24,8 @@ public class LayoutStyle implements ILayoutStyle {
 
     /// The color that is used for the border of the progress bar
     @Override
-    public LayoutStyle borderColor(Integer c) {
-        borderColor = c;
+    public LayoutStyle borderColor(Integer borderColor) {
+        this.borderColor = borderColor;
         return this;
     }
 

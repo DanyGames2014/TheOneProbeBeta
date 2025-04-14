@@ -13,7 +13,7 @@ public class ElementItemStackRender {
         // TODO: Find proper mapping
         //ItemRenderer itemRender = Minecraft.INSTANCE.getRenderItem();
         ItemRenderer itemRender = new ItemRenderer();
-        
+
         if (itemStack != null && itemStack.count != 0) {
             int size = itemStack.count;
             String amount;

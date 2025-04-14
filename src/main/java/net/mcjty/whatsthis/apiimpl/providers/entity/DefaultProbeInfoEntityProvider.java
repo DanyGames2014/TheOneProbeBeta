@@ -91,15 +91,15 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 //            }
 
         }
-        
+
         if (entity instanceof PaintingEntity painting) {
             probeInfo.text(LABEL + "Variant: " + INFO + painting.variant.id);
         }
-        
-        if (entity instanceof SheepEntity sheep) { 
+
+        if (entity instanceof SheepEntity sheep) {
             probeInfo.text(LABEL + "Wool Color: " + INFO + sheep.getColor());
         }
-        
+
         if (Tools.show(mode, config.getAnimalOwnerSetting())) {
             if (entity instanceof WolfEntity wolf) {
 

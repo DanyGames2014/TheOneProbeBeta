@@ -23,6 +23,7 @@ public class HarvestInfoTools {
     };
 
     private static final HashMap<String, ItemStack> testTools = new HashMap<>();
+
     static {
         testTools.put("shovel", new ItemStack(Item.WOODEN_SHOVEL));
         testTools.put("axe", new ItemStack(Item.WOODEN_AXE));
