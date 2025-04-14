@@ -105,31 +105,14 @@ public class WhatsThis {
     }
 
     private void setupModCompat() {
-//        tesla = Loader.isModLoaded("tesla");
-//        if (tesla) {
-//            logger.log(Level.INFO, "The One Probe Detected TESLA: enabling support");
-//        }
-//
-//        redstoneflux = Loader.isModLoaded("redstoneflux");
-//        if (redstoneflux) {
-//            logger.log(Level.INFO, "The One Probe Detected RedstoneFlux: enabling support");
-//        }
-//
-//        baubles = Loader.isModLoaded("Baubles") || Loader.isModLoaded("baubles");
-//        if (baubles) {
-//            if (ConfigSetup.supportBaubles) {
-//                logger.log(Level.INFO, "The One Probe Detected Baubles: enabling support");
-//            } else {
-//                logger.log(Level.INFO, "The One Probe Detected Baubles but support disabled in config");
-//                baubles = false;
-//            }
-//        }
+        
     }
 
     private void configureProviders() {
         List<IProbeInfoProvider> providers = WhatsThis.theOneProbeImp.getProviders();
         String[] defaultValues = new String[providers.size()];
         int i = 0;
+        
         for (IProbeInfoProvider provider : providers) {
             defaultValues[i++] = provider.getID();
         }
@@ -146,6 +129,7 @@ public class WhatsThis {
         List<IProbeInfoEntityProvider> providers = WhatsThis.theOneProbeImp.getEntityProviders();
         String[] defaultValues = new String[providers.size()];
         int i = 0;
+        
         for (IProbeInfoEntityProvider provider : providers) {
             defaultValues[i++] = provider.getID();
         }

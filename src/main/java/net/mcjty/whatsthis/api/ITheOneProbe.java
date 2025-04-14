@@ -58,11 +58,6 @@ public interface ITheOneProbe {
      */
     IElementFactory getElementFactory(int id);
 
-    /**
-     * Get the overlay renderer. You can use this to do your own custom overlay rendering
-     * (besides what The One Probe already does).
-     */
-    IOverlayRenderer getOverlayRenderer();
 
     /**
      * Get a copy of the default configuration as it is given to the probe providers. This is

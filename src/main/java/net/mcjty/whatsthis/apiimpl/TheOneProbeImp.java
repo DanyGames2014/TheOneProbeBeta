@@ -167,11 +167,6 @@ public class TheOneProbeImp implements ITheOneProbe {
     }
 
     @Override
-    public IOverlayRenderer getOverlayRenderer() {
-        return new DefaultOverlayRenderer();
-    }
-
-    @Override
     public IProbeConfig createProbeConfig() {
         return ConfigSetup.getProbeConfig();
     }

@@ -57,22 +57,6 @@ public class OverlayRenderer {
     // When the server delays too long we also show some preliminary information already
     private static long lastRenderedTime = -1;
 
-    public static void registerProbeInfo(int dim, BlockPos pos, ProbeInfo probeInfo) {
-        if (probeInfo == null) {
-            return;
-        }
-        long time = System.currentTimeMillis();
-        cachedInfo.put(Pair.of(dim, pos), Pair.of(time, probeInfo));
-    }
-
-    public static void registerProbeInfo(int entityId, ProbeInfo probeInfo) {
-        if (probeInfo == null) {
-            return;
-        }
-        long time = System.currentTimeMillis();
-        cachedEntityInfo.put(entityId, Pair.of(time, probeInfo));
-    }
-
     public static void renderHUD(ProbeMode mode, float partialTicks) {
         float dist = Config.MAIN_CONFIG.probeDistance;
 
@@ -88,9 +72,9 @@ public class OverlayRenderer {
                 double sw = screenScaler.getScaledWidth();
                 double sh = screenScaler.getScaledHeight();
 
-                setupOverlayRendering(sw * scale, sh * scale);
+                RenderHelper.setupOverlayRendering(sw * scale, sh * scale);
                 renderHUDEntity(mode, mouseOver, sw * scale, sh * scale);
-                setupOverlayRendering(sw, sh);
+                RenderHelper.setupOverlayRendering(sw, sh);
                 GL11.glPopMatrix();
 
                 checkCleanup();
@@ -117,9 +101,9 @@ public class OverlayRenderer {
             double sw = scaledresolution.getScaledWidth();
             double sh = scaledresolution.getScaledHeight();
 
-            setupOverlayRendering(sw * scale, sh * scale);
+            RenderHelper.setupOverlayRendering(sw * scale, sh * scale);
             renderHUDBlock(mode, mouseOver, sw * scale, sh * scale);
-            setupOverlayRendering(sw, sh);
+            RenderHelper.setupOverlayRendering(sw, sh);
 
             GL11.glPopMatrix();
         }
@@ -127,91 +111,8 @@ public class OverlayRenderer {
         checkCleanup();
     }
 
-    public static void setupOverlayRendering(double sw, double sh) {
-        GL11.glClear(256);
-//        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0.0D, sw, sh, 0.0D, 1000.0D, 3000.0D);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-    }
-
-    private static void checkCleanup() {
-        long time = System.currentTimeMillis();
-        if (time > lastCleanupTime + 5000) {
-            cleanupCachedBlocks(time);
-            cleanupCachedEntities(time);
-            lastCleanupTime = time;
-        }
-    }
-
-    private static void renderHUDEntity(ProbeMode mode, HitResult mouseOver, double sw, double sh) {
-        Entity entity = mouseOver.entity;
-        if (entity == null) {
-            return;
-        }
-
-        String entityString = EntityRegistry.getId(entity);
-        if (entityString == null && !(entity instanceof PlayerEntity)) {
-            // We can't show info for this entity
-            return;
-        }
-
-        int entityId = entity.id;
-
-        PlayerEntity player = Minecraft.INSTANCE.player;
-        long time = System.currentTimeMillis();
-
-        Pair<Long, ProbeInfo> cacheEntry = cachedEntityInfo.get(entityId);
-        if (cacheEntry == null || cacheEntry.getValue() == null) {
-
-            // To make sure we don't ask it too many times before the server got a chance to send the answer
-            // we insert a dummy entry here for a while
-            if (cacheEntry == null || time >= cacheEntry.getLeft()) {
-                cachedEntityInfo.put(entityId, Pair.of(time + 500, null));
-                requestEntityInfo(mode, mouseOver, entity, player);
-            }
-
-            if (lastPair != null && time < lastPairTime + Config.MAIN_CONFIG.timeout) {
-                renderElements(lastPair.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
-                lastRenderedTime = time;
-            } else if (Config.MAIN_CONFIG.waitingForServerTimeout > 0 && lastRenderedTime != -1 && time > lastRenderedTime + Config.MAIN_CONFIG.waitingForServerTimeout) {
-                // It has been a while. Show some info on client that we are
-                // waiting for server information
-                ProbeInfo info = getWaitingEntityInfo(mode, mouseOver, entity, player);
-                registerProbeInfo(entityId, info);
-                lastPair = Pair.of(time, info);
-                lastPairTime = time;
-                renderElements(lastPair.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
-                lastRenderedTime = time;
-            }
-        } else {
-            if (time > cacheEntry.getLeft() + Config.MAIN_CONFIG.timeout) {
-                // This info is slightly old. Update it
-
-                // To make sure we don't ask it too many times before the server got a chance to send the answer
-                // we increase the time a bit here
-                cachedEntityInfo.put(entityId, Pair.of(time + 500, cacheEntry.getRight()));
-                requestEntityInfo(mode, mouseOver, entity, player);
-            }
-            renderElements(cacheEntry.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
-            lastRenderedTime = time;
-            lastPair = cacheEntry;
-            lastPairTime = time;
-        }
-    }
-
-    private static void requestEntityInfo(ProbeMode mode, HitResult mouseOver, Entity entity, PlayerEntity player) {
-        PacketHelper.send(new PacketGetEntityInfo(player.world.dimension.id, mode, mouseOver, entity));
-    }
-
     private static void renderHUDBlock(ProbeMode mode, HitResult mouseOver, double sw, double sh) {
         BlockPos blockPos = new BlockPos(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ);
-
-        if (blockPos == null) {
-            return;
-        }
 
         PlayerEntity player = Minecraft.INSTANCE.player;
         if (player.world.isAir(blockPos.x, blockPos.y, blockPos.z)) {
@@ -287,117 +188,69 @@ public class OverlayRenderer {
         }
     }
 
-    // Information for when the server is laggy
-    private static ProbeInfo getWaitingInfo(ProbeMode mode, HitResult mouseOver, BlockPos pos, PlayerEntity player) {
-        ProbeInfo probeInfo = WhatsThis.theOneProbeImp.create();
-
-        World world = player.world;
-        BlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        ItemStack pickBlock = new ItemStack(block, 1, world.getBlockMeta(pos.x, pos.y, pos.z));
-        IProbeHitData data = new ProbeHitData(pos, Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ), Direction.byId(mouseOver.side), pickBlock);
-
-        IProbeConfig probeConfig = WhatsThis.theOneProbeImp.createProbeConfig();
-
-        try {
-            DefaultProbeInfoProvider.showStandardBlockInfo(mode, probeInfo, world, pos, state, block, player, data, probeConfig);
-        } catch (Exception e) {
-            ThrowableIdentity.registerThrowable(e);
-            probeInfo.text(ERROR + "Error (see log for details)!");
+    private static void renderHUDEntity(ProbeMode mode, HitResult mouseOver, double sw, double sh) {
+        Entity entity = mouseOver.entity;
+        if (entity == null) {
+            return;
         }
 
-        probeInfo.text(ERROR + "Waiting for server...");
-        return probeInfo;
-    }
-
-    private static ProbeInfo getWaitingEntityInfo(ProbeMode mode, HitResult mouseOver, Entity entity, PlayerEntity player) {
-        ProbeInfo probeInfo = WhatsThis.theOneProbeImp.create();
-        IProbeHitEntityData data = new ProbeHitEntityData(Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ));
-
-        IProbeConfig probeConfig = WhatsThis.theOneProbeImp.createProbeConfig();
-        try {
-            DefaultProbeInfoEntityProvider.showStandardInfo(mode, probeInfo, entity, probeConfig);
-        } catch (Exception e) {
-            ThrowableIdentity.registerThrowable(e);
-            probeInfo.text(ERROR + "Error (see log for details)!");
+        String entityString = EntityRegistry.getId(entity);
+        if (entityString == null && !(entity instanceof PlayerEntity)) {
+            // We can't show info for this entity
+            return;
         }
 
-        probeInfo.text(ERROR + "Waiting for server...");
-        return probeInfo;
-    }
+        int entityId = entity.id;
 
-    private static void requestBlockInfo(ProbeMode mode, HitResult mouseOver, BlockPos pos, PlayerEntity player) {
-        World world = player.world;
-        BlockState blockState = world.getBlockState(pos);
+        PlayerEntity player = Minecraft.INSTANCE.player;
+        long time = System.currentTimeMillis();
 
-        ItemStack pickBlock = new ItemStack(blockState.getBlock(), 1, world.getBlockMeta(pos.x, pos.y, pos.z));
+        Pair<Long, ProbeInfo> cacheEntry = cachedEntityInfo.get(entityId);
+        if (cacheEntry == null || cacheEntry.getValue() == null) {
 
-//         TODO: handle pickBlock
-//        ItemStack pickBlock = block.getPickBlock(blockState, mouseOver, world, blockPos, player);
-//        if (pickBlock == null || (!pickBlock.isEmpty() && pickBlock.getItem() == null)) {
-//            // Protection for some invalid items.
-//            pickBlock = ItemStack.EMPTY;
-//        }
-//        if (pickBlock != null && (!pickBlock.isEmpty()) && ConfigSetup.getDontSendNBTSet().contains(pickBlock.getItem().getRegistryName())) {
-//            pickBlock = pickBlock.copy();
-//            pickBlock.setTagCompound(null);
-//        }
-
-        PacketHelper.send(new PacketGetInfo(world.dimension.id, pos, mode, mouseOver, pickBlock));
-    }
-
-    public static void renderOverlay(IOverlayStyle style, IProbeInfo probeInfo) {
-        GL11.glPushMatrix();
-
-        double scale = Config.CLIENT_CONFIG.tooltipScale;
-
-        Minecraft minecraft = Minecraft.INSTANCE;
-        ScreenScaler screenScaler = new ScreenScaler(minecraft.options, minecraft.displayWidth, minecraft.displayHeight);
-        double sw = screenScaler.getScaledWidth();
-        double sh = screenScaler.getScaledHeight();
-
-        setupOverlayRendering(sw * scale, sh * scale);
-        renderElements((ProbeInfo) probeInfo, style, sw * scale, sh * scale, null);
-        setupOverlayRendering(sw, sh);
-        GL11.glPopMatrix();
-    }
-
-    private static void cleanupCachedBlocks(long time) {
-        // It has been a while. Time to clean up unused cached pairs.
-        Map<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
-        for (Map.Entry<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> entry : cachedInfo.entrySet()) {
-            long t = entry.getValue().getLeft();
-            if (time < t + Config.MAIN_CONFIG.timeout + 1000) {
-                newCachedInfo.put(entry.getKey(), entry.getValue());
+            // To make sure we don't ask it too many times before the server got a chance to send the answer
+            // we insert a dummy entry here for a while
+            if (cacheEntry == null || time >= cacheEntry.getLeft()) {
+                cachedEntityInfo.put(entityId, Pair.of(time + 500, null));
+                requestEntityInfo(mode, mouseOver, entity, player);
             }
-        }
-        cachedInfo = newCachedInfo;
-    }
 
-    private static void cleanupCachedEntities(long time) {
-        // It has been a while. Time to clean up unused cached pairs.
-        Map<Integer, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
-        for (Map.Entry<Integer, Pair<Long, ProbeInfo>> entry : cachedEntityInfo.entrySet()) {
-            long t = entry.getValue().getLeft();
-            if (time < t + Config.MAIN_CONFIG.timeout + 1000) {
-                newCachedInfo.put(entry.getKey(), entry.getValue());
+            if (lastPair != null && time < lastPairTime + Config.MAIN_CONFIG.timeout) {
+                renderElements(lastPair.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
+                lastRenderedTime = time;
+            } else if (Config.MAIN_CONFIG.waitingForServerTimeout > 0 && lastRenderedTime != -1 && time > lastRenderedTime + Config.MAIN_CONFIG.waitingForServerTimeout) {
+                // It has been a while. Show some info on client that we are
+                // waiting for server information
+                ProbeInfo info = getWaitingEntityInfo(mode, mouseOver, entity, player);
+                registerProbeInfo(entityId, info);
+                lastPair = Pair.of(time, info);
+                lastPairTime = time;
+                renderElements(lastPair.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
+                lastRenderedTime = time;
             }
+        } else {
+            if (time > cacheEntry.getLeft() + Config.MAIN_CONFIG.timeout) {
+                // This info is slightly old. Update it
+
+                // To make sure we don't ask it too many times before the server got a chance to send the answer
+                // we increase the time a bit here
+                cachedEntityInfo.put(entityId, Pair.of(time + 500, cacheEntry.getRight()));
+                requestEntityInfo(mode, mouseOver, entity, player);
+            }
+            renderElements(cacheEntry.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
+            lastRenderedTime = time;
+            lastPair = cacheEntry;
+            lastPairTime = time;
         }
-        cachedEntityInfo = newCachedInfo;
     }
 
-    public static void renderElements(ProbeInfo probeInfo, IOverlayStyle style, double sw, double sh,
-                                      @Nullable IElement extra) {
+    public static void renderElements(ProbeInfo probeInfo, IOverlayStyle style, double sw, double sh, @Nullable IElement extra) {
         if (extra != null) {
             probeInfo.element(extra);
         }
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        RenderHelper.disableLighting();
 
-//        final ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
-//        final int scaledWidth = scaledresolution.getScaledWidth();
-//        final int scaledHeight = scaledresolution.getScaledHeight();
         int scaledWidth = (int) sw;
         int scaledHeight = (int) sh;
 
@@ -445,5 +298,120 @@ public class OverlayRenderer {
         if (extra != null) {
             probeInfo.removeElement(extra);
         }
+    }
+
+    // Request Info
+    private static void requestBlockInfo(ProbeMode mode, HitResult mouseOver, BlockPos pos, PlayerEntity player) {
+        World world = player.world;
+        BlockState blockState = world.getBlockState(pos);
+
+        ItemStack pickBlock = new ItemStack(blockState.getBlock(), 1, world.getBlockMeta(pos.x, pos.y, pos.z));
+
+//         TODO: handle pickBlock
+//        ItemStack pickBlock = block.getPickBlock(blockState, mouseOver, world, blockPos, player);
+//        if (pickBlock == null || (!pickBlock.isEmpty() && pickBlock.getItem() == null)) {
+//            // Protection for some invalid items.
+//            pickBlock = ItemStack.EMPTY;
+//        }
+//        if (pickBlock != null && (!pickBlock.isEmpty()) && ConfigSetup.getDontSendNBTSet().contains(pickBlock.getItem().getRegistryName())) {
+//            pickBlock = pickBlock.copy();
+//            pickBlock.setTagCompound(null);
+//        }
+
+        PacketHelper.send(new PacketGetInfo(world.dimension.id, pos, mode, mouseOver, pickBlock));
+    }
+    private static void requestEntityInfo(ProbeMode mode, HitResult mouseOver, Entity entity, PlayerEntity player) {
+        PacketHelper.send(new PacketGetEntityInfo(player.world.dimension.id, mode, mouseOver, entity));
+    }
+
+    // Register Info
+    public static void registerProbeInfo(int dim, BlockPos pos, ProbeInfo probeInfo) {
+        if (probeInfo == null) {
+            return;
+        }
+        long time = System.currentTimeMillis();
+        cachedInfo.put(Pair.of(dim, pos), Pair.of(time, probeInfo));
+    }
+
+    public static void registerProbeInfo(int entityId, ProbeInfo probeInfo) {
+        if (probeInfo == null) {
+            return;
+        }
+        long time = System.currentTimeMillis();
+        cachedEntityInfo.put(entityId, Pair.of(time, probeInfo));
+    }
+
+
+    // Waiting Info
+    private static ProbeInfo getWaitingInfo(ProbeMode mode, HitResult mouseOver, BlockPos pos, PlayerEntity player) {
+        ProbeInfo probeInfo = WhatsThis.theOneProbeImp.create();
+
+        World world = player.world;
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        ItemStack pickBlock = new ItemStack(block, 1, world.getBlockMeta(pos.x, pos.y, pos.z));
+        IProbeHitData data = new ProbeHitData(pos, Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ), Direction.byId(mouseOver.side), pickBlock);
+
+        IProbeConfig probeConfig = WhatsThis.theOneProbeImp.createProbeConfig();
+
+        try {
+            DefaultProbeInfoProvider.showStandardBlockInfo(mode, probeInfo, world, pos, state, block, player, data, probeConfig);
+        } catch (Exception e) {
+            ThrowableIdentity.registerThrowable(e);
+            probeInfo.text(ERROR + "Error (see log for details)!");
+        }
+
+        probeInfo.text(ERROR + "Waiting for server...");
+        return probeInfo;
+    }
+
+    private static ProbeInfo getWaitingEntityInfo(ProbeMode mode, HitResult mouseOver, Entity entity, PlayerEntity player) {
+        ProbeInfo probeInfo = WhatsThis.theOneProbeImp.create();
+        IProbeHitEntityData data = new ProbeHitEntityData(Vec3d.create(mouseOver.blockX, mouseOver.blockY, mouseOver.blockZ));
+
+        IProbeConfig probeConfig = WhatsThis.theOneProbeImp.createProbeConfig();
+        try {
+            DefaultProbeInfoEntityProvider.showStandardInfo(mode, probeInfo, entity, probeConfig);
+        } catch (Exception e) {
+            ThrowableIdentity.registerThrowable(e);
+            probeInfo.text(ERROR + "Error (see log for details)!");
+        }
+
+        probeInfo.text(ERROR + "Waiting for server...");
+        return probeInfo;
+    }
+
+    // Cleanup
+    private static void checkCleanup() {
+        long time = System.currentTimeMillis();
+        if (time > lastCleanupTime + 5000) {
+            cleanupCachedBlocks(time);
+            cleanupCachedEntities(time);
+            lastCleanupTime = time;
+        }
+    }
+
+    private static void cleanupCachedBlocks(long time) {
+        // It has been a while. Time to clean up unused cached pairs.
+        Map<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
+        for (Map.Entry<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> entry : cachedInfo.entrySet()) {
+            long t = entry.getValue().getLeft();
+            if (time < t + Config.MAIN_CONFIG.timeout + 1000) {
+                newCachedInfo.put(entry.getKey(), entry.getValue());
+            }
+        }
+        cachedInfo = newCachedInfo;
+    }
+
+    private static void cleanupCachedEntities(long time) {
+        // It has been a while. Time to clean up unused cached pairs.
+        Map<Integer, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
+        for (Map.Entry<Integer, Pair<Long, ProbeInfo>> entry : cachedEntityInfo.entrySet()) {
+            long t = entry.getValue().getLeft();
+            if (time < t + Config.MAIN_CONFIG.timeout + 1000) {
+                newCachedInfo.put(entry.getKey(), entry.getValue());
+            }
+        }
+        cachedEntityInfo = newCachedInfo;
     }
 }

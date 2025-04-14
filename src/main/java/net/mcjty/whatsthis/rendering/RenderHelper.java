@@ -374,4 +374,14 @@ public class RenderHelper {
 
         ProbeTextRenderer.INSTANCE.renderStringAtPos(text, x, y, new Color(red, green, blue, alpha), shadow);
     }
+
+    public static void setupOverlayRendering(double sw, double sh) {
+        GL11.glClear(256);
+//        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0.0D, sw, sh, 0.0D, 1000.0D, 3000.0D);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
+    }
 }
