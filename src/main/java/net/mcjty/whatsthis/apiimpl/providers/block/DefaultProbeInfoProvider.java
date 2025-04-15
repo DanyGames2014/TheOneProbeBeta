@@ -8,6 +8,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.JukeboxBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.NoteBlockBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -88,6 +89,10 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         // Note Block Info
         if (Util.show(mode, config.getShowMusicBlock())) {
             showMusicBlock(probeInfo, world, pos, state, block, data);
+        }
+        
+        if(Util.show(mode, config.getShowSignText())) {
+            showSignText(probeInfo, world, pos, state, block, data);
         }
 
         // Energy Info
@@ -285,5 +290,16 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
                     
         }
     }
+    
+    private void showSignText(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, IProbeHitData data) {
+        if(block instanceof SignBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof SignBlockEntity sign) {
+            probeInfo.vertical(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                .text(sign.texts[0])
+                .text(sign.texts[1])
+                .text(sign.texts[2])
+                .text(sign.texts[3]);
+        }
+    }
+        
 
 }

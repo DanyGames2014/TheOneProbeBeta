@@ -50,5 +50,8 @@ public class ProbeConfig {
     public IProbeConfig.ConfigMode showMobOwner = EXTENDED;
     
     @ConfigEntry(name = "showMusicBlock", description = "Show the note of a note block and the disc in a jukebox")
-    public IProbeConfig.ConfigMode showMusicBlock = EXTENDED;
+    public IProbeConfig.ConfigMode showMusicBlock = NORMAL;
+    
+    @ConfigEntry(name = "showSignText", description = "Show the text on a sign")
+    public IProbeConfig.ConfigMode showSignText = EXTENDED;
 }

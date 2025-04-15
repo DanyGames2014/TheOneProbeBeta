@@ -53,4 +53,6 @@ public interface IProbeConfig {
     ConfigMode getShowMobHealth();
     
     ConfigMode getShowMusicBlock();
+    
+    ConfigMode getShowSignText();
 }

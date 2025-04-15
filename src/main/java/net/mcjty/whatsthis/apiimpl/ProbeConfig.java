@@ -78,4 +78,9 @@ public class ProbeConfig implements IProbeConfig {
     public ConfigMode getShowMusicBlock() {
         return Config.PROBE_CONFIG.showMusicBlock;
     }
+
+    @Override
+    public ConfigMode getShowSignText() {
+        return Config.PROBE_CONFIG.showSignText;
+    }
 }
