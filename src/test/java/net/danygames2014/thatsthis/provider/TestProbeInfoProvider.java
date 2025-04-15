@@ -1,10 +1,10 @@
 package net.danygames2014.thatsthis.provider;
 
 import net.danygames2014.thatsthis.ThatsThis;
-import net.mcjty.whatsthis.api.IProbeHitData;
-import net.mcjty.whatsthis.api.IProbeInfo;
-import net.mcjty.whatsthis.api.IProbeInfoProvider;
-import net.mcjty.whatsthis.api.ProbeMode;
+import net.danygames2014.whatsthis.api.IProbeHitData;
+import net.danygames2014.whatsthis.api.IProbeInfo;
+import net.danygames2014.whatsthis.api.IProbeInfoProvider;
+import net.danygames2014.whatsthis.api.ProbeMode;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
