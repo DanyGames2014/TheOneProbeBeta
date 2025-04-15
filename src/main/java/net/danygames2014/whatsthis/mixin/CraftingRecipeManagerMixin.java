@@ -1,7 +1,7 @@
 package net.danygames2014.whatsthis.mixin;
 
 import net.danygames2014.whatsthis.WhatsThis;
-import net.danygames2014.whatsthis.items.ProbeUtil;
+import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;

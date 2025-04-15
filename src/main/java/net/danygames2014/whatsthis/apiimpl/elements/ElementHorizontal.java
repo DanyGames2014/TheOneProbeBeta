@@ -8,8 +8,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 public class ElementHorizontal extends AbstractElementPanel {
-    public static final int SPACING = 5;
-
     // Constructor
     public ElementHorizontal(Integer borderColor, int spacing, ElementAlignment alignment) {
         super(borderColor, spacing, alignment);

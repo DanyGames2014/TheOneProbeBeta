@@ -1,6 +1,7 @@
-package net.danygames2014.whatsthis.items;
+package net.danygames2014.whatsthis.item;
 
 import net.danygames2014.whatsthis.WhatsThis;
+import net.danygames2014.whatsthis.compat.AccessoryApiCompat;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -86,11 +87,6 @@ public class ProbeUtil {
     }
 
     private static boolean hasProbeInBauble(PlayerEntity player) {
-        return false;
-//        if (ModSetup.baubles) {
-//            return BaubleTools.hasProbeGoggle(player);
-//        } else {
-//            return false;
-//        }
+        return WhatsThis.accessoryApiCompat && AccessoryApiCompat.hasProbeGoggles(player);
     }
 }

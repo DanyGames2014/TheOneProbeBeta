@@ -1,5 +1,6 @@
 package net.danygames2014.whatsthis;
 
+import net.danygames2014.whatsthis.compat.AccessoryApiCompat;
 import net.fabricmc.loader.api.FabricLoader;
 import net.danygames2014.whatsthis.api.IProbeInfoEntityProvider;
 import net.danygames2014.whatsthis.api.IProbeInfoProvider;
@@ -13,8 +14,8 @@ import net.danygames2014.whatsthis.apiimpl.providers.entity.EntityProbeInfoProvi
 import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.event.BlockProbeInfoProviderRegistryEvent;
 import net.danygames2014.whatsthis.event.EntityProbeInfoProviderRegistryEvent;
-import net.danygames2014.whatsthis.items.ProbeNote;
-import net.danygames2014.whatsthis.items.ProbeUtil;
+import net.danygames2014.whatsthis.item.ProbeNoteItem;
+import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.danygames2014.whatsthis.network.PacketGetEntityInfo;
 import net.danygames2014.whatsthis.network.PacketGetInfo;
 import net.danygames2014.whatsthis.network.PacketReturnEntityInfo;
@@ -73,12 +74,12 @@ public class WhatsThis {
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
-        probeNote = new ProbeNote(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");
+        probeNote = new ProbeNoteItem(NAMESPACE.id("probe_note")).setTranslationKey(NAMESPACE, "probe_note");
         probe = new TemplateItem(NAMESPACE.id("probe")).setTranslationKey(NAMESPACE, "probe").setMaxCount(1);
         creativeProbe = new TemplateItem(NAMESPACE.id("creative_probe")).setTranslationKey(NAMESPACE, "creative_probe").setMaxCount(1);
 
         if (accessoryApiCompat) {
-            probeGoggles = new TemplateItem(NAMESPACE.id("probe_goggles")).setTranslationKey(NAMESPACE, "probe_goggles").setMaxCount(1);
+            AccessoryApiCompat.registerProbeAccessory();
         }
     }
 
@@ -115,7 +116,9 @@ public class WhatsThis {
     }
 
     private void setupModCompat() {
-        
+        if(FabricLoader.getInstance().isModLoaded("accessoryapi")) {
+            accessoryApiCompat = true;
+        }
     }
 
     private void configureProviders() {

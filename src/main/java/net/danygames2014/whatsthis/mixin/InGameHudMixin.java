@@ -2,7 +2,7 @@ package net.danygames2014.whatsthis.mixin;
 
 import net.danygames2014.whatsthis.api.ProbeMode;
 import net.danygames2014.whatsthis.config.Config;
-import net.danygames2014.whatsthis.items.ProbeUtil;
+import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.danygames2014.whatsthis.keys.KeybindListener;
 import net.danygames2014.whatsthis.rendering.OverlayRenderer;
 import net.minecraft.client.Minecraft;

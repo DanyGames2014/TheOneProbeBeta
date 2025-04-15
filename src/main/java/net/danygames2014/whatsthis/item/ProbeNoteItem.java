@@ -1,4 +1,4 @@
-package net.danygames2014.whatsthis.items;
+package net.danygames2014.whatsthis.item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class ProbeNote extends TemplateItem {
-    public ProbeNote(Identifier identifier) {
+public class ProbeNoteItem extends TemplateItem {
+    public ProbeNoteItem(Identifier identifier) {
         super(identifier);
         setMaxCount(1);
     }

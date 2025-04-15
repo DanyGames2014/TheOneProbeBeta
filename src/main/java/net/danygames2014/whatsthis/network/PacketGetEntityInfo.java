@@ -9,7 +9,7 @@ import net.danygames2014.whatsthis.apiimpl.ProbeHitEntityData;
 import net.danygames2014.whatsthis.apiimpl.ProbeInfo;
 import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.config.ConfigSetup;
-import net.danygames2014.whatsthis.items.ProbeUtil;
+import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

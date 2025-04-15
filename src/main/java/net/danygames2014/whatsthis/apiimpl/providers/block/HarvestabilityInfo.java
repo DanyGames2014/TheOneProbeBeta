@@ -5,7 +5,7 @@ import net.danygames2014.whatsthis.api.IIconStyle;
 import net.danygames2014.whatsthis.api.ILayoutStyle;
 import net.danygames2014.whatsthis.api.IProbeInfo;
 import net.danygames2014.whatsthis.config.Config;
-import net.danygames2014.whatsthis.items.ProbeUtil;
+import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
