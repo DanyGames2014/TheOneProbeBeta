@@ -1,0 +1,9 @@
+# Items
+item.whatsthis.probe.name=Probe
+item.whatsthis.probe_goggles.name=Probe (Accessory)
+item.whatsthis.creative_probe.name=Creative Probe
+item.whatsthis.probe_note.name=Whats This Read Me
+
+# Keybinds
+key.whatsthis.toggleLiquids=Toggle Liquid View
+key.whatsthis.toggleVisible=Visibility Toggle
