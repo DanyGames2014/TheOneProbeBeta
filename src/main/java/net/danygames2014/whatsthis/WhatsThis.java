@@ -1,7 +1,5 @@
 package net.danygames2014.whatsthis;
 
-import net.danygames2014.whatsthis.compat.AccessoryApiCompat;
-import net.fabricmc.loader.api.FabricLoader;
 import net.danygames2014.whatsthis.api.IProbeInfoEntityProvider;
 import net.danygames2014.whatsthis.api.IProbeInfoProvider;
 import net.danygames2014.whatsthis.apiimpl.TheOneProbeImp;
@@ -11,6 +9,7 @@ import net.danygames2014.whatsthis.apiimpl.providers.block.DefaultProbeInfoProvi
 import net.danygames2014.whatsthis.apiimpl.providers.entity.DebugProbeInfoEntityProvider;
 import net.danygames2014.whatsthis.apiimpl.providers.entity.DefaultProbeInfoEntityProvider;
 import net.danygames2014.whatsthis.apiimpl.providers.entity.EntityProbeInfoProvider;
+import net.danygames2014.whatsthis.compat.AccessoryApiCompat;
 import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.event.BlockProbeInfoProviderRegistryEvent;
 import net.danygames2014.whatsthis.event.EntityProbeInfoProviderRegistryEvent;
@@ -20,6 +19,7 @@ import net.danygames2014.whatsthis.network.PacketGetEntityInfo;
 import net.danygames2014.whatsthis.network.PacketGetInfo;
 import net.danygames2014.whatsthis.network.PacketReturnEntityInfo;
 import net.danygames2014.whatsthis.network.PacketReturnInfo;
+import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.Item;
 import net.modificationstation.stationapi.api.StationAPI;
@@ -56,7 +56,7 @@ public class WhatsThis {
     public static Item creativeProbe;
     public static Item probeGoggles;
 
-    public static boolean accessoryApiCompat = true;
+    public static boolean accessoryApiCompat = false;
 
     // TODO: BH Creative Support
     // TODO: Give note on spawning
@@ -94,13 +94,13 @@ public class WhatsThis {
     @EventListener(phase = InitEvent.PRE_INIT_PHASE)
     public void preInit(InitEvent event) {
         FabricLoader.getInstance().getEntrypointContainers("whatsthis", Object.class).forEach(EntrypointManager::setup);
-        
+
         TheOneProbeImp.registerElements();
         theOneProbeImp.registerProvider(new DefaultProbeInfoProvider());
         theOneProbeImp.registerProvider(new DebugProbeInfoProvider());
         theOneProbeImp.registerProvider(new BlockProbeInfoProvider());
         StationAPI.EVENT_BUS.post(new BlockProbeInfoProviderRegistryEvent());
-        
+
         theOneProbeImp.registerEntityProvider(new DefaultProbeInfoEntityProvider());
         theOneProbeImp.registerEntityProvider(new DebugProbeInfoEntityProvider());
         theOneProbeImp.registerEntityProvider(new EntityProbeInfoProvider());
@@ -116,16 +116,14 @@ public class WhatsThis {
     }
 
     private void setupModCompat() {
-        if(FabricLoader.getInstance().isModLoaded("accessoryapi")) {
-            accessoryApiCompat = true;
-        }
+        accessoryApiCompat = FabricLoader.getInstance().isModLoaded("accessoryapi");
     }
 
     private void configureProviders() {
         List<IProbeInfoProvider> providers = WhatsThis.theOneProbeImp.getProviders();
         String[] defaultValues = new String[providers.size()];
         int i = 0;
-        
+
         for (IProbeInfoProvider provider : providers) {
             defaultValues[i++] = provider.getID();
         }
@@ -142,7 +140,7 @@ public class WhatsThis {
         List<IProbeInfoEntityProvider> providers = WhatsThis.theOneProbeImp.getEntityProviders();
         String[] defaultValues = new String[providers.size()];
         int i = 0;
-        
+
         for (IProbeInfoEntityProvider provider : providers) {
             defaultValues[i++] = provider.getID();
         }

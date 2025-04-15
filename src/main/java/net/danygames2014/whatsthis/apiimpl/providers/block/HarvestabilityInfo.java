@@ -180,6 +180,20 @@ public class HarvestabilityInfo {
         }
     }
 
+    enum Harvestable {
+        HARVESTABLE,
+        NOT_HARVESTABLE,
+        UNBREAKABLE
+    }
+    
+    private static Harvestable isHarvestable(PlayerEntity player, World world, BlockPos pos, BlockState state, Block block) {
+        if(block.getHardness() == -1.0F){
+            return Harvestable.UNBREAKABLE;
+        }
+        
+        return player.canHarvest(world, pos, state) ? Harvestable.HARVESTABLE : Harvestable.NOT_HARVESTABLE;
+    }
+    
     static void showCanBeHarvested(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, PlayerEntity player) {
         if (ProbeUtil.isHandProbe(player.getHand())) {
             // If the player holds the probe there is no need to show harvestability information as the
@@ -187,17 +201,20 @@ public class HarvestabilityInfo {
             return;
         }
 
-        boolean harvestable = player.canHarvest(world, pos, state);
-        if (harvestable) {
-            probeInfo.text(OK + "Harvestable");
-        } else {
-            probeInfo.text(WARNING + "Not harvestable");
+        switch (isHarvestable(player, world, pos, state, block)){
+            case HARVESTABLE -> {
+                probeInfo.text(OK + "Harvestable");
+            }
+            case NOT_HARVESTABLE -> {
+                probeInfo.text(WARNING + "Not harvestable");
+            }
+            case UNBREAKABLE -> {
+                probeInfo.text(WARNING + "Unbreakable");
+            }
         }
     }
 
     static void showHarvestInfo(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, PlayerEntity player) {
-        boolean harvestable = player.canHarvest(world, pos, state);
-
         String harvestTool = getHarvestTool(world, pos, state, block);
         String harvestLevel = getHarvestLevel(state);
 
@@ -211,16 +228,25 @@ public class HarvestabilityInfo {
 
         String harvestToolString = getHarvestToolString(harvestTool, world, pos, state, block, player);
 
-        if (harvestable) {
-            horizontal.icon(ICONS, 0, offs, dim, dim, iconStyle)
-                    .text(harvestToolString);
-        } else {
-            if (harvestLevel == null || harvestLevel.isEmpty()) {
-                horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
+        switch (isHarvestable(player, world, pos, state, block)){
+            case HARVESTABLE -> {
+                horizontal.icon(ICONS, 0, offs, dim, dim, iconStyle)
                         .text(harvestToolString);
-            } else {
+            }
+            
+            case NOT_HARVESTABLE -> {
+                if (harvestLevel == null || harvestLevel.isEmpty()) {
+                    horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
+                            .text(harvestToolString);
+                } else {
+                    horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
+                            .text(harvestToolString + WARNING + " (" + harvestLevel + " Level)");
+                }
+            }
+            
+            case UNBREAKABLE -> {
                 horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
-                        .text(harvestToolString + WARNING + " (" + harvestLevel + " Level)");
+                    .text(WARNING + "Unbreakable");
             }
         }
     }
