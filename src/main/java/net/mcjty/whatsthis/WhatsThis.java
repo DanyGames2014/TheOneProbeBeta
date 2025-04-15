@@ -14,7 +14,7 @@ import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.event.BlockProbeInfoProviderRegistryEvent;
 import net.mcjty.whatsthis.event.EntityProbeInfoProviderRegistryEvent;
 import net.mcjty.whatsthis.items.ProbeNote;
-import net.mcjty.whatsthis.items.ProbeUtils;
+import net.mcjty.whatsthis.items.ProbeUtil;
 import net.mcjty.whatsthis.network.PacketGetEntityInfo;
 import net.mcjty.whatsthis.network.PacketGetInfo;
 import net.mcjty.whatsthis.network.PacketReturnEntityInfo;
@@ -28,7 +28,6 @@ import net.modificationstation.stationapi.api.event.network.packet.PacketRegiste
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
-import net.modificationstation.stationapi.api.mod.entrypoint.EventBusPolicy;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
@@ -67,7 +66,7 @@ public class WhatsThis {
 
     @EventListener
     public void probeTooltip(TooltipBuildEvent event) {
-        if (event.itemStack.getStationNbt().contains(ProbeUtils.PROBETAG)) {
+        if (event.itemStack.getStationNbt().contains(ProbeUtil.PROBETAG)) {
             event.tooltip.add(Formatting.AQUA + "Probe");
         }
     }

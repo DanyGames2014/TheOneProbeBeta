@@ -5,7 +5,7 @@ import net.mcjty.whatsthis.api.IItemStyle;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.client.ElementItemStackRender;
 import net.mcjty.whatsthis.apiimpl.styles.ItemStyle;
-import net.mcjty.whatsthis.network.NetworkTools;
+import net.mcjty.whatsthis.network.NetworkUtil;
 import net.minecraft.item.ItemStack;
 
 import java.io.DataInputStream;
@@ -25,7 +25,7 @@ public class ElementItemStack implements IElement {
     // Networking
     public ElementItemStack(DataInputStream stream) throws IOException {
         if (stream.readBoolean()) {
-            stack = NetworkTools.readItemStack(stream);
+            stack = NetworkUtil.readItemStack(stream);
         } else {
             stack = null;
         }
@@ -38,7 +38,7 @@ public class ElementItemStack implements IElement {
     public void toBytes(DataOutputStream stream) throws IOException {
         if (stack != null) {
             stream.writeBoolean(true);
-            NetworkTools.writeItemStack(stream, stack);
+            NetworkUtil.writeItemStack(stream, stack);
         } else {
             stream.writeBoolean(false);
         }

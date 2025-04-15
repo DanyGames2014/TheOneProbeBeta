@@ -2,8 +2,8 @@ package net.mcjty.whatsthis.items;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.mcjty.whatsthis.gui.GuiConfig;
-import net.mcjty.whatsthis.gui.GuiNote;
+import net.mcjty.whatsthis.gui.ConfigScreen;
+import net.mcjty.whatsthis.gui.NoteScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,9 +21,9 @@ public class ProbeNote extends TemplateItem {
     @Override
     public ItemStack use(ItemStack stack, World world, PlayerEntity user) {
         if (user.isSneaking()) {
-            Minecraft.INSTANCE.setScreen(new GuiConfig());
+            Minecraft.INSTANCE.setScreen(new ConfigScreen());
         } else {
-            Minecraft.INSTANCE.setScreen(new GuiNote());
+            Minecraft.INSTANCE.setScreen(new NoteScreen());
         }
 
         return stack;

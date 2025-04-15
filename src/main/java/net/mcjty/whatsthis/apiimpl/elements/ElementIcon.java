@@ -5,9 +5,7 @@ import net.mcjty.whatsthis.api.IIconStyle;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.client.ElementIconRender;
 import net.mcjty.whatsthis.apiimpl.styles.IconStyle;
-import net.mcjty.whatsthis.network.NetworkTools;
-import net.modificationstation.stationapi.api.util.Identifier;
-import net.modificationstation.stationapi.api.util.Namespace;
+import net.mcjty.whatsthis.network.NetworkUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -33,7 +31,7 @@ public class ElementIcon implements IElement {
 
     // Networking
     public ElementIcon(DataInputStream stream) throws IOException {
-        icon = NetworkTools.readString(stream);
+        icon = NetworkUtil.readString(stream);
         u = stream.readInt();
         v = stream.readInt();
         w = stream.readInt();
@@ -47,7 +45,7 @@ public class ElementIcon implements IElement {
 
     @Override
     public void toBytes(DataOutputStream stream) throws IOException {
-        NetworkTools.writeString(stream, icon);
+        NetworkUtil.writeString(stream, icon);
         stream.writeInt(u);
         stream.writeInt(v);
         stream.writeInt(w);

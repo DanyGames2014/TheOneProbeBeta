@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 
-public class ProbeUtils {
+public class ProbeUtil {
     public static String PROBETAG = "theoneprobe";
     public static String PROBETAG_HAND = "theoneprobe_hand";
 

@@ -1,6 +1,6 @@
 package net.mcjty.whatsthis.apiimpl.providers.block;
 
-import net.mcjty.whatsthis.Tools;
+import net.mcjty.whatsthis.Util;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.apiimpl.styles.ItemStyle;
 import net.mcjty.whatsthis.apiimpl.styles.LayoutStyle;
@@ -45,14 +45,14 @@ public class InventoryInfo {
             }
         }
 
-        if (Tools.show(mode, chestMode)) {
+        if (Util.show(mode, chestMode)) {
             if (stacks == null) {
                 stacks = new ArrayList<>();
                 getInventoryContents(world, pos, stacks);
             }
 
             if (!stacks.isEmpty()) {
-                boolean showDetailed = Tools.show(mode, config.getShowChestContentsDetailed()) && stacks.size() <= Config.MAIN_CONFIG.showItemDetailThreshold;
+                boolean showDetailed = Util.show(mode, config.getShowChestContentsDetailed()) && stacks.size() <= Config.MAIN_CONFIG.showItemDetailThreshold;
                 showInventoryContents(probeInfo, world, pos, stacks, showDetailed);
             }
         }

@@ -1,6 +1,6 @@
 package net.mcjty.whatsthis.apiimpl.providers.entity;
 
-import net.mcjty.whatsthis.Tools;
+import net.mcjty.whatsthis.Util;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.config.ConfigSetup;
@@ -43,7 +43,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            if (Tools.show(mode, config.getShowMobHealth())) {
+            if (Util.show(mode, config.getShowMobHealth())) {
                 int health = livingEntity.health;
                 int maxHealth = livingEntity.maxHealth;
 
@@ -100,7 +100,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
             probeInfo.text(LABEL + "Wool Color: " + INFO + sheep.getColor());
         }
 
-        if (Tools.show(mode, config.getAnimalOwnerSetting())) {
+        if (Util.show(mode, config.getAnimalOwnerSetting())) {
             if (entity instanceof WolfEntity wolf) {
 
                 if (wolf.isTamed()) {
@@ -137,9 +137,9 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 
 
     public static void showStandardInfo(ProbeMode mode, IProbeInfo probeInfo, Entity entity, IProbeConfig config) {
-        String modid = Tools.getModName(entity);
+        String modid = Util.getModName(entity);
 
-        if (Tools.show(mode, config.getShowModName())) {
+        if (Util.show(mode, config.getShowModName())) {
             probeInfo.horizontal()
                     .entity(entity)
                     .vertical()

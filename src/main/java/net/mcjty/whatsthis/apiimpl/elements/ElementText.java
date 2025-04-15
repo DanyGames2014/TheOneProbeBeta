@@ -3,7 +3,7 @@ package net.mcjty.whatsthis.apiimpl.elements;
 import net.mcjty.whatsthis.api.IElement;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.client.ElementTextRender;
-import net.mcjty.whatsthis.network.NetworkTools;
+import net.mcjty.whatsthis.network.NetworkUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,12 +19,12 @@ public class ElementText implements IElement {
 
     // Networking
     public ElementText(DataInputStream stream) throws IOException {
-        text = NetworkTools.readStringUTF8(stream);
+        text = NetworkUtil.readStringUTF8(stream);
     }
 
     @Override
     public void toBytes(DataOutputStream stream) throws IOException {
-        NetworkTools.writeStringUTF8(stream, text);
+        NetworkUtil.writeStringUTF8(stream, text);
     }
 
     // Rendering

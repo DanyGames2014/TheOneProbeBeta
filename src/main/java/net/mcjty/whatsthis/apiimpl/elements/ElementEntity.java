@@ -5,7 +5,7 @@ import net.mcjty.whatsthis.api.IEntityStyle;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.client.ElementEntityRender;
 import net.mcjty.whatsthis.apiimpl.styles.EntityStyle;
-import net.mcjty.whatsthis.network.NetworkTools;
+import net.mcjty.whatsthis.network.NetworkUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,14 +44,14 @@ public class ElementEntity implements IElement {
 
     // Networking
     public ElementEntity(DataInputStream stream) throws IOException {
-        entityName = NetworkTools.readString(stream);
+        entityName = NetworkUtil.readString(stream);
         style = new EntityStyle()
                 .width(stream.readInt())
                 .height(stream.readInt())
                 .scale(stream.readFloat());
 
         if (stream.readBoolean()) {
-            entityNbt = NetworkTools.readNBT(stream);
+            entityNbt = NetworkUtil.readNBT(stream);
         } else {
             entityNbt = null;
         }
@@ -65,14 +65,14 @@ public class ElementEntity implements IElement {
 
     @Override
     public void toBytes(DataOutputStream stream) throws IOException {
-        NetworkTools.writeString(stream, entityName);
+        NetworkUtil.writeString(stream, entityName);
         stream.writeInt(style.getWidth());
         stream.writeInt(style.getHeight());
         stream.writeFloat(style.getScale());
 
         if (entityNbt != null) {
             stream.writeBoolean(true);
-            NetworkTools.writeNBT(stream, entityNbt);
+            NetworkUtil.writeNBT(stream, entityNbt);
         } else {
             stream.writeBoolean(false);
         }

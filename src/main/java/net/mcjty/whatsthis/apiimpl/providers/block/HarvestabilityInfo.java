@@ -5,7 +5,7 @@ import net.mcjty.whatsthis.api.IIconStyle;
 import net.mcjty.whatsthis.api.ILayoutStyle;
 import net.mcjty.whatsthis.api.IProbeInfo;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.items.ProbeUtils;
+import net.mcjty.whatsthis.items.ProbeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -181,7 +181,7 @@ public class HarvestabilityInfo {
     }
 
     static void showCanBeHarvested(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, PlayerEntity player) {
-        if (ProbeUtils.isHandProbe(player.getHand())) {
+        if (ProbeUtil.isHandProbe(player.getHand())) {
             // If the player holds the probe there is no need to show harvestability information as the
             // probe cannot harvest anything. This is only supposed to work in off hand.
             return;

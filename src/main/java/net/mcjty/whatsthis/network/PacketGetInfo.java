@@ -9,7 +9,7 @@ import net.mcjty.whatsthis.apiimpl.ProbeHitData;
 import net.mcjty.whatsthis.apiimpl.ProbeInfo;
 import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
-import net.mcjty.whatsthis.items.ProbeUtils;
+import net.mcjty.whatsthis.items.ProbeUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -79,7 +79,7 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
             }
 
             if (stream.readBoolean()) {
-                pickBlock = NetworkTools.readItemStack(stream);
+                pickBlock = NetworkUtil.readItemStack(stream);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -108,7 +108,7 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
 
             if (pickBlock != null) {
                 stream.writeBoolean(true);
-                NetworkTools.writeItemStack(stream, pickBlock);
+                NetworkUtil.writeItemStack(stream, pickBlock);
             } else {
                 stream.writeBoolean(false);
             }
@@ -164,13 +164,13 @@ public class PacketGetInfo extends Packet implements ManagedPacket<PacketGetInfo
     private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, BlockPos blockPos, Direction sideHit, Vec3d hitVec, ItemStack pickBlock) {
         if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
             // We need a probe only for extended information
-            if (!ProbeUtils.hasAProbeSomewhere(player)) {
+            if (!ProbeUtil.hasAProbeSomewhere(player)) {
                 // No probe anywhere, switch EXTENDED to NORMAL
                 if (mode == ProbeMode.EXTENDED) {
                     mode = ProbeMode.NORMAL;
                 }
             }
-        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ProbeUtils.hasAProbeSomewhere(player)) {
+        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ProbeUtil.hasAProbeSomewhere(player)) {
             // The server says we need a probe but we don't have one in our hands
             return null;
         }

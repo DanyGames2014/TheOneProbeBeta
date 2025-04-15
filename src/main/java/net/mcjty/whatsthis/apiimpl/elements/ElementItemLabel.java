@@ -3,7 +3,7 @@ package net.mcjty.whatsthis.apiimpl.elements;
 import net.mcjty.whatsthis.api.IElement;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.client.ElementTextRender;
-import net.mcjty.whatsthis.network.NetworkTools;
+import net.mcjty.whatsthis.network.NetworkUtil;
 import net.minecraft.item.ItemStack;
 
 import java.io.DataInputStream;
@@ -21,7 +21,7 @@ public class ElementItemLabel implements IElement {
     // Networking
     public ElementItemLabel(DataInputStream stream) throws IOException {
         if (stream.readBoolean()) {
-            stack = NetworkTools.readItemStack(stream);
+            stack = NetworkUtil.readItemStack(stream);
         } else {
             stack = null;
         }
@@ -31,7 +31,7 @@ public class ElementItemLabel implements IElement {
     public void toBytes(DataOutputStream stream) throws IOException {
         if (stack != null && stack.count > 0) {
             stream.writeBoolean(true);
-            NetworkTools.writeItemStack(stream, stack);
+            NetworkUtil.writeItemStack(stream, stack);
         } else {
             stream.writeBoolean(false);
         }

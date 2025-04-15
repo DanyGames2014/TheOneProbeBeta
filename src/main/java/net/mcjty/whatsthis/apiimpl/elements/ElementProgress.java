@@ -6,7 +6,7 @@ import net.mcjty.whatsthis.api.NumberFormat;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
 import net.mcjty.whatsthis.apiimpl.client.ElementProgressRender;
 import net.mcjty.whatsthis.apiimpl.styles.ProgressStyle;
-import net.mcjty.whatsthis.network.NetworkTools;
+import net.mcjty.whatsthis.network.NetworkUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,8 +34,8 @@ public class ElementProgress implements IElement {
         style = new ProgressStyle()
                 .width(stream.readInt())
                 .height(stream.readInt())
-                .prefix(NetworkTools.readStringUTF8(stream))
-                .suffix(NetworkTools.readStringUTF8(stream))
+                .prefix(NetworkUtil.readStringUTF8(stream))
+                .suffix(NetworkUtil.readStringUTF8(stream))
                 .borderColor(stream.readInt())
                 .filledColor(stream.readInt())
                 .alternateFilledColor(stream.readInt())
@@ -52,8 +52,8 @@ public class ElementProgress implements IElement {
         stream.writeLong(max);
         stream.writeInt(style.getWidth());
         stream.writeInt(style.getHeight());
-        NetworkTools.writeStringUTF8(stream, style.getPrefix());
-        NetworkTools.writeStringUTF8(stream, style.getSuffix());
+        NetworkUtil.writeStringUTF8(stream, style.getPrefix());
+        NetworkUtil.writeStringUTF8(stream, style.getSuffix());
         stream.writeInt(style.getBorderColor());
         stream.writeInt(style.getFilledColor());
         stream.writeInt(style.getAlternatefilledColor());

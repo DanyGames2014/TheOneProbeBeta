@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class NetworkTools {
+public class NetworkUtil {
 
     public static NbtCompound readNBT(DataInputStream stream) {
         return (NbtCompound) NbtElement.readTag(stream);

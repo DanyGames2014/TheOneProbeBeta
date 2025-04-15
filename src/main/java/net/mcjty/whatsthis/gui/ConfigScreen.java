@@ -1,6 +1,6 @@
 package net.mcjty.whatsthis.gui;
 
-import net.mcjty.whatsthis.Tools;
+import net.mcjty.whatsthis.Util;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.IOverlayStyle;
 import net.mcjty.whatsthis.api.TextStyleClass;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static net.mcjty.whatsthis.api.TextStyleClass.*;
 
-public class GuiConfig extends Screen {
+public class ConfigScreen extends Screen {
     private static final int WIDTH = 230;
     private static final int HEIGHT = 230;
 
@@ -203,7 +203,7 @@ public class GuiConfig extends Screen {
 
     private void renderProbe() {
         Block block = Block.LOG;
-        String modid = Tools.getModName(block);
+        String modid = Util.getModName(block);
         ProbeInfo probeInfo = WhatsThis.theOneProbeImp.create();
         ItemStack pickBlock = new ItemStack(block);
         probeInfo.horizontal()

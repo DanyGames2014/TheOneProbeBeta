@@ -8,7 +8,7 @@ import net.modificationstation.stationapi.api.util.Formatting;
 
 import static net.mcjty.whatsthis.config.ConfigSetup.*;
 
-public class GuiNote extends Screen {
+public class NoteScreen extends Screen {
     private static final int WIDTH = 256;
     private static final int HEIGHT = 160;
 

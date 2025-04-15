@@ -1,6 +1,6 @@
 package net.mcjty.whatsthis.apiimpl.providers.block;
 
-import net.mcjty.whatsthis.Tools;
+import net.mcjty.whatsthis.Util;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
 import net.mcjty.whatsthis.apiimpl.ProbeConfig;
@@ -16,8 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
 
-import static net.mcjty.whatsthis.api.IProbeInfo.ENDLOC;
-import static net.mcjty.whatsthis.api.IProbeInfo.STARTLOC;
 import static net.mcjty.whatsthis.api.TextStyleClass.*;
 
 public class DefaultProbeInfoProvider implements IProbeInfoProvider {
@@ -53,8 +51,8 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
 
         // Harvest Level
-        boolean showHarvestLevel = Tools.show(mode, config.getShowHarvestLevel());
-        boolean showHarvested = Tools.show(mode, config.getShowCanBeHarvested());
+        boolean showHarvestLevel = Util.show(mode, config.getShowHarvestLevel());
+        boolean showHarvested = Util.show(mode, config.getShowCanBeHarvested());
         if (showHarvested && showHarvestLevel) {
             HarvestabilityInfo.showHarvestInfo(probeInfo, world, pos, state, block, player);
         } else if (showHarvestLevel) {
@@ -64,22 +62,22 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
 
         // Crop Growth
-        if (Tools.show(mode, config.getShowCropPercentage())) {
+        if (Util.show(mode, config.getShowCropPercentage())) {
             showGrowthLevel(probeInfo, world, pos, state, block, data);
         }
 
         // Mob Spawner Info
-        if (Tools.show(mode, config.getShowMobSpawnerSetting())) {
+        if (Util.show(mode, config.getShowMobSpawnerSetting())) {
             showMobSpawnerInfo(probeInfo, world, pos, state, block, data);
         }
 
         // Redstone Power
-        if (Tools.show(mode, config.getShowRedstone())) {
-            showRedstonePower(probeInfo, world, pos, state, block, data, Tools.show(mode, config.getShowLeverSetting()));
+        if (Util.show(mode, config.getShowRedstone())) {
+            showRedstonePower(probeInfo, world, pos, state, block, data, Util.show(mode, config.getShowLeverSetting()));
         }
 
         // Redstone Component
-        if (Tools.show(mode, config.getShowLeverSetting())) {
+        if (Util.show(mode, config.getShowLeverSetting())) {
             showLeverSetting(probeInfo, world, pos, state, block, data);
         }
 
@@ -92,7 +90,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
 
         // Fluid Info
-        if (Tools.show(mode, config.getShowTankSetting())) {
+        if (Util.show(mode, config.getShowTankSetting())) {
             if (config.getTankMode() > 0) {
                 showTankInfo(probeInfo, world, pos);
             }
@@ -100,13 +98,13 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
     }
 
     public static void showStandardBlockInfo(ProbeMode mode, IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, PlayerEntity player, IProbeHitData data, IProbeConfig config) {
-        String modid = Tools.getModName(block);
+        String modid = Util.getModName(block);
         ItemStack pickBlock = data.getPickBlock();
         
         // TODO: Special handling for liquids when the time comes
 
         if (pickBlock != null) {
-            if (Tools.show(mode, config.getShowModName())) {
+            if (Util.show(mode, config.getShowModName())) {
                 probeInfo.horizontal()
                         .item(pickBlock)
                         .vertical()
@@ -118,7 +116,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
                         .itemLabel(pickBlock);
             }
         } else {
-            if (Tools.show(mode, config.getShowModName())) {
+            if (Util.show(mode, config.getShowModName())) {
                 probeInfo.vertical()
                         .text(NAME + block.getTranslatedName())
                         .text(MODNAME + modid);

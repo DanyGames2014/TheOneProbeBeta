@@ -2,7 +2,7 @@ package net.mcjty.whatsthis.mixin;
 
 import net.mcjty.whatsthis.api.ProbeMode;
 import net.mcjty.whatsthis.config.Config;
-import net.mcjty.whatsthis.items.ProbeUtils;
+import net.mcjty.whatsthis.items.ProbeUtil;
 import net.mcjty.whatsthis.keys.KeybindListener;
 import net.mcjty.whatsthis.rendering.OverlayRenderer;
 import net.minecraft.client.Minecraft;
@@ -31,7 +31,7 @@ public class InGameHudMixin {
             }
         }
 
-        if (ProbeUtils.isDebugProbe(Minecraft.INSTANCE.player.getHand())) {
+        if (ProbeUtil.isDebugProbe(Minecraft.INSTANCE.player.getHand())) {
             OverlayRenderer.renderHUD(ProbeMode.DEBUG, tickDelta);
         } else {
             switch (Config.MAIN_CONFIG.needsProbe) {
@@ -41,7 +41,7 @@ public class InGameHudMixin {
                     break;
                 case PROBE_NEEDED:
                 case PROBE_NEEDEDHARD:
-                    if (ProbeUtils.hasAProbeSomewhere(Minecraft.INSTANCE.player)) {
+                    if (ProbeUtil.hasAProbeSomewhere(Minecraft.INSTANCE.player)) {
                         OverlayRenderer.renderHUD(getModeForPlayer(), tickDelta);
                     }
                     break;
@@ -54,9 +54,9 @@ public class InGameHudMixin {
         PlayerEntity player = Minecraft.INSTANCE.player;
 
         // If the mode is extended by default or the player is holding a probe
-        if (Config.MAIN_CONFIG.extendedInMain || ProbeUtils.isHandProbe(player.getHand())) {
+        if (Config.MAIN_CONFIG.extendedInMain || ProbeUtil.isHandProbe(player.getHand())) {
             // If the player has a probe somewhere, switch to extended mode
-            if (ProbeUtils.hasAProbeSomewhere(player)) {
+            if (ProbeUtil.hasAProbeSomewhere(player)) {
                 return ProbeMode.EXTENDED;
             }
         }

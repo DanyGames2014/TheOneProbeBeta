@@ -1,7 +1,7 @@
 package net.mcjty.whatsthis.mixin;
 
 import net.mcjty.whatsthis.WhatsThis;
-import net.mcjty.whatsthis.items.ProbeUtils;
+import net.mcjty.whatsthis.items.ProbeUtil;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -34,7 +34,7 @@ public class CraftingRecipeManagerMixin {
         }
 
         if (hasProbe && helmet != null) {
-            helmet.getStationNbt().putBoolean(ProbeUtils.PROBETAG, true);
+            helmet.getStationNbt().putBoolean(ProbeUtil.PROBETAG, true);
             cir.setReturnValue(helmet);
         }
     }
