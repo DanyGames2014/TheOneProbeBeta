@@ -3,12 +3,11 @@ package net.mcjty.whatsthis.apiimpl.providers.block;
 import net.mcjty.whatsthis.Util;
 import net.mcjty.whatsthis.WhatsThis;
 import net.mcjty.whatsthis.api.*;
-import net.mcjty.whatsthis.apiimpl.ProbeConfig;
-import net.mcjty.whatsthis.apiimpl.elements.ElementProgress;
-import net.mcjty.whatsthis.config.Config;
 import net.mcjty.whatsthis.config.ConfigSetup;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.JukeboxBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.block.entity.NoteBlockBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -82,25 +81,32 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
 
         // Inventory Contents
-        InventoryInfo.showInventoryInfo(mode, probeInfo, world, pos, state, block, data, config);
+        if (Util.show(mode, config.getShowChestContents())) {
+            InventoryInfo.showInventoryInfo(mode, probeInfo, world, pos, state, block, data, config);
+        }
+
+        // Note Block Info
+        if (Util.show(mode, config.getShowMusicBlock())) {
+            showMusicBlock(probeInfo, world, pos, state, block, data);
+        }
 
         // Energy Info
-        if (config.getRFMode() > 0) {
-            showRF(probeInfo, world, pos);
-        }
+//        if (config.getRFMode() > 0) {
+//            showRF(probeInfo, world, pos);
+//        }
 
         // Fluid Info
-        if (Util.show(mode, config.getShowTankSetting())) {
-            if (config.getTankMode() > 0) {
-                showTankInfo(probeInfo, world, pos);
-            }
-        }
+//        if (Util.show(mode, config.getShowTankSetting())) {
+//            if (config.getTankMode() > 0) {
+//                showTankInfo(probeInfo, world, pos);
+//            }
+//        }
     }
 
     public static void showStandardBlockInfo(ProbeMode mode, IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, PlayerEntity player, IProbeHitData data, IProbeConfig config) {
         String modid = Util.getModName(block);
         ItemStack pickBlock = data.getPickBlock();
-        
+
         // TODO: Special handling for liquids when the time comes
 
         if (pickBlock != null) {
@@ -170,7 +176,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         }
     }
 
-    private void showTankInfo(IProbeInfo probeInfo, World world, BlockPos pos) {
+//    private void showTankInfo(IProbeInfo probeInfo, World world, BlockPos pos) {
 //        ProbeConfig config = ConfigSetup.getDefaultConfig();
 //        TileEntity te = world.getTileEntity(pos);
 //        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
@@ -188,7 +194,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 //                }
 //            }
 //        }
-    }
+//    }
 
 //    private void addFluidInfo(IProbeInfo probeInfo, ProbeConfig config, FluidStack fluidStack, int maxContents) {
 //        int contents = fluidStack == null ? 0 : fluidStack.amount;
@@ -208,7 +214,7 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 //        }
 //    }
 
-    private void showRF(IProbeInfo probeInfo, World world, BlockPos pos) {
+//    private void showRF(IProbeInfo probeInfo, World world, BlockPos pos) {
 //        ProbeConfig config = ConfigSetup.getDefaultConfig();
 //        TileEntity te = world.getTileEntity(pos);
 //        if (ModSetup.tesla && TeslaTools.isEnergyHandler(te)) {
@@ -229,21 +235,21 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 //                addRFInfo(probeInfo, config, handler.getEnergyStored(), handler.getMaxEnergyStored());
 //            }
 //        }
-    }
+//    }
 
-    private void addRFInfo(IProbeInfo probeInfo, ProbeConfig config, long energy, long maxEnergy) {
-        if (config.getRFMode() == 1) {
-            probeInfo.progress(energy, maxEnergy,
-                    probeInfo.defaultProgressStyle()
-                            .suffix("RF")
-                            .filledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarFilledColor))
-                            .alternateFilledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarAlternateFilledColor))
-                            .borderColor(Config.parseColor(Config.MAIN_CONFIG.rfbarBorderColor))
-                            .numberFormat(Config.MAIN_CONFIG.rfFormat));
-        } else {
-            probeInfo.text(PROGRESS + "RF: " + ElementProgress.format(energy, Config.MAIN_CONFIG.rfFormat, "RF"));
-        }
-    }
+//    private void addRFInfo(IProbeInfo probeInfo, ProbeConfig config, long energy, long maxEnergy) {
+//        if (config.getRFMode() == 1) {
+//            probeInfo.progress(energy, maxEnergy,
+//                    probeInfo.defaultProgressStyle()
+//                            .suffix("RF")
+//                            .filledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarFilledColor))
+//                            .alternateFilledColor(Config.parseColor(Config.MAIN_CONFIG.rfbarAlternateFilledColor))
+//                            .borderColor(Config.parseColor(Config.MAIN_CONFIG.rfbarBorderColor))
+//                            .numberFormat(Config.MAIN_CONFIG.rfFormat));
+//        } else {
+//            probeInfo.text(PROGRESS + "RF: " + ElementProgress.format(energy, Config.MAIN_CONFIG.rfFormat, "RF"));
+//        }
+//    }
 
     private void showGrowthLevel(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, IProbeHitData data) {
         if (blockState.isOf(Block.WHEAT)) {
@@ -257,4 +263,27 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
             }
         }
     }
+
+    private static final String[] NOTE_TABLE = {
+            "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"
+    };
+
+    private void showMusicBlock(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, IProbeHitData data) {
+        if (block instanceof NoteBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof NoteBlockBlockEntity noteBlock) {
+            byte note = noteBlock.note;
+
+            probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                    .text(LABEL + "Note: " + INFO + NOTE_TABLE[note]);
+
+
+        } else if (block instanceof JukeboxBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof JukeboxBlockEntity jukebox) {
+            var disc = new ItemStack(jukebox.recordId, 1, 0);
+            
+            probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
+                    .item(disc)
+                    .itemLabel(disc);
+                    
+        }
+    }
+
 }

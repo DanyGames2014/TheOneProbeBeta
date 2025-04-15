@@ -51,4 +51,6 @@ public interface IProbeConfig {
     ConfigMode getShowRedstone();
 
     ConfigMode getShowMobHealth();
+    
+    ConfigMode getShowMusicBlock();
 }

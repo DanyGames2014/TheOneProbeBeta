@@ -40,7 +40,7 @@ public class ProbeConfig {
     @ConfigEntry(name = "showLeverSetting")
     public IProbeConfig.ConfigMode showLeverSetting = NORMAL;
 
-    @ConfigEntry(name = "showTankSetting =")
+    @ConfigEntry(name = "showTankSetting")
     public IProbeConfig.ConfigMode showTankSetting = EXTENDED;
 
     @ConfigEntry(name = "showMobSpawner")
@@ -48,4 +48,7 @@ public class ProbeConfig {
 
     @ConfigEntry(name = "showMobOwner")
     public IProbeConfig.ConfigMode showMobOwner = EXTENDED;
+    
+    @ConfigEntry(name = "showMusicBlock", description = "Show the note of a note block and the disc in a jukebox")
+    public IProbeConfig.ConfigMode showMusicBlock = EXTENDED;
 }

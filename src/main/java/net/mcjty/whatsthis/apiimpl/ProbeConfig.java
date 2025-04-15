@@ -73,4 +73,9 @@ public class ProbeConfig implements IProbeConfig {
     public ConfigMode getShowTankSetting() {
         return Config.PROBE_CONFIG.showTankSetting;
     }
+
+    @Override
+    public ConfigMode getShowMusicBlock() {
+        return Config.PROBE_CONFIG.showMusicBlock;
+    }
 }
