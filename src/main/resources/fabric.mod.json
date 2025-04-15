@@ -39,6 +39,7 @@
   "mixins": [
     "whatsthis.mixins.json"
   ],
+  "accessWidener": "whatsthis.accesswidener",
 
   "depends": {
     "minecraft": "1.0.0-beta.7.3"
