@@ -1,5 +1,6 @@
 package net.mcjty.whatsthis;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.mcjty.whatsthis.api.IProbeInfoEntityProvider;
 import net.mcjty.whatsthis.api.IProbeInfoProvider;
 import net.mcjty.whatsthis.apiimpl.TheOneProbeImp;
@@ -10,6 +11,8 @@ import net.mcjty.whatsthis.apiimpl.providers.entity.DebugProbeInfoEntityProvider
 import net.mcjty.whatsthis.apiimpl.providers.entity.DefaultProbeInfoEntityProvider;
 import net.mcjty.whatsthis.apiimpl.providers.entity.EntityProbeInfoProvider;
 import net.mcjty.whatsthis.config.Config;
+import net.mcjty.whatsthis.event.BlockProbeInfoProviderRegistryEvent;
+import net.mcjty.whatsthis.event.EntityProbeInfoProviderRegistryEvent;
 import net.mcjty.whatsthis.items.ProbeNote;
 import net.mcjty.whatsthis.items.ProbeUtils;
 import net.mcjty.whatsthis.network.PacketGetEntityInfo;
@@ -18,11 +21,14 @@ import net.mcjty.whatsthis.network.PacketReturnEntityInfo;
 import net.mcjty.whatsthis.network.PacketReturnInfo;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.Item;
+import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.client.event.gui.screen.container.TooltipBuildEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
+import net.modificationstation.stationapi.api.mod.entrypoint.EventBusPolicy;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
@@ -87,13 +93,18 @@ public class WhatsThis {
 
     @EventListener(phase = InitEvent.PRE_INIT_PHASE)
     public void preInit(InitEvent event) {
+        FabricLoader.getInstance().getEntrypointContainers("whatsthis", Object.class).forEach(EntrypointManager::setup);
+        
         TheOneProbeImp.registerElements();
         theOneProbeImp.registerProvider(new DefaultProbeInfoProvider());
         theOneProbeImp.registerProvider(new DebugProbeInfoProvider());
         theOneProbeImp.registerProvider(new BlockProbeInfoProvider());
+        StationAPI.EVENT_BUS.post(new BlockProbeInfoProviderRegistryEvent());
+        
         theOneProbeImp.registerEntityProvider(new DefaultProbeInfoEntityProvider());
         theOneProbeImp.registerEntityProvider(new DebugProbeInfoEntityProvider());
         theOneProbeImp.registerEntityProvider(new EntityProbeInfoProvider());
+        StationAPI.EVENT_BUS.post(new EntityProbeInfoProviderRegistryEvent());
 
         setupModCompat();
     }

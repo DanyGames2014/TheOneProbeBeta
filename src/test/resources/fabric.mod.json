@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "thatsthis",
+  "version": "${version}",
+
+  "name": "UwU Thats This",
+  "description": "",
+  "authors": [
+    "DanyGames2014"
+  ],
+
+  "license": "MIT",
+  "icon": "assets/thatsthis/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "stationapi:event_bus": [
+      "net.danygames2014.thatsthis.ThatsThis"
+    ],
+    "stationapi:event_bus_client": [
+    ],
+    "stationapi:event_bus_server": [
+    ],
+    "whatsthis": [
+      "net.danygames2014.thatsthis.init.ProbeInfoListener"
+    ]
+  },
+
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3"
+  }
+}

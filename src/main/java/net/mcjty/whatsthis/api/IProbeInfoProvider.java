@@ -22,5 +22,5 @@ public interface IProbeInfoProvider {
      * The given probeInfo object represents a vertical layout. So adding elements to that
      * will cause them to be grouped vertically.
      */
-    void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data);
+    void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState state, IProbeHitData data);
 }

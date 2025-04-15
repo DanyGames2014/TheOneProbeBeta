@@ -7,12 +7,6 @@ import net.glasslauncher.mods.gcapi3.impl.GCCore;
 import net.mcjty.whatsthis.api.NumberFormat;
 
 public class MainConfig {
-    @SuppressWarnings("deprecation")
-    public void save() {
-        ConfigRootEntry category = GCCore.MOD_CONFIGS.get("whatsthis:config");
-        GCCore.saveConfig(category.modContainer(), category.configCategoryHandler(), EventStorage.EventSource.USER_SAVE);
-    }
-
     @ConfigEntry(name = "loggingThrowableTimeout", minLength = 1, maxLength = 10000000, comment = "How much time (ms) to wait before reporting an exception again")
     public Integer loggingThrowableTimeout = 20000;
 
@@ -40,7 +34,7 @@ public class MainConfig {
     @ConfigEntry(name = "tankFormat", minLength = 0, maxLength = 2, comment = "Format for displaying tank contents: 0 = full, 1 = compact, 2 = comma separated")
     public NumberFormat tankFormat = NumberFormat.COMPACT;
 
-    @ConfigEntry(name = "timeout", minLength = 10, maxLength = 100000, comment = "The amount of milliseconds to wait before updating probe information from the server (this is a client-side config)")
+    @ConfigEntry(name = "timeout", minLength = 100, maxLength = 100000, comment = "The amount of milliseconds to wait before updating probe information from the server (this is a client-side config)")
     public Integer timeout = 300;
 
     @ConfigEntry(name = "waitingForServerTimeout", minLength = -1, maxLength = 100000, comment = "The amount of milliseconds to wait before showing a 'fetch from server' info on the client (if the server is slow to respond) (-1 to disable this feature)")
@@ -54,9 +48,6 @@ public class MainConfig {
 
     @ConfigEntry(name = "showDebugInfo", comment = "If true show debug info with creative probe")
     public Boolean showDebugInfo = true;
-
-    @ConfigEntry(name = "compactEqualStacks", comment = "If true equal stacks will be compacted in the chest contents overlay")
-    public Boolean compactEqualStacks = true;
 
     @ConfigEntry(name = "rfbarFilledColor", comment = "Color for the RF bar")
     public String rfbarFilledColor = Integer.toHexString(0xffdd0000);
