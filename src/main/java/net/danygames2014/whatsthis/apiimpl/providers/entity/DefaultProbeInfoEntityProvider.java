@@ -25,6 +25,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
     }
 
     private static DecimalFormat dfCommas = new DecimalFormat("##.#");
+    private static final String[] SHEEP_COLORS = new String[]{"White", "Orange", "Magenta", "Light Blue", "Yellow", "Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
 
     @Override
     public void addProbeEntityInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
@@ -97,7 +98,11 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
         }
 
         if (entity instanceof SheepEntity sheep) {
-            probeInfo.text(LABEL + "Wool Color: " + INFO + sheep.getColor());
+            int sheepColor = sheep.getColor();
+
+            if (sheepColor + 1 <= SHEEP_COLORS.length) {
+                probeInfo.text(LABEL + "Wool Color: " + INFO + SHEEP_COLORS[sheepColor]);
+            }
         }
 
         if (Util.show(mode, config.getAnimalOwnerSetting())) {
@@ -118,7 +123,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
             }
         }
     }
-
+    
 //    public static String getPotionDurationString(PotionEffect effect, float factor) {
 //        if (effect.getDuration() == 32767) {
 //            return "**:**";
