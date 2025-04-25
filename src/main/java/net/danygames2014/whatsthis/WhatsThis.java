@@ -116,7 +116,9 @@ public class WhatsThis {
     }
 
     private void setupModCompat() {
-        accessoryApiCompat = FabricLoader.getInstance().isModLoaded("accessoryapi");
+        if(Config.PROBE_CONFIG.supportAccessoryApi){
+            accessoryApiCompat = FabricLoader.getInstance().isModLoaded("accessoryapi");
+        }
     }
 
     private void configureProviders() {

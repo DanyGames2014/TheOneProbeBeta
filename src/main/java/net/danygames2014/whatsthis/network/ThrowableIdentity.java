@@ -1,7 +1,7 @@
 package net.danygames2014.whatsthis.network;
 
 import net.danygames2014.whatsthis.WhatsThis;
-import net.danygames2014.whatsthis.config.ConfigSetup;
+import net.danygames2014.whatsthis.config.Config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class ThrowableIdentity {
         long curtime = System.currentTimeMillis();
         if (catchedThrowables.containsKey(identity)) {
             long lasttime = catchedThrowables.get(identity);
-            if (curtime < lasttime + ConfigSetup.loggingThrowableTimeout) {
+            if (curtime < lasttime + Config.PROBE_CONFIG.loggingThrowableTimeout) {
                 // If this exception occured less then some time ago we don't report it.
                 return;
             }

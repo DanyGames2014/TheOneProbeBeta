@@ -136,7 +136,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
     }
 
     private static ProbeInfo getProbeInfo(PlayerEntity player, ProbeMode mode, World world, Entity entity, Vec3d hitVec) {
-        if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
+        if (Config.PROBE_CONFIG.needsProbe == PROBE_NEEDEDFOREXTENDED) {
             // We need a probe only for extended information
             if (!ProbeUtil.hasAProbeSomewhere(player)) {
                 // No probe anywhere, switch EXTENDED to NORMAL
@@ -144,7 +144,7 @@ public class PacketGetEntityInfo extends Packet implements ManagedPacket<PacketG
                     mode = ProbeMode.NORMAL;
                 }
             }
-        } else if (Config.MAIN_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ProbeUtil.hasAProbeSomewhere(player)) {
+        } else if (Config.PROBE_CONFIG.needsProbe == PROBE_NEEDEDHARD && !ProbeUtil.hasAProbeSomewhere(player)) {
             // The server says we need a probe but we don't have one in our hands or on our head
             return null;
         }

@@ -58,7 +58,7 @@ public class OverlayRenderer {
     private static long lastRenderedTime = -1;
 
     public static void renderHUD(ProbeMode mode, float partialTicks) {
-        float dist = Config.MAIN_CONFIG.probeDistance;
+        float dist = Config.PROBE_CONFIG.probeDistance;
 
         HitResult mouseOver = Minecraft.INSTANCE.crosshairTarget;
         if (mouseOver != null) {
@@ -159,10 +159,10 @@ public class OverlayRenderer {
                 requestBlockInfo(mode, mouseOver, blockPos, player);
             }
 
-            if (lastPair != null && time < lastPairTime + Config.MAIN_CONFIG.timeout) {
+            if (lastPair != null && time < lastPairTime + Config.PROBE_CONFIG.timeout) {
                 renderElements(lastPair.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, damageElement);
                 lastRenderedTime = time;
-            } else if (Config.MAIN_CONFIG.waitingForServerTimeout > 0 && lastRenderedTime != -1 && time > lastRenderedTime + Config.MAIN_CONFIG.waitingForServerTimeout) {
+            } else if (Config.PROBE_CONFIG.waitingForServerTimeout > 0 && lastRenderedTime != -1 && time > lastRenderedTime + Config.PROBE_CONFIG.waitingForServerTimeout) {
                 // It has been a while. Show some info on client that we are
                 // waiting for server information
                 ProbeInfo info = getWaitingInfo(mode, mouseOver, blockPos, player);
@@ -173,7 +173,7 @@ public class OverlayRenderer {
                 lastRenderedTime = time;
             }
         } else {
-            if (time > cacheEntry.getLeft() + Config.MAIN_CONFIG.timeout) {
+            if (time > cacheEntry.getLeft() + Config.PROBE_CONFIG.timeout) {
                 // This info is slightly old. Update it
 
                 // To make sure we don't ask it too many times before the server got a chance to send the answer
@@ -215,10 +215,10 @@ public class OverlayRenderer {
                 requestEntityInfo(mode, mouseOver, entity, player);
             }
 
-            if (lastPair != null && time < lastPairTime + Config.MAIN_CONFIG.timeout) {
+            if (lastPair != null && time < lastPairTime + Config.PROBE_CONFIG.timeout) {
                 renderElements(lastPair.getRight(), ConfigSetup.getDefaultOverlayStyle(), sw, sh, null);
                 lastRenderedTime = time;
-            } else if (Config.MAIN_CONFIG.waitingForServerTimeout > 0 && lastRenderedTime != -1 && time > lastRenderedTime + Config.MAIN_CONFIG.waitingForServerTimeout) {
+            } else if (Config.PROBE_CONFIG.waitingForServerTimeout > 0 && lastRenderedTime != -1 && time > lastRenderedTime + Config.PROBE_CONFIG.waitingForServerTimeout) {
                 // It has been a while. Show some info on client that we are
                 // waiting for server information
                 ProbeInfo info = getWaitingEntityInfo(mode, mouseOver, entity, player);
@@ -229,7 +229,7 @@ public class OverlayRenderer {
                 lastRenderedTime = time;
             }
         } else {
-            if (time > cacheEntry.getLeft() + Config.MAIN_CONFIG.timeout) {
+            if (time > cacheEntry.getLeft() + Config.PROBE_CONFIG.timeout) {
                 // This info is slightly old. Update it
 
                 // To make sure we don't ask it too many times before the server got a chance to send the answer
@@ -396,7 +396,7 @@ public class OverlayRenderer {
         Map<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
         for (Map.Entry<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> entry : cachedInfo.entrySet()) {
             long t = entry.getValue().getLeft();
-            if (time < t + Config.MAIN_CONFIG.timeout + 1000) {
+            if (time < t + Config.PROBE_CONFIG.timeout + 1000) {
                 newCachedInfo.put(entry.getKey(), entry.getValue());
             }
         }
@@ -408,7 +408,7 @@ public class OverlayRenderer {
         Map<Integer, Pair<Long, ProbeInfo>> newCachedInfo = new HashMap<>();
         for (Map.Entry<Integer, Pair<Long, ProbeInfo>> entry : cachedEntityInfo.entrySet()) {
             long t = entry.getValue().getLeft();
-            if (time < t + Config.MAIN_CONFIG.timeout + 1000) {
+            if (time < t + Config.PROBE_CONFIG.timeout + 1000) {
                 newCachedInfo.put(entry.getKey(), entry.getValue());
             }
         }

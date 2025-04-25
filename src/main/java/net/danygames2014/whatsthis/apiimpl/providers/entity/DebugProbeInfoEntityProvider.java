@@ -26,7 +26,7 @@ public class DebugProbeInfoEntityProvider implements IProbeInfoEntityProvider {
 
     @Override
     public void addProbeEntityInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
-        if (mode == ProbeMode.DEBUG && Config.MAIN_CONFIG.showDebugInfo) {
+        if (mode == ProbeMode.DEBUG && Config.PROBE_CONFIG.showDebugInfo) {
             IProbeInfo vertical = probeInfo.vertical(new LayoutStyle().borderColor(0xffff4444).spacing(2));
 
             // Entity ID Info

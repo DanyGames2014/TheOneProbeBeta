@@ -28,7 +28,7 @@ public class DebugProbeInfoProvider implements IProbeInfoProvider {
 
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState state, IProbeHitData data) {
-        if (mode == ProbeMode.DEBUG && Config.MAIN_CONFIG.showDebugInfo) {
+        if (mode == ProbeMode.DEBUG && Config.PROBE_CONFIG.showDebugInfo) {
             Block block = state.getBlock();
             BlockPos pos = data.getPos();
             showDebugInfo(probeInfo, world, state, pos, block, data.getSideHit());

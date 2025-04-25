@@ -51,8 +51,6 @@ public class ConfigSetup {
         textStyleClasses = new HashMap<>(defaultTextStyleClasses);
     }
 
-    public static int loggingThrowableTimeout = 20000;
-
     private static IOverlayStyle defaultOverlayStyle;
     private static ProbeConfig probeConfig = new ProbeConfig();
 
@@ -112,20 +110,12 @@ public class ConfigSetup {
         setConfigValue("whatsthis:config", "needsProbe", needsProbe);
     }
 
-    public static void setExtendedInMain(boolean extendedInMain) {
-        setConfigValue("whatsthis:client", "extendedInMain", extendedInMain);
-    }
-
     public static void setLiquids(boolean showLiquids) {
         setConfigValue("whatsthis:client", "showLiquids", showLiquids);
     }
 
     public static void setVisible(boolean isVisible) {
         setConfigValue("whatsthis:client", "isVisible", isVisible);
-    }
-
-    public static void setCompactEqualStacks(boolean compactEqualStacks) {
-        setConfigValue("whatsthis:main", "compactEqualStacks", compactEqualStacks);
     }
 
     public static void setPos(int leftx, int topy, int rightx, int bottomy) {
@@ -251,15 +241,6 @@ public class ConfigSetup {
         return "";
     }
 
-    private static int parseColor(String col) {
-        try {
-            return (int) Long.parseLong(col, 16);
-        } catch (NumberFormatException e) {
-            System.out.println("Config.parseColor");
-            return 0;
-        }
-    }
-
     public static void updateDefaultOverlayStyle() {
         defaultOverlayStyle = new DefaultOverlayStyle()
                 .borderThickness(Config.CLIENT_CONFIG.boxThickness)
@@ -279,7 +260,7 @@ public class ConfigSetup {
     public static Set<Identifier> getInventoriesToShow() {
         if (inventoriesToShow == null) {
             inventoriesToShow = new HashSet<>();
-            for (String s : Config.MAIN_CONFIG.showContentsWithoutSneaking) {
+            for (String s : Config.PROBE_CONFIG.showContentsWithoutSneaking) {
                 inventoriesToShow.add(Identifier.of(s));
             }
         }
@@ -289,7 +270,7 @@ public class ConfigSetup {
     public static Set<Identifier> getInventoriesToNotShow() {
         if (inventoriesToNotShow == null) {
             inventoriesToNotShow = new HashSet<>();
-            for (String s : Config.MAIN_CONFIG.dontShowContentsUnlessSneaking) {
+            for (String s : Config.PROBE_CONFIG.dontShowContentsUnlessSneaking) {
                 inventoriesToNotShow.add(Identifier.of(s));
             }
         }
@@ -299,7 +280,7 @@ public class ConfigSetup {
     public static Set<Identifier> getDontSendNBTSet() {
         if (dontSendNBTSet == null) {
             dontSendNBTSet = new HashSet<>();
-            for (String s : Config.MAIN_CONFIG.dontSendNBT) {
+            for (String s : Config.PROBE_CONFIG.dontSendNBT) {
                 dontSendNBTSet.add(Identifier.of(s));
             }
         }

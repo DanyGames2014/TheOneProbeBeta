@@ -52,7 +52,7 @@ public class NoteScreen extends Screen {
         y += 10;
 
         y += 10;
-        switch (Config.MAIN_CONFIG.needsProbe) {
+        switch (Config.PROBE_CONFIG.needsProbe) {
             case PROBE_NEEDED:
                 RenderHelper.renderText(minecraft, x, y, "In this pack the probe is configured to be");
                 y += 10;

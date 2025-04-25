@@ -16,17 +16,14 @@ import java.lang.reflect.Type;
 import java.util.function.Function;
 
 public class Config implements ConfigFactoryProvider {
-    @ConfigRoot(value = "config", visibleName = "Config")
-    public static final MainConfig MAIN_CONFIG = new MainConfig();
-
-    @ConfigRoot(value = "provider", visibleName = "Provider Config")
-    public static final ProviderConfig PROVIDER_CONFIG = new ProviderConfig();
-
-    @ConfigRoot(value = "client", visibleName = "Client Config")
+    @ConfigRoot(value = "client", visibleName = "Client Config", index = 0)
     public static final ClientConfig CLIENT_CONFIG = new ClientConfig();
-
-    @ConfigRoot(value = "probe", visibleName = "Probe Config")
+    
+    @ConfigRoot(value = "probe", visibleName = "Probe Config", index = 1)
     public static final ProbeConfig PROBE_CONFIG = new ProbeConfig();
+
+    @ConfigRoot(value = "provider", visibleName = "Provider Config", index = 2)
+    public static final ProviderConfig PROVIDER_CONFIG = new ProviderConfig();
 
     public static int parseColor(String col) {
         try {

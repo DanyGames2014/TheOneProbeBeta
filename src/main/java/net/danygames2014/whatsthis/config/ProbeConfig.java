@@ -1,57 +1,83 @@
 package net.danygames2014.whatsthis.config;
 
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
-import net.danygames2014.whatsthis.api.IProbeConfig;
-
-import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.EXTENDED;
-import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.NORMAL;
+import net.danygames2014.whatsthis.api.NumberFormat;
 
 public class ProbeConfig {
-    @ConfigEntry(name = "showHarvestLevel")
-    public IProbeConfig.ConfigMode showHarvestLevel = NORMAL;
+    // General Probe Settings
+    @ConfigEntry(name = "Probe Requirement", minLength = 0, maxLength = 3, comment = "Is the probe needed to show the tooltip? 0 = no, 1 = yes, 2 = yes and clients cannot override, 3 = probe needed for extended info only")
+    public Integer needsProbe = ConfigSetup.PROBE_NEEDEDFOREXTENDED;
 
-    @ConfigEntry(name = "showCanBeHarvested")
-    public IProbeConfig.ConfigMode showCanBeHarvested = NORMAL;
+    @ConfigEntry(name = "Probe Distance", minLength = 1, maxLength = 50, comment = "Distance at which the probe works")
+    public Float probeDistance = 6F;
 
-    @ConfigEntry(name = "showModName")
-    public IProbeConfig.ConfigMode showModName = NORMAL;
+    @ConfigEntry(name = "Show Debug Info", comment = "If true show debug info with creative probe")
+    public Boolean showDebugInfo = true;
 
-    @ConfigEntry(name = "showCropPercentage")
-    public IProbeConfig.ConfigMode showCropPercentage = NORMAL;
+    // Note Settings    
+    @ConfigEntry(name = "Get Note on Spawn", comment = "If true there will be a readme note for first-time players")
+    public Boolean spawnNote = true;
 
-    @ConfigEntry(name = "showChestContents =")
-    public IProbeConfig.ConfigMode showChestContents = EXTENDED;
+    // Compat Settings
+    @ConfigEntry(name = "Accessory API Support", comment = "If true there will be a bauble version of the probe if baubles is present")
+    public Boolean supportAccessoryApi = true;
 
-    @ConfigEntry(name = "showChestContentsDetailed =")
-    public IProbeConfig.ConfigMode showChestContentsDetailed = EXTENDED;
+    // Networking Settings
+    @ConfigEntry(name = "Probe Refresh Rate", minLength = 100, maxLength = 100000, comment = "The amount of milliseconds to wait before updating probe information from the server (this is a client-side config)")
+    public Integer timeout = 300;
 
-    @ConfigEntry(name = "showRedstone")
-    public IProbeConfig.ConfigMode showRedstone = NORMAL;
-
-    @ConfigEntry(name = "showMobHealth")
-    public IProbeConfig.ConfigMode showMobHealth = NORMAL;
-
-    @ConfigEntry(name = "showMobGrowth")
-    public IProbeConfig.ConfigMode showMobGrowth = NORMAL;
-
-    //@ConfigEntry(name = "showMobPotionEffects")
-    //public IProbeConfig.ConfigMode showMobPotionEffects = EXTENDED;
-
-    @ConfigEntry(name = "showLeverSetting")
-    public IProbeConfig.ConfigMode showLeverSetting = NORMAL;
-
-    @ConfigEntry(name = "showTankSetting")
-    public IProbeConfig.ConfigMode showTankSetting = EXTENDED;
-
-    @ConfigEntry(name = "showMobSpawner")
-    public IProbeConfig.ConfigMode showMobSpawner = NORMAL;
-
-    @ConfigEntry(name = "showMobOwner")
-    public IProbeConfig.ConfigMode showMobOwner = EXTENDED;
+    @ConfigEntry(name = "Server Waiting Timeout", minLength = -1, maxLength = 100000, comment = "The amount of milliseconds to wait before showing a 'fetch from server' info on the client (if the server is slow to respond) (-1 to disable this feature)")
+    public Integer waitingForServerTimeout = 2000;
     
-    @ConfigEntry(name = "showMusicBlock", description = "Show the note of a note block and the disc in a jukebox")
-    public IProbeConfig.ConfigMode showMusicBlock = NORMAL;
+    // Logging Throwable Timeout
+    @ConfigEntry(name = "Logging Throwable Timeout", minLength = 1, maxLength = 10000000, comment = "How much time (ms) to wait before reporting an exception again")
+    public Integer loggingThrowableTimeout = 20000;
+
+    // RF Display Settings
+    @ConfigEntry(name = "RF Display Style", minLength = 0, maxLength = 2, comment = "How to display RF: 0 = do not show, 1 = show in a bar, 2 = show as text")
+    public Integer showRF = 1;
+
+    @ConfigEntry(name = "RF Number Format", minLength = 0, maxLength = 2, comment = "Format for displaying RF: 0 = full, 1 = compact, 2 = comma separated")
+    public NumberFormat rfFormat = NumberFormat.COMPACT;
+
+    @ConfigEntry(name = "RF Bar Filled Color", comment = "Color for the RF bar")
+    public String rfbarFilledColor = Integer.toHexString(0xffdd0000);
+
+    @ConfigEntry(name = "RF Bar Alternate Filled Color", comment = "Alternate color for the RF bar")
+    public String rfbarAlternateFilledColor = Integer.toHexString(0xff430000);
+
+    @ConfigEntry(name = "RF Bar Border Color", comment = "Color for the RF bar border")
+    public String rfbarBorderColor = Integer.toHexString(0xff555555);
     
-    @ConfigEntry(name = "showSignText", description = "Show the text on a sign")
-    public IProbeConfig.ConfigMode showSignText = EXTENDED;
+    // Tank Display Settings
+    @ConfigEntry(name = "Fluid Tank Display Style", minLength = 0, maxLength = 2, comment = "How to display tank contents: 0 = do not show, 1 = show in a bar, 2 = show as text")
+    public Integer showTank = 1;
+
+    @ConfigEntry(name = "Fluid Tank Number Format", minLength = 0, maxLength = 2, comment = "Format for displaying tank contents: 0 = full, 1 = compact, 2 = comma separated")
+    public NumberFormat tankFormat = NumberFormat.COMPACT;
+
+    @ConfigEntry(name = "Fluid Tank Bar Filled Color", comment = "Color for the tank bar")
+    public String tankbarFilledColor = Integer.toHexString(0xff0000dd);
+
+    @ConfigEntry(name = "Fluid Tank Alternate Filled Color", comment = "Alternate color for the tank bar")
+    public String tankbarAlternateFilledColor = Integer.toHexString(0xff000043);
+
+    @ConfigEntry(name = "Fluid Tank Bar Border Color", comment = "Color for the tank bar border")
+    public String tankbarBorderColor = Integer.toHexString(0xff555555);
+
+    // Inventory Settings
+    @ConfigEntry(name = "Item Detail Threshold", minLength = 0, maxLength = 20, comment = "If the number of items in an inventory is lower or equal then this number then more info is shown")
+    public Integer showItemDetailThreshold = 4;
+
+    @ConfigEntry(name = "showSmallChestContentsWithoutSneaking", minLength = 0, maxLength = 1000, comment = "The maximum amount of slots (empty or not) to show without sneaking")
+    public Integer showSmallChestContentsWithoutSneaking = 3;
+
+    @ConfigEntry(name = "showContentsWithoutSneaking", maxLength = 6969, comment = "A list of blocks for which we automatically show chest contents even if not sneaking")
+    public String[] showContentsWithoutSneaking = new String[]{"minecraft:chest"};
+
+    @ConfigEntry(name = "dontShowContentsUnlessSneaking", comment = "A list of blocks for which we don't show chest contents automatically except if sneaking")
+    public String[] dontShowContentsUnlessSneaking = new String[]{};
+
+    @ConfigEntry(name = "dontSendNBT", comment = "A list of blocks for which we don't send NBT over the network. This is mostly useful for blocks that have HUGE NBT in their pickblock (itemstack)")
+    public String[] dontSendNBT = new String[]{};
 }

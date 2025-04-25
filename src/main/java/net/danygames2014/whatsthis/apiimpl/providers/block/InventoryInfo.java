@@ -29,13 +29,13 @@ public class InventoryInfo {
         IProbeConfig.ConfigMode chestMode = config.getShowChestContents();
         List<ItemStack> stacks = null;
 
-        if (chestMode == IProbeConfig.ConfigMode.EXTENDED && (Config.MAIN_CONFIG.showSmallChestContentsWithoutSneaking > 0 || !ConfigSetup.getInventoriesToShow().isEmpty())) {
+        if (chestMode == IProbeConfig.ConfigMode.EXTENDED && (Config.PROBE_CONFIG.showSmallChestContentsWithoutSneaking > 0 || !ConfigSetup.getInventoriesToShow().isEmpty())) {
             if (ConfigSetup.getInventoriesToShow().contains(BlockRegistry.INSTANCE.getId(block))) {
                 chestMode = IProbeConfig.ConfigMode.NORMAL;
-            } else if (Config.MAIN_CONFIG.showSmallChestContentsWithoutSneaking > 0) {
+            } else if (Config.PROBE_CONFIG.showSmallChestContentsWithoutSneaking > 0) {
                 stacks = new ArrayList<>();
                 int slots = getInventoryContents(world, pos, stacks);
-                if (slots <= Config.MAIN_CONFIG.showSmallChestContentsWithoutSneaking) {
+                if (slots <= Config.PROBE_CONFIG.showSmallChestContentsWithoutSneaking) {
                     chestMode = IProbeConfig.ConfigMode.NORMAL;
                 }
             }
@@ -52,7 +52,7 @@ public class InventoryInfo {
             }
 
             if (!stacks.isEmpty()) {
-                boolean showDetailed = Util.show(mode, config.getShowChestContentsDetailed()) && stacks.size() <= Config.MAIN_CONFIG.showItemDetailThreshold;
+                boolean showDetailed = Util.show(mode, config.getShowChestContentsDetailed()) && stacks.size() <= Config.PROBE_CONFIG.showItemDetailThreshold;
                 showInventoryContents(probeInfo, world, pos, stacks, showDetailed);
             }
         }

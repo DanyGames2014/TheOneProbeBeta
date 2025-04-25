@@ -34,7 +34,7 @@ public class InGameHudMixin {
         if (ProbeUtil.isDebugProbe(Minecraft.INSTANCE.player.getHand())) {
             OverlayRenderer.renderHUD(ProbeMode.DEBUG, tickDelta);
         } else {
-            switch (Config.MAIN_CONFIG.needsProbe) {
+            switch (Config.PROBE_CONFIG.needsProbe) {
                 case PROBE_NOTNEEDED:
                 case PROBE_NEEDEDFOREXTENDED:
                     OverlayRenderer.renderHUD(getModeForPlayer(), tickDelta);
@@ -54,7 +54,7 @@ public class InGameHudMixin {
         PlayerEntity player = Minecraft.INSTANCE.player;
 
         // If the mode is extended by default or the player is holding a probe
-        if (Config.MAIN_CONFIG.extendedInMain || ProbeUtil.isHandProbe(player.getHand())) {
+        if (Config.CLIENT_CONFIG.extendedInMain || ProbeUtil.isHandProbe(player.getHand())) {
             // If the player has a probe somewhere, switch to extended mode
             if (ProbeUtil.hasAProbeSomewhere(player)) {
                 return ProbeMode.EXTENDED;
