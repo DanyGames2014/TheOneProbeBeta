@@ -249,45 +249,49 @@ public class OverlayRenderer {
             probeInfo.element(extra);
         }
 
+        GL11.glScalef(1 / Config.CLIENT_CONFIG.tooltipScale, 1 / Config.CLIENT_CONFIG.tooltipScale, 1 / Config.CLIENT_CONFIG.tooltipScale);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderHelper.disableLighting();
 
         int scaledWidth = (int) sw;
         int scaledHeight = (int) sh;
 
-        int w = probeInfo.getWidth();
-        int h = probeInfo.getHeight();
+        int probeWidth = probeInfo.getWidth();
+        int probeHeight = probeInfo.getHeight();
 
         int offset = style.getBorderOffset();
         int thick = style.getBorderThickness();
         int margin = 0;
         if (thick > 0) {
-            w += (offset + thick + 3) * 2;
-            h += (offset + thick + 3) * 2;
+            probeWidth += (offset + thick + 3) * 2;
+            probeHeight += (offset + thick + 3) * 2;
             margin = offset + thick + 3;
         }
 
         int x;
         int y;
+
         if (style.getLeftX() != -1) {
             x = style.getLeftX();
         } else if (style.getRightX() != -1) {
-            x = scaledWidth - w - style.getRightX();
+            x = scaledWidth - probeWidth - style.getRightX();
         } else {
-            x = (scaledWidth - w) / 2;
+            x = (scaledWidth - probeWidth) / 2;
         }
+
         if (style.getTopY() != -1) {
             y = style.getTopY();
         } else if (style.getBottomY() != -1) {
-            y = scaledHeight - h - style.getBottomY();
+            y = scaledHeight - probeHeight - style.getBottomY();
         } else {
-            y = (scaledHeight - h) / 2;
+            y = (scaledHeight - probeHeight) / 2;
         }
 
         if (thick > 0) {
             if (offset > 0) {
-                RenderHelper.drawThickBeveledBox(x, y, x + w - 1, y + h - 1, thick, style.getBoxColor(), style.getBoxColor(), style.getBoxColor());
+                RenderHelper.drawThickBeveledBox(x, y, x + probeWidth - 1, y + probeHeight - 1, thick, style.getBoxColor(), style.getBoxColor(), style.getBoxColor());
             }
-            RenderHelper.drawThickBeveledBox(x + offset, y + offset, x + w - 1 - offset, y + h - 1 - offset, thick, style.getBorderColor(), style.getBorderColor(), style.getBoxColor());
+            RenderHelper.drawThickBeveledBox(x + offset, y + offset, x + probeWidth - 1 - offset, y + probeHeight - 1 - offset, thick, style.getBorderColor(), style.getBorderColor(), style.getBoxColor());
         }
 
         if (!Minecraft.INSTANCE.paused) {
@@ -295,6 +299,7 @@ public class OverlayRenderer {
         }
 
         probeInfo.render(x + margin, y + margin);
+
         if (extra != null) {
             probeInfo.removeElement(extra);
         }
@@ -320,6 +325,7 @@ public class OverlayRenderer {
 
         PacketHelper.send(new PacketGetInfo(world.dimension.id, pos, mode, mouseOver, pickBlock));
     }
+
     private static void requestEntityInfo(ProbeMode mode, HitResult mouseOver, Entity entity, PlayerEntity player) {
         PacketHelper.send(new PacketGetEntityInfo(player.world.dimension.id, mode, mouseOver, entity));
     }
