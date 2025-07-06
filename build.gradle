@@ -3,7 +3,7 @@
 //file:noinspection ForeignDelegate
 plugins {
     id 'maven-publish'
-    id 'fabric-loom' version '1.10.1'
+    id 'fabric-loom' version '1.10.5'
     id 'babric-loom-extension' version '1.10.1'
 }
 
@@ -106,19 +106,19 @@ dependencies {
         transitive false
     }
 
-    modImplementation("maven.modrinth:bh-creative:${project.bhcreative_version}-fabric,b1.7.3") {
+    modImplementation("maven.modrinth:bh-creative:${project.bhcreative_version}-b1.7.3") {
         transitive false
     }
 
-    modRuntimeOnly("maven.modrinth:retroauth:${project.retroauth_version}-fabric,b1.7.3") {
+    modRuntimeOnly("maven.modrinth:retroauth:${project.retroauth_version}-b1.7.3") {
         transitive false
     }
     
-    modRuntimeOnly("maven.modrinth:unitweaks:${project.unitweaks_version}-fabric,b1.7.3") {
+    modRuntimeOnly("maven.modrinth:unitweaks:${project.unitweaks_version}-b1.7.3") {
         transitive false
     }
 
-    modRuntimeOnly("maven.modrinth:fast-stapi-intro:2.0.0-fabric,b1.7.3") {
+    modRuntimeOnly("maven.modrinth:fast-stapi-intro:2.0.0-b1.7.3") {
         transitive false
     }
 
