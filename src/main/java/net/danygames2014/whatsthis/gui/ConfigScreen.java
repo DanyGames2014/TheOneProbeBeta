@@ -55,18 +55,21 @@ public class ConfigScreen extends Screen {
                 Pair.of(OK, "white"),
                 Pair.of(PROGRESS, "white")
         ));
-        presets.add(new Preset("Soft Pastels", 0xffe0bbff, 0x00000000, 1, 1,
-                Pair.of(MODNAME, "aqua")
+        presets.add(new Preset("Soft Pastels", 0xffe0bbff, 0x55bbffe0, 1, 1,
+                Pair.of(MODNAME, "light_purple"),
+                Pair.of(TextStyleClass.INFO, "white"),
+                Pair.of(TextStyleClass.INFOIMP, "white"),
+                Pair.of(LABEL, "light_purple")
         ));
         presets.add(new Preset("Ocean Blue", 0xff003366, 0x556699cc, 2, 0,
-                Pair.of(TextStyleClass.MODNAME, "cyan"),
-                Pair.of(TextStyleClass.NAME, "light_blue,bold"),
+                Pair.of(TextStyleClass.MODNAME, "aqua"),
+                Pair.of(TextStyleClass.NAME, "blue"),
                 Pair.of(TextStyleClass.INFO, "white"),
-                Pair.of(TextStyleClass.INFOIMP, "white,bold"),
+                Pair.of(TextStyleClass.INFOIMP, "white"),
                 Pair.of(TextStyleClass.WARNING, "yellow,bold"),
                 Pair.of(TextStyleClass.ERROR, "red,bold"),
                 Pair.of(TextStyleClass.OBSOLETE, "gray,bold,italic"),
-                Pair.of(TextStyleClass.LABEL, "aqua,bold"),
+                Pair.of(TextStyleClass.LABEL, "aqua"),
                 Pair.of(TextStyleClass.OK, "green,bold"),
                 Pair.of(TextStyleClass.PROGRESS, "white,bold")
         ));
