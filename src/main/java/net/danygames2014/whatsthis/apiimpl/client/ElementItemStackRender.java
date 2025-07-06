@@ -14,7 +14,7 @@ public class ElementItemStackRender {
         //ItemRenderer itemRender = Minecraft.INSTANCE.getRenderItem();
         ItemRenderer itemRender = new ItemRenderer();
 
-        if (itemStack != null && itemStack.count != 0) {
+        if (itemStack != null && itemStack.count != 0 && itemStack.getItem() != null) {
             int size = itemStack.count;
             String amount;
             if (size <= 1) {

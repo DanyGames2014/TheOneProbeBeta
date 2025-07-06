@@ -40,7 +40,7 @@ public class ElementItemLabel implements IElement {
     // Rendering
     @Override
     public void render(int x, int y) {
-        if (stack != null && stack.count > 0) {
+        if (stack != null && stack.count > 0 && stack.getItem() != null) {
             String text = stack.getItem().getTranslatedName();
             ElementTextRender.render(text, x, y);
         }
@@ -49,7 +49,7 @@ public class ElementItemLabel implements IElement {
     // Styling
     @Override
     public int getWidth() {
-        if (stack != null && stack.count > 0) {
+        if (stack != null && stack.count > 0 && stack.getItem() != null) {
             String text = stack.getItem().getTranslatedName();
             return ElementTextRender.getWidth(text);
         } else {
