@@ -59,7 +59,6 @@ public class WhatsThis {
     public static boolean accessoryApiCompat = false;
 
     // TODO: BH Creative Support
-    // TODO: Give note on spawning
 
     public Logger getLogger() {
         return LOGGER;
