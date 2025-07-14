@@ -107,7 +107,7 @@ public class ConfigSetup {
     }
 
     public static void setProbeNeeded(int needsProbe) {
-        setConfigValue("whatsthis:config", "needsProbe", needsProbe);
+        setConfigValue("whatsthis:probe", "needsProbe", needsProbe);
     }
 
     public static void setLiquids(boolean showLiquids) {
