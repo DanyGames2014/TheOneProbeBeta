@@ -29,7 +29,7 @@ public class ClientConfig {
     public Float tooltipScale = 1.0F;
     
     @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the left side of the screen. Use -1 if you don't want to set this")
-    public Integer leftX = 5;
+    public Integer leftX = -1;
 
     @ConfigEntry(name = "rightX", minLength = -1, maxLength = 10000, comment = "The distance to the right side of the screen. Use -1 if you don't want to set this")
     public Integer rightX = -1;
