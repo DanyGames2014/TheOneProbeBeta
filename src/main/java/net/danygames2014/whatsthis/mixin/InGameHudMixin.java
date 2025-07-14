@@ -21,6 +21,10 @@ import static net.danygames2014.whatsthis.config.ConfigSetup.*;
 public class InGameHudMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glColor4f(FFFF)V", remap = false))
     public void renderOverlay(float tickDelta, boolean screenOpen, int mouseX, int mouseY, CallbackInfo ci) {
+        if (Minecraft.INSTANCE.options.debugHud) {
+            return;
+        }
+        
         if (Config.CLIENT_CONFIG.holdKeyToMakeVisible) {
             if (!Keyboard.isKeyDown(KeybindListener.toggleVisible.code)) {
                 return;
