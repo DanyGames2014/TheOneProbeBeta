@@ -1,6 +1,7 @@
 package net.danygames2014.whatsthis.mixin;
 
 import net.danygames2014.whatsthis.WhatsThis;
+import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.item.GotNotePersistentState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +29,10 @@ public class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void aVoid(World world, CallbackInfo ci) {
         if (world.isRemote) {
+            return;
+        }
+
+        if (!Config.PROBE_CONFIG.spawnNote) {
             return;
         }
 
