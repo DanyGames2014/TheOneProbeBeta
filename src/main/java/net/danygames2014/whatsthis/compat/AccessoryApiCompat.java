@@ -11,7 +11,7 @@ public class AccessoryApiCompat {
         AccessoryRegister.add("probe", "assets/whatsthis/stationapi/textures/item/probe.png", 0, 0);
         WhatsThis.probeGoggles = new ProbeGogglesItem(WhatsThis.NAMESPACE.id("probe_goggles")).setTranslationKey(WhatsThis.NAMESPACE, "probe_goggles").setMaxCount(1);
     }
-    
+
     public static boolean hasProbeGoggles(PlayerEntity player) {
         return AccessoryAccess.hasAccessory(player, WhatsThis.probeGoggles);
     }

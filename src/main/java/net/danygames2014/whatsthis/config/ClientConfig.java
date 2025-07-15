@@ -23,11 +23,11 @@ public class ClientConfig {
 
     @ConfigEntry(name = "compactEqualStacks", comment = "If true equal stacks will be compacted in the chest contents overlay")
     public Boolean compactEqualStacks = true;
-    
+
     // Tooltip Scale & Position
     @ConfigEntry(name = "tooltipScale", minLength = 0, maxLength = 5, comment = "The scale of the tooltips, 1 is default, 2 is smaller")
     public Float tooltipScale = 1.0F;
-    
+
     @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the left side of the screen. Use -1 if you don't want to set this")
     public Integer leftX = -1;
 
@@ -52,7 +52,7 @@ public class ClientConfig {
 
     @ConfigEntry(name = "boxFillColor", comment = "Color of the box (0 to disable)")
     public String boxFillColor = Integer.toHexString(0x55006699);
-    
+
     @ConfigEntry(name = "chestContentsBorderColor", comment = "Color of the border of the chest contents box (0 to disable)")
     public String chestContentsBorderColor = Integer.toHexString(0xff006699);
 

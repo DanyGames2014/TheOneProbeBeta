@@ -58,12 +58,6 @@ public class WhatsThis {
 
     public static boolean accessoryApiCompat = false;
 
-    // TODO: BH Creative Support
-
-    public Logger getLogger() {
-        return LOGGER;
-    }
-
     @EventListener
     public void probeTooltip(TooltipBuildEvent event) {
         if (event.itemStack.getStationNbt().contains(ProbeUtil.PROBETAG)) {
@@ -115,7 +109,7 @@ public class WhatsThis {
     }
 
     private void setupModCompat() {
-        if(Config.PROBE_CONFIG.supportAccessoryApi){
+        if (Config.PROBE_CONFIG.supportAccessoryApi) {
             accessoryApiCompat = FabricLoader.getInstance().isModLoaded("accessoryapi");
         }
     }

@@ -185,15 +185,15 @@ public class HarvestabilityInfo {
         NOT_HARVESTABLE,
         UNBREAKABLE
     }
-    
+
     private static Harvestable isHarvestable(PlayerEntity player, World world, BlockPos pos, BlockState state, Block block) {
-        if(block.getHardness() == -1.0F){
+        if (block.getHardness() == -1.0F) {
             return Harvestable.UNBREAKABLE;
         }
-        
+
         return player.canHarvest(world, pos, state) ? Harvestable.HARVESTABLE : Harvestable.NOT_HARVESTABLE;
     }
-    
+
     static void showCanBeHarvested(IProbeInfo probeInfo, World world, BlockPos pos, BlockState state, Block block, PlayerEntity player) {
         if (ProbeUtil.isHandProbe(player.getHand())) {
             // If the player holds the probe there is no need to show harvestability information as the
@@ -201,7 +201,7 @@ public class HarvestabilityInfo {
             return;
         }
 
-        switch (isHarvestable(player, world, pos, state, block)){
+        switch (isHarvestable(player, world, pos, state, block)) {
             case HARVESTABLE -> {
                 probeInfo.text(OK + "Harvestable");
             }
@@ -228,12 +228,12 @@ public class HarvestabilityInfo {
 
         String harvestToolString = getHarvestToolString(harvestTool, world, pos, state, block, player);
 
-        switch (isHarvestable(player, world, pos, state, block)){
+        switch (isHarvestable(player, world, pos, state, block)) {
             case HARVESTABLE -> {
                 horizontal.icon(ICONS, 0, offs, dim, dim, iconStyle)
                         .text(harvestToolString);
             }
-            
+
             case NOT_HARVESTABLE -> {
                 if (harvestLevel == null || harvestLevel.isEmpty()) {
                     horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
@@ -243,10 +243,10 @@ public class HarvestabilityInfo {
                             .text(harvestToolString + WARNING + " (" + harvestLevel + " Level)");
                 }
             }
-            
+
             case UNBREAKABLE -> {
                 horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
-                    .text(WARNING + "Unbreakable");
+                        .text(WARNING + "Unbreakable");
             }
         }
     }

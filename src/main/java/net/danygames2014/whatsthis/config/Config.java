@@ -1,6 +1,8 @@
 package net.danygames2014.whatsthis.config;
 
 import com.google.common.collect.ImmutableMap;
+import net.danygames2014.whatsthis.api.IProbeConfig;
+import net.danygames2014.whatsthis.api.NumberFormat;
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 import net.glasslauncher.mods.gcapi3.api.ConfigFactoryProvider;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
@@ -8,8 +10,6 @@ import net.glasslauncher.mods.gcapi3.impl.SeptFunction;
 import net.glasslauncher.mods.gcapi3.impl.factory.DefaultFactoryProvider;
 import net.glasslauncher.mods.gcapi3.impl.object.ConfigEntryHandler;
 import net.glasslauncher.mods.gcapi3.impl.object.entry.EnumConfigEntryHandler;
-import net.danygames2014.whatsthis.api.IProbeConfig;
-import net.danygames2014.whatsthis.api.NumberFormat;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class Config implements ConfigFactoryProvider {
     @ConfigRoot(value = "client", visibleName = "Client Config", index = 0)
     public static final ClientConfig CLIENT_CONFIG = new ClientConfig();
-    
+
     @ConfigRoot(value = "probe", visibleName = "Probe Config", index = 1)
     public static final ProbeConfig PROBE_CONFIG = new ProbeConfig();
 

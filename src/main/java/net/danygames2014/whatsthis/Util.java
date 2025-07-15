@@ -24,6 +24,7 @@ public class Util {
     }
 
     private static String modName = "";
+
     public static String getModName(Block block) {
         Identifier identifier = BlockRegistry.INSTANCE.getId(block);
 

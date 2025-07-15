@@ -2,16 +2,13 @@
   "schemaVersion": 1,
   "id": "whatsthis",
   "version": "${version}",
-
   "name": "OwO Whats This",
   "description": "",
   "authors": [
     "DanyGames2014"
   ],
-
   "license": "MIT",
   "icon": "assets/whatsthis/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
@@ -40,7 +37,6 @@
     "whatsthis.mixins.json"
   ],
   "accessWidener": "whatsthis.accesswidener",
-
   "depends": {
     "minecraft": "1.0.0-beta.7.3"
   }

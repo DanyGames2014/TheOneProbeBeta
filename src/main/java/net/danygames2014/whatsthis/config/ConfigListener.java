@@ -1,7 +1,7 @@
 package net.danygames2014.whatsthis.config;
 
-import net.glasslauncher.mods.gcapi3.api.PostConfigLoadedListener;
 import net.danygames2014.whatsthis.api.TextStyleClass;
+import net.glasslauncher.mods.gcapi3.api.PostConfigLoadedListener;
 
 import java.util.HashMap;
 import java.util.Map;

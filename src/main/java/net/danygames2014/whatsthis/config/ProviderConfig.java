@@ -1,7 +1,7 @@
 package net.danygames2014.whatsthis.config;
 
-import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 import net.danygames2014.whatsthis.api.IProbeConfig;
+import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
 import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.EXTENDED;
 import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.NORMAL;
@@ -14,7 +14,7 @@ public class ProviderConfig {
     // Harvestability
     @ConfigEntry(name = "Show Harvestability")
     public IProbeConfig.ConfigMode showCanBeHarvested = NORMAL;
-    
+
     @ConfigEntry(name = "Show Harvest Level")
     public IProbeConfig.ConfigMode showHarvestLevel = NORMAL;
 
@@ -41,10 +41,10 @@ public class ProviderConfig {
 
     @ConfigEntry(name = "Show Mob Owner")
     public IProbeConfig.ConfigMode showMobOwner = EXTENDED;
-    
+
     @ConfigEntry(name = "Show Mob Spawner Entity")
     public IProbeConfig.ConfigMode showMobSpawner = NORMAL;
-    
+
     // Tank Setting
     @ConfigEntry(name = "Show Tank Info")
     public IProbeConfig.ConfigMode showTankSetting = EXTENDED;
@@ -52,7 +52,7 @@ public class ProviderConfig {
     // Music Block Info
     @ConfigEntry(name = "Show Music Block Info", description = "Show the note of a note block and the disc in a jukebox")
     public IProbeConfig.ConfigMode showMusicBlock = NORMAL;
-    
+
     // Sign Text
     @ConfigEntry(name = "Show Sign Text", description = "Show the text on a sign")
     public IProbeConfig.ConfigMode showSignText = EXTENDED;

@@ -1,9 +1,9 @@
 package net.danygames2014.whatsthis.item;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.danygames2014.whatsthis.gui.ConfigScreen;
 import net.danygames2014.whatsthis.gui.NoteScreen;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

@@ -24,7 +24,7 @@ public class InGameHudMixin {
         if (Minecraft.INSTANCE.options.debugHud) {
             return;
         }
-        
+
         if (Config.CLIENT_CONFIG.holdKeyToMakeVisible) {
             if (!Keyboard.isKeyDown(KeybindListener.toggleVisible.code)) {
                 return;

@@ -1,8 +1,6 @@
 package net.danygames2014.whatsthis.config;
 
 
-import net.glasslauncher.mods.gcapi3.api.GCAPI;
-import net.glasslauncher.mods.gcapi3.impl.GlassYamlFile;
 import net.danygames2014.whatsthis.WhatsThis;
 import net.danygames2014.whatsthis.api.IOverlayStyle;
 import net.danygames2014.whatsthis.api.IProbeConfig;
@@ -10,6 +8,8 @@ import net.danygames2014.whatsthis.api.TextStyleClass;
 import net.danygames2014.whatsthis.apiimpl.ProbeConfig;
 import net.danygames2014.whatsthis.apiimpl.styles.DefaultOverlayStyle;
 import net.danygames2014.whatsthis.rendering.ProbeTextRenderer;
+import net.glasslauncher.mods.gcapi3.api.GCAPI;
+import net.glasslauncher.mods.gcapi3.impl.GlassYamlFile;
 import net.modificationstation.stationapi.api.util.Formatting;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.MathHelper;

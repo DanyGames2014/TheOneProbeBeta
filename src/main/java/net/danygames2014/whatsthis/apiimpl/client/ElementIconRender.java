@@ -12,7 +12,7 @@ public class ElementIconRender {
         if (icon == null) {
             return;
         }
-        
+
         int textureId = Minecraft.INSTANCE.textureManager.getTextureId(icon);
         Minecraft.INSTANCE.textureManager.bindTexture(textureId);
         RenderHelper.drawTexturedModalRect(x, y, u, v, w, h, txtw, txth);

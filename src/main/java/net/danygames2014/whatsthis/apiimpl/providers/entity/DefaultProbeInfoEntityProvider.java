@@ -123,7 +123,7 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
             }
         }
     }
-    
+
 //    public static String getPotionDurationString(PotionEffect effect, float factor) {
 //        if (effect.getDuration() == 32767) {
 //            return "**:**";

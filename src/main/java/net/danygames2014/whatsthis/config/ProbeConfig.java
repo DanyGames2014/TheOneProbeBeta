@@ -1,7 +1,7 @@
 package net.danygames2014.whatsthis.config;
 
-import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 import net.danygames2014.whatsthis.api.NumberFormat;
+import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
 public class ProbeConfig {
     // General Probe Settings
@@ -28,7 +28,7 @@ public class ProbeConfig {
 
     @ConfigEntry(name = "Server Waiting Timeout", minLength = -1, maxLength = 100000, comment = "The amount of milliseconds to wait before showing a 'fetch from server' info on the client (if the server is slow to respond) (-1 to disable this feature)")
     public Integer waitingForServerTimeout = 2000;
-    
+
     // Logging Throwable Timeout
     @ConfigEntry(name = "Logging Throwable Timeout", minLength = 1, maxLength = 10000000, comment = "How much time (ms) to wait before reporting an exception again")
     public Integer loggingThrowableTimeout = 20000;
@@ -48,7 +48,7 @@ public class ProbeConfig {
 
     @ConfigEntry(name = "RF Bar Border Color", comment = "Color for the RF bar border")
     public String rfbarBorderColor = Integer.toHexString(0xff555555);
-    
+
     // Tank Display Settings
     @ConfigEntry(name = "Fluid Tank Display Style", minLength = 0, maxLength = 2, comment = "How to display tank contents: 0 = do not show, 1 = show in a bar, 2 = show as text")
     public Integer showTank = 1;

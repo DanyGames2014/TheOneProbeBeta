@@ -26,7 +26,7 @@ public class ElementProgress implements IElement {
         this.max = max;
         this.style = style;
     }
-    
+
     // Networking
     public ElementProgress(DataInputStream stream) throws IOException {
         current = stream.readLong();
@@ -95,6 +95,7 @@ public class ElementProgress implements IElement {
     }
 
     // Util
+
     /**
      * If the suffix starts with 'm' we can possibly drop that
      */

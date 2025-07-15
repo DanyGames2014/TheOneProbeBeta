@@ -90,8 +90,8 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
         if (Util.show(mode, config.getShowMusicBlock())) {
             showMusicBlock(probeInfo, world, pos, state, block, data);
         }
-        
-        if(Util.show(mode, config.getShowSignText())) {
+
+        if (Util.show(mode, config.getShowSignText())) {
             showSignText(probeInfo, world, pos, state, block, data);
         }
 
@@ -283,23 +283,23 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 
         } else if (block instanceof JukeboxBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof JukeboxBlockEntity jukebox) {
             var disc = new ItemStack(jukebox.recordId, 1, 0);
-            
+
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                     .item(disc)
                     .itemLabel(disc);
-                    
+
         }
     }
-    
+
     private void showSignText(IProbeInfo probeInfo, World world, BlockPos pos, BlockState blockState, Block block, IProbeHitData data) {
-        if(block instanceof SignBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof SignBlockEntity sign) {
+        if (block instanceof SignBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof SignBlockEntity sign) {
             probeInfo.vertical(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
-                .text(sign.texts[0])
-                .text(sign.texts[1])
-                .text(sign.texts[2])
-                .text(sign.texts[3]);
+                    .text(sign.texts[0])
+                    .text(sign.texts[1])
+                    .text(sign.texts[2])
+                    .text(sign.texts[3]);
         }
     }
-        
+
 
 }

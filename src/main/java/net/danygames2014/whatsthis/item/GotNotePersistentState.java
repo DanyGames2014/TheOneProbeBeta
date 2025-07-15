@@ -1,4 +1,4 @@
-package net.danygames2014.whatsthis;
+package net.danygames2014.whatsthis.item;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -23,7 +23,7 @@ public class GotNotePersistentState extends PersistentState {
             gotNoteState = new GotNotePersistentState(id);
             world.persistentStateManager.set(id, gotNoteState);
         }
-        
+
         return gotNoteState;
     }
 
