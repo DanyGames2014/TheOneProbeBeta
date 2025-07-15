@@ -15,7 +15,7 @@ public class ClientConfig {
     @ConfigEntry(name = "extendedInMain", comment = "If true the probe will automatically show extended information if it is in your main hand (so not required to sneak)")
     public Boolean extendedInMain = false;
 
-    @ConfigEntry(name = "showBreakProgress", minLength = 0, maxLength = 2, comment = "0 means don't show break progress, 1 is show as bar, 2 is show as text")
+    @ConfigEntry(name = "showBreakProgress", minValue = 0, maxValue = 2, comment = "0 means don't show break progress, 1 is show as bar, 2 is show as text")
     public Integer showBreakProgress = 1;
 
     @ConfigEntry(name = "harvestStyleVanilla", comment = "true means shows harvestability with vanilla style icons")
@@ -25,26 +25,26 @@ public class ClientConfig {
     public Boolean compactEqualStacks = true;
 
     // Tooltip Scale & Position
-    @ConfigEntry(name = "tooltipScale", minLength = 0, maxLength = 5, comment = "The scale of the tooltips, 1 is default, 2 is smaller")
+    @ConfigEntry(name = "tooltipScale", minValue = 0, maxValue = 5, comment = "The scale of the tooltips, 1 is default, 2 is smaller")
     public Float tooltipScale = 1.0F;
 
-    @ConfigEntry(name = "leftX", minLength = -1, maxLength = 10000, comment = "The distance to the left side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "leftX", minValue = -1, maxValue = 10000, comment = "The distance to the left side of the screen. Use -1 if you don't want to set this")
     public Integer leftX = -1;
 
-    @ConfigEntry(name = "rightX", minLength = -1, maxLength = 10000, comment = "The distance to the right side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "rightX", minValue = -1, maxValue = 10000, comment = "The distance to the right side of the screen. Use -1 if you don't want to set this")
     public Integer rightX = -1;
 
-    @ConfigEntry(name = "topY", minLength = -1, maxLength = 10000, comment = "The distance to the top side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "topY", minValue = -1, maxValue = 10000, comment = "The distance to the top side of the screen. Use -1 if you don't want to set this")
     public Integer topY = 5;
 
-    @ConfigEntry(name = "bottomY", minLength = -1, maxLength = 10000, comment = "The distance to the bottom side of the screen. Use -1 if you don't want to set this")
+    @ConfigEntry(name = "bottomY", minValue = -1, maxValue = 10000, comment = "The distance to the bottom side of the screen. Use -1 if you don't want to set this")
     public Integer bottomY = -1;
 
     // Box Styles
-    @ConfigEntry(name = "boxOffset", minLength = 0, maxLength = 20, comment = "How much the border should be offset (i.e. to create an 'outer' border)")
+    @ConfigEntry(name = "boxOffset", minValue = 0, maxValue = 20, comment = "How much the border should be offset (i.e. to create an 'outer' border)")
     public Integer boxOffset = 0;
 
-    @ConfigEntry(name = "boxThickness", minLength = 0, maxLength = 20, comment = "Thickness of the border of the box (0 to disable)")
+    @ConfigEntry(name = "boxThickness", minValue = 0, maxValue = 20, comment = "Thickness of the border of the box (0 to disable)")
     public Integer boxThickness = 2;
 
     @ConfigEntry(name = "boxBorderColor", comment = "Color of the border of the box (0 to disable)")
