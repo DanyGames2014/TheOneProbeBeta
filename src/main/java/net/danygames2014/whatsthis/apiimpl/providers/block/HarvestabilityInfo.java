@@ -29,7 +29,7 @@ import static net.danygames2014.whatsthis.api.TextStyleClass.*;
 
 public class HarvestabilityInfo {
 
-    private static final String ICONS = "assets/whatsthis/stationapi/textures/gui/icons.png";
+    private static final String ICONS = "/assets/whatsthis/stationapi/textures/gui/icons.png";
 
     // Harvest Levels
     private record HarvestLevelEntry(String name, TagKey<Block> tagKey, ToolLevel toolLevel) {

@@ -19,7 +19,7 @@ public class NoteScreen extends Screen {
     private int guiLeft;
     private int guiTop;
 
-    private static final String background = "assets/whatsthis/stationapi/textures/gui/note.png";
+    private static final String background = "/assets/whatsthis/stationapi/textures/gui/note.png";
     private static int backgroundId = 0;
 
     @Override

@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public class ElementProgressRender {
 
-    private static final String ICONS = "gui/icons.png";
+    private static final String ICONS = "/gui/icons.png";
 
     public static void render(IProgressStyle style, long current, long max, int x, int y, int w, int h) {
         if (style.isLifeBar()) {

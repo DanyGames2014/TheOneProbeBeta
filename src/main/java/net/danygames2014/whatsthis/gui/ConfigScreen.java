@@ -28,8 +28,8 @@ public class ConfigScreen extends Screen {
     private int guiLeft;
     private int guiTop;
 
-    private static final String background = "assets/whatsthis/stationapi/textures/gui/config.png";
-    private static final String scene = "assets/whatsthis/stationapi/textures/gui/scene.png";
+    private static final String background = "/assets/whatsthis/stationapi/textures/gui/config.png";
+    private static final String scene = "/assets/whatsthis/stationapi/textures/gui/scene.png";
 
     private static int backgroundId = 0;
     private static int sceneId = 0;
