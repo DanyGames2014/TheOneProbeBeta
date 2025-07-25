@@ -11,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,8 +32,8 @@ public class PlayerEntityMixin extends LivingEntity {
         super(world);
     }
 
-    @Inject(method = "<init>", at = @At(value = "TAIL"))
-    public void aVoid(World world, CallbackInfo ci) {
+    @Inject(method = "readNbt", at = @At(value = "TAIL"))
+    public void aVoid(NbtCompound nbt, CallbackInfo ci) {
         if (world.isRemote) {
             return;
         }
