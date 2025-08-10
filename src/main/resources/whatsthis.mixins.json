@@ -10,7 +10,6 @@
   "server": [
   ],
   "client": [
-    "ClientNetworkHandlerMixin",
     "InGameHudMixin"
   ],
   "injectors": {
