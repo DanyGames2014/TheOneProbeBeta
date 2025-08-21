@@ -1,1 +1,0 @@
-* Fix getting note on spawn not respecting config setting
