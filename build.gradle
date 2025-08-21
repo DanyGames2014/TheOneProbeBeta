@@ -20,6 +20,9 @@ java {
 
 loom {
 	accessWidenerPath = file("src/main/resources/whatsthis.accesswidener")
+    mixin {
+        useLegacyMixinAp = false
+    }
 }
 
 repositories {
@@ -144,6 +147,10 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 17
+}
+
+tasks.withType(AbstractTestTask).configureEach {
+    failOnNoDiscoveredTests = false
 }
 
 java {
