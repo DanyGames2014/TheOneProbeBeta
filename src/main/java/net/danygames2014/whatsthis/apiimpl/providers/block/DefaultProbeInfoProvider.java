@@ -282,8 +282,10 @@ public class DefaultProbeInfoProvider implements IProbeInfoProvider {
 
 
         } else if (block instanceof JukeboxBlock && world.getBlockEntity(pos.x, pos.y, pos.z) instanceof JukeboxBlockEntity jukebox) {
-            var disc = new ItemStack(jukebox.recordId, 1, 0);
-
+            if (jukebox.recordId <= 0) return;
+            
+            ItemStack disc = new ItemStack(jukebox.recordId, 1, 0);
+            
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                     .item(disc)
                     .itemLabel(disc);
