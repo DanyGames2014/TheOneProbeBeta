@@ -2,13 +2,17 @@ package net.danygames2014.whatsthis;
 
 import net.danygames2014.whatsthis.api.IProbeConfig;
 import net.danygames2014.whatsthis.api.ProbeMode;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
-import org.apache.commons.lang3.text.WordUtils;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.EXTENDED;
 import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.NORMAL;
@@ -23,35 +27,44 @@ public class Util {
         return null;
     }
 
-    private static String modName = "";
-
     public static String getModName(Block block) {
         Identifier identifier = BlockRegistry.INSTANCE.getId(block);
 
         if (identifier == null) {
-            modName = "Minecraft";
+            return "Minecraft";
         } else {
-            modName = identifier.namespace.toString();
+            return getModName(identifier.namespace.toString());
         }
-
-        return formatModName(modName);
     }
 
     public static String getModName(Entity entity) {
         String[] enttityName = EntityRegistry.getId(entity).split(":");
 
         if (enttityName.length <= 1) {
-            modName = "Minecraft";
+            return "Minecraft";
         } else {
-            modName = enttityName[1];
+            return getModName(enttityName[1]);
         }
-
-        return formatModName(modName);
     }
 
-    @SuppressWarnings("deprecation")
-    public static String formatModName(String input) {
-        return WordUtils.capitalizeFully(input);
+    public static HashMap<String, String> modIds = new HashMap<>();
+
+    public static String getModName(String modId) {
+        return modIds.computeIfAbsent(modId, Util::fetchModName);
+    }
+
+    public static String fetchModName(String modId) {
+        // Special case for modloader mods loaded via Apron. Hi CatCore o/
+        if (modId.startsWith("mod_")) {
+            return modId.substring(4);
+        }
+        
+        Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(modId);
+        if (modContainer.isPresent()) {
+            return modContainer.get().getMetadata().getName();
+        } else {
+            return "Unknown";
+        }
     }
 
     public static boolean show(ProbeMode mode, IProbeConfig.ConfigMode cfg) {
