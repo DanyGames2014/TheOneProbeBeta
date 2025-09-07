@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "o  ",
+    " w ",
+    "  u"
+  ],
+  "key": {
+    "o": {
+      "item": "minecraft:repeater"
+    },
+    "w": {
+      "item": "minecraft:gold_ingot"
+    },
+    "u": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "whatsthis:probe"
+  }
+}
