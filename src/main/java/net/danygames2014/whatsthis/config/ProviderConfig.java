@@ -3,8 +3,7 @@ package net.danygames2014.whatsthis.config;
 import net.danygames2014.whatsthis.api.IProbeConfig;
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
-import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.EXTENDED;
-import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.NORMAL;
+import static net.danygames2014.whatsthis.api.IProbeConfig.ConfigMode.*;
 
 public class ProviderConfig {
     // Mod Name
@@ -16,7 +15,7 @@ public class ProviderConfig {
     public IProbeConfig.ConfigMode showCanBeHarvested = NORMAL;
 
     @ConfigEntry(name = "Show Harvest Level")
-    public IProbeConfig.ConfigMode showHarvestLevel = NORMAL;
+    public IProbeConfig.ConfigMode showHarvestLevel = NOT;
 
     // Crop Growth
     @ConfigEntry(name = "Show Crop Growth Percentage")

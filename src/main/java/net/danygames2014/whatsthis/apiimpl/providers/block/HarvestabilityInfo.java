@@ -1,9 +1,6 @@
 package net.danygames2014.whatsthis.apiimpl.providers.block;
 
-import net.danygames2014.whatsthis.api.ElementAlignment;
-import net.danygames2014.whatsthis.api.IIconStyle;
-import net.danygames2014.whatsthis.api.ILayoutStyle;
-import net.danygames2014.whatsthis.api.IProbeInfo;
+import net.danygames2014.whatsthis.api.*;
 import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.minecraft.block.Block;
@@ -18,7 +15,9 @@ import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.tool.TagToolLevel;
 import net.modificationstation.stationapi.api.item.tool.ToolLevel;
 import net.modificationstation.stationapi.api.tag.TagKey;
+import net.modificationstation.stationapi.api.util.Formatting;
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,15 +200,28 @@ public class HarvestabilityInfo {
             return;
         }
 
+        boolean v = Config.CLIENT_CONFIG.harvestStyleVanilla;
+        int offs = v ? 16 : 0;
+        int dim = v ? 13 : 16;
+        
+        ILayoutStyle alignment = probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER);
+        IIconStyle iconStyle = probeInfo.defaultIconStyle().width(v ? 18 : 20).height(v ? 14 : 16).textureWidth(32).textureHeight(32);
+        IProbeInfo horizontal = probeInfo.horizontal(alignment);
+        
         switch (isHarvestable(player, world, pos, state, block)) {
             case HARVESTABLE -> {
-                probeInfo.text(OK + "Harvestable");
+                horizontal.icon(ICONS, 0, offs, dim, dim, iconStyle)
+                        .text(OK + "Harvestable");
             }
+
             case NOT_HARVESTABLE -> {
-                probeInfo.text(WARNING + "Not harvestable");
+                horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
+                        .text(WARNING + "Not Harvestable");
             }
+
             case UNBREAKABLE -> {
-                probeInfo.text(WARNING + "Unbreakable");
+                horizontal.icon(ICONS, 16, offs, dim, dim, iconStyle)
+                        .text(WARNING + "Unbreakable");
             }
         }
     }
