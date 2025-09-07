@@ -1,6 +1,6 @@
 plugins {
     id 'maven-publish'
-    id 'fabric-loom' version '1.10.5'
+    id 'fabric-loom' version '1.11.7'
     id 'babric-loom-extension' version '1.10.2'
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -19,7 +19,9 @@ java {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/whatsthis.accesswidener")
+    if (project.hasProperty("accesswidener_name") && project.accesswidener_name.length() > 0) {
+        accessWidenerPath = file("src/main/resources/${project.accesswidener_name}.accesswidener")
+    }
     mixin {
         useLegacyMixinAp = false
     }
@@ -28,38 +30,38 @@ loom {
 repositories {
     // Used for Babric Loom Extensions
     maven {
-        name = 'Babric'
-        url = 'https://maven.glass-launcher.net/babric'
+        name = "Babric"
+        url = "https://maven.glass-launcher.net/babric"
     }
 
     // Used for many dependencies
     maven {
-        name = 'Glass Releases'
-        url = 'https://maven.glass-launcher.net/releases'
+        name = "Glass Releases"
+        url = "https://maven.glass-launcher.net/releases"
     }
 
     // Used for Snapshots
     maven {
-        name = 'Glass Snapshots'
-        url = 'https://maven.glass-launcher.net/snapshots'
+        name = "Glass Snapshots"
+        url = "https://maven.glass-launcher.net/snapshots"
     }
 
     // NyaRepo
     maven {
-        name = "nyarepo"
+        name = "NyaRepo"
         url = "https://maven.fildand.cz/releases"
     }
 
     // Used for a StationAPI dependency.
     maven {
-        name = 'Froge'
-        url 'https://maven.minecraftforge.net/'
+        name = "Froge Maven"
+        url = "https://maven.minecraftforge.net/"
     }
 
     // Used for projects that do not have a maven repository, but do have a GitHub repository with working build scripts.
     maven {
-        name = 'Jitpack'
-        url = 'https://jitpack.io'
+        name = "Jitpack"
+        url = "https://jitpack.io"
     }
 
     // Modrinth Maven
@@ -88,52 +90,82 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2"
     implementation "me.carleslc:Simple-Yaml:1.8.4"
 
-    modImplementation ("net.modificationstation:StationAPI:${project.stapi_version}") {
+    modImplementation("net.modificationstation:StationAPI:${project.stapi_version}") {
         exclude group: "babric", module: "fabric-loader"
     }
 
-    modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") {
-        transitive false
+    if (project.hasProperty("modmenu_version")) {
+        modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") {
+            transitive = false
+        }
     }
 
-    modImplementation("net.glasslauncher.mods:glass-networking:${project.glass_networking_version}") {
-        transitive false
+    if (project.hasProperty("glass_networking_version")) {
+        modImplementation("net.glasslauncher.mods:glass-networking:${project.glass_networking_version}") {
+            transitive = false
+        }
     }
 
-    modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
-        transitive false
+    if (project.hasProperty("gcapi_version")) {
+        modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
+            transitive = false
+        }
     }
 
-    modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
-        transitive false
+    if (project.hasProperty("alwaysmoreitems_version")) {
+        modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
+            transitive = false
+        }
     }
 
-    modImplementation("maven.modrinth:retrocommands:${project.retrocommands_version}-b1.7.3") {
-        transitive false
+    if (project.hasProperty("retrocommands_version")) {
+        modImplementation("maven.modrinth:retrocommands:${project.retrocommands_version}-b1.7.3") {
+            transitive = false
+        }
     }
 
-    modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
-        transitive false
+    if (project.hasProperty("spawneggs_version")) {
+        modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
+            transitive = false
+        }
     }
 
-    modImplementation("maven.modrinth:bh-creative:${project.bhcreative_version}-b1.7.3") {
-        transitive false
+    if (project.hasProperty("bhcreative_version")) {
+        modImplementation("maven.modrinth:bh-creative:${project.bhcreative_version}-b1.7.3") {
+            transitive = false
+        }
     }
 
-    modRuntimeOnly("maven.modrinth:retroauth:${project.retroauth_version}-b1.7.3") {
-        transitive false
+    if (project.hasProperty("whatsthis_version")) {
+        modImplementation("net.danygames2014:WhatsThis:${project.whatsthis_version}") {
+            transitive = false
+        }
     }
 
-    modRuntimeOnly("maven.modrinth:unitweaks:${project.unitweaks_version}-b1.7.3") {
-        transitive false
+    if (project.hasProperty("nyalib_version")) {
+        modImplementation("net.danygames2014:NyaLib:${project.nyalib_version}")
+    }
+
+    if (project.hasProperty("uniwrench_version")) {
+        modImplementation("net.danygames2014:UniWrench:${project.uniwrench_version}") {
+            transitive = false
+        }
+    }
+
+    if (project.hasProperty("retroauth_version")) {
+        modRuntimeOnly("maven.modrinth:retroauth:${project.retroauth_version}-b1.7.3") {
+            transitive = false
+        }
+    }
+
+    if (project.hasProperty("unitweaks_version")) {
+        modRuntimeOnly("maven.modrinth:unitweaks:${project.unitweaks_version}-b1.7.3") {
+            transitive = false
+        }
     }
 
     modRuntimeOnly("maven.modrinth:fast-stapi-intro:2.0.0-b1.7.3") {
-        transitive false
-    }
-
-    modImplementation("maven.modrinth:accessory-api:${project.accessoryapi_version}") {
-        transitive false
+        transitive = false
     }
 }
 
@@ -149,8 +181,9 @@ tasks.withType(JavaCompile).configureEach {
     it.options.release = 17
 }
 
-tasks.withType(AbstractTestTask).configureEach {
-    failOnNoDiscoveredTests = false
+// Disables the generation of the .module file
+tasks.withType(GenerateModuleMetadata).configureEach {
+    enabled = false
 }
 
 java {
@@ -173,8 +206,8 @@ publishing {
             maven {
                 url = "https://maven.glass-launcher.net/releases"
                 credentials {
-                    username "${project.calmilamsy_secret_publishing_cave_username}"
-                    password "${project.calmilamsy_secret_publishing_cave_password}"
+                    username = "${project.calmilamsy_secret_publishing_cave_username}"
+                    password = "${project.calmilamsy_secret_publishing_cave_password}"
                 }
             }
         }
@@ -184,8 +217,8 @@ publishing {
             maven {
                 url = "https://maven.fildand.cz/releases"
                 credentials {
-                    username "${project.nyarepo_publishing_cave_username}"
-                    password "${project.nyarepo_publishing_cave_password}"
+                    username = "${project.nyarepo_publishing_cave_username}"
+                    password = "${project.nyarepo_publishing_cave_password}"
                 }
             }
         }
@@ -218,6 +251,17 @@ modrinth {
     }
 }
 
+tasks.named("modrinth") {
+    onlyIf {
+        if (!project.hasProperty("modrinth_publishing_cave") || !project.hasProperty("modrinth_slug") || project.modrinth_slug.length() == 0 || !project.hasProperty("modrinth_version_name") || project.modrinth_version_name.length() == 0) {
+            println("Modrinth publishing skipped due to the required properties not being set")
+            return false
+        }
+
+        return true
+    }
+}
+
 tasks.register("update") {
     doLast {
         def propsFile = file("gradle.properties")
@@ -236,6 +280,9 @@ tasks.register("update") {
         updateDependency(lines, "Retro Commands", "retrocommands_version", "https://api.modrinth.com/maven/maven/modrinth/retrocommands")
         updateDependency(lines, "RetroAuth", "retroauth_version", "https://api.modrinth.com/maven/maven/modrinth/retroauth")
         updateDependency(lines, "UniTweaks", "unitweaks_version", "https://api.modrinth.com/maven/maven/modrinth/unitweaks")
+        updateDependency(lines, "Whats This", "whatsthis_version", "https://maven.fildand.cz/releases/net/danygames2014/WhatsThis")
+        updateDependency(lines, "NyaLib", "nyalib_version", "https://maven.fildand.cz/releases/net/danygames2014/NyaLib")
+        updateDependency(lines, "UniWrench", "uniwrench_version", "https://maven.fildand.cz/releases/net/danygames2014/UniWrench")
 
         propsFile.text = lines.join(System.lineSeparator())
         println("Finished updating dependencies, please reload your Gradle Project")
@@ -243,7 +290,7 @@ tasks.register("update") {
 }
 
 def updateDependency(List<String> lines, String name, String property, String artifactUrl) {
-    println("Updating Dependency " + name)
+    println("Checking updates for " + name)
 
     if (!project.hasProperty(property)) {
         println("Project does not have property " + property)
@@ -258,11 +305,11 @@ def updateDependency(List<String> lines, String name, String property, String ar
     }
 
     for (int i = 0; i < lines.size(); i++) {
-        if (lines[i].contains(property)){
+        if (lines[i].contains(property)) {
             String[] split = lines[i].split("=")
             String currentVersion = split[1]
 
-            if (!currentVersion.equalsIgnoreCase(latestVersion)){
+            if (!currentVersion.equalsIgnoreCase(latestVersion)) {
                 println("Dependency " + name + " updated. (" + currentVersion + " -> " + latestVersion + ")")
                 lines[i] = split[0] + "=" + latestVersion
             } else {
