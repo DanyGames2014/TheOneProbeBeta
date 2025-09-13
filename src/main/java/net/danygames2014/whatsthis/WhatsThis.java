@@ -13,6 +13,7 @@ import net.danygames2014.whatsthis.compat.AccessoryApiCompat;
 import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.event.BlockProbeInfoProviderRegistryEvent;
 import net.danygames2014.whatsthis.event.EntityProbeInfoProviderRegistryEvent;
+import net.danygames2014.whatsthis.event.ProbeElementsRegistryEvent;
 import net.danygames2014.whatsthis.item.ProbeNoteItem;
 import net.danygames2014.whatsthis.item.ProbeUtil;
 import net.danygames2014.whatsthis.network.PacketGetEntityInfo;
@@ -89,6 +90,8 @@ public class WhatsThis {
         FabricLoader.getInstance().getEntrypointContainers("whatsthis", Object.class).forEach(EntrypointManager::setup);
 
         TheOneProbeImp.registerElements();
+        StationAPI.EVENT_BUS.post(new ProbeElementsRegistryEvent());
+        
         theOneProbeImp.registerProvider(new DefaultProbeInfoProvider());
         theOneProbeImp.registerProvider(new DebugProbeInfoProvider());
         theOneProbeImp.registerProvider(new BlockProbeInfoProvider());
