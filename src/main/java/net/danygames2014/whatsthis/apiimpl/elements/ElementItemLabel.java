@@ -4,6 +4,7 @@ import net.danygames2014.whatsthis.api.IElement;
 import net.danygames2014.whatsthis.apiimpl.TheOneProbeImp;
 import net.danygames2014.whatsthis.apiimpl.client.ElementTextRender;
 import net.danygames2014.whatsthis.network.NetworkUtil;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
 
 import java.io.DataInputStream;
@@ -41,7 +42,7 @@ public class ElementItemLabel implements IElement {
     @Override
     public void render(int x, int y) {
         if (stack != null && stack.count > 0 && stack.getItem() != null) {
-            String text = stack.getItem().getTranslatedName();
+            String text = I18n.getTranslation(stack.getTranslationKey() + ".name");
             ElementTextRender.render(text, x, y);
         }
     }
@@ -50,7 +51,7 @@ public class ElementItemLabel implements IElement {
     @Override
     public int getWidth() {
         if (stack != null && stack.count > 0 && stack.getItem() != null) {
-            String text = stack.getItem().getTranslatedName();
+            String text = I18n.getTranslation(stack.getTranslationKey() + ".name");
             return ElementTextRender.getWidth(text);
         } else {
             return 10;

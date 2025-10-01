@@ -8,6 +8,7 @@ import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.config.ConfigSetup;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,7 @@ public class InventoryInfo {
             for (ItemStack stackInSlot : stacks) {
                 horizontal = vertical.horizontal(new LayoutStyle().spacing(10).alignment(ElementAlignment.ALIGN_CENTER));
                 horizontal.item(stackInSlot, new ItemStyle().width(16).height(16))
-                        .text(INFO + stackInSlot.getItem().getTranslatedName());
+                        .text(INFO + I18n.getTranslation(stackInSlot.getTranslationKey() + ".name"));
             }
         } else {
             for (ItemStack stackInSlot : stacks) {
