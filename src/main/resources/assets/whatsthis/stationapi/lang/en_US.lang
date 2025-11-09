@@ -7,3 +7,6 @@ item.whatsthis.probe_note.name=Whats This Read Me
 # Keybinds
 key.whatsthis.toggleLiquids=Toggle Liquid View
 key.whatsthis.toggleVisible=Visibility Toggle
+
+# Creative Tab
+tab.whatsthis.creative_tab.name=Whats This
