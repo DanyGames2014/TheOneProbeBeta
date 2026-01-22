@@ -292,23 +292,26 @@ public class RenderHelper {
             y2 = var6;
         }
 
-        float var11 = (float) (color >> 24 & 255) / 255.0F;
-        float var7 = (float) (color >> 16 & 255) / 255.0F;
-        float var8 = (float) (color >> 8 & 255) / 255.0F;
-        float var9 = (float) (color & 255) / 255.0F;
+        float a = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
         Tessellator var10 = Tessellator.INSTANCE;
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glColor4f(var7, var8, var9, var11);
+        boolean prevGlBlend = GL11.glIsEnabled(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(r, g, b, a);
         var10.startQuads();
         var10.vertex(x1, y2, 0.0);
         var10.vertex(x2, y2, 0.0);
         var10.vertex(x2, y1, 0.0);
         var10.vertex(x1, y1, 0.0);
         var10.draw();
-        GL11.glEnable(3553);
-        GL11.glDisable(3042);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        if (!prevGlBlend) {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
     }
 
     /**
