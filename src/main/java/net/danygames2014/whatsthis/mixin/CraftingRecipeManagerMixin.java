@@ -22,7 +22,7 @@ public class CraftingRecipeManagerMixin {
     @Inject(method = "craft", at = @At(value = "HEAD"), cancellable = true)
     public void probifyHelmet(CraftingInventory c, CallbackInfoReturnable<ItemStack> cir) {
         for (ItemStack stack : c.stacks) {
-            if (stack != null) {
+            if (stack != null && stack.count > 0) {
                 if (stack.isOf(WhatsThis.probe)) {
                     hasProbe = true;
                 } else if (stack.getItem() instanceof ArmorItem armorItem) {
@@ -36,6 +36,9 @@ public class CraftingRecipeManagerMixin {
         if (hasProbe && helmet != null) {
             helmet.getStationNbt().putBoolean(ProbeUtil.PROBETAG, true);
             cir.setReturnValue(helmet);
+            hasProbe = false;
+            helmet = null;
+            cir.cancel();
         }
     }
 }
