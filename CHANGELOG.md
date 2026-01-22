@@ -1,3 +1,5 @@
-* Make the probe craftable
-* Disable showing harvest levels by default
-* Improve the Harvestable/Not Harvestable tooltip graphic
+* Added ProbeElementsRegistryEvent
+* Make tooltips respect metadata
+* Fix missing creative tab localization
+* Fix double-crafting of the probe helmet
+* Fix hotbar not being transparent after rendering some elements
