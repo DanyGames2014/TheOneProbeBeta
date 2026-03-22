@@ -134,6 +134,7 @@ public class TheOneProbeImp implements ITheOneProbe {
         }
 
         providers = newProviders;
+        //ConfigSetup.setConfigValue("whatsthis:provider", "sortedProviders", sortedProviders);
     }
 
     public void configureEntityProviders(String[] sortedProviders, Set<String> excludedProviders) {
