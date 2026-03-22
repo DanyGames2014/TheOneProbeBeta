@@ -22,7 +22,7 @@ public class ThrowableIdentity {
             }
         }
         catchedThrowables.put(identity, curtime);
-        WhatsThis.LOGGER.debug("The One Probe catched error: ", e);
+        WhatsThis.LOGGER.error("Whats This caught an error: ", e);
     }
 
     public ThrowableIdentity(Throwable e) {
