@@ -38,12 +38,12 @@ public class Util {
     }
 
     public static String getModName(Entity entity) {
-        String[] enttityName = EntityRegistry.getId(entity).split(":");
+        String[] entityName = EntityRegistry.getId(entity).split(":");
 
-        if (enttityName.length <= 1) {
+        if (entityName.length <= 1) {
             return "Minecraft";
         } else {
-            return getModName(enttityName[1]);
+            return getModName(entityName[0]);
         }
     }
 
