@@ -3,6 +3,9 @@ accessWidener v2 named
 # Minecraft Instance
 accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
 
+# Translations
+accessible field net/minecraft/client/resource/language/TranslationStorage translations Ljava/util/Properties;
+
 # Packet Processing
 accessible field net/minecraft/server/network/ServerPlayNetworkHandler player Lnet/minecraft/entity/player/ServerPlayerEntity;
 

@@ -143,18 +143,18 @@ public class DefaultProbeInfoEntityProvider implements IProbeInfoEntityProvider 
 
     public static void showStandardInfo(ProbeMode mode, IProbeInfo probeInfo, Entity entity, IProbeConfig config) {
         String modid = Util.getModName(entity);
-
+        String entityName = Util.getEntityName(entity);
+        
         if (Util.show(mode, config.getShowModName())) {
             probeInfo.horizontal()
                     .entity(entity)
                     .vertical()
-                    .text(NAME + EntityRegistry.getId(entity))
-                    // TODO : Proper Entity Names
+                    .text(NAME + entityName)
                     .text(MODNAME + modid);
         } else {
             probeInfo.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER))
                     .entity(entity)
-                    .text(NAME + EntityRegistry.getId(entity));
+                    .text(NAME + entityName);
         }
     }
 }

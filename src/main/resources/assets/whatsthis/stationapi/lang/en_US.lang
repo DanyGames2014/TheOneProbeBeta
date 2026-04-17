@@ -10,3 +10,8 @@ key.whatsthis.toggleVisible=Visibility Toggle
 
 # Creative Tab
 tab.whatsthis.creative_tab.name=Whats This
+
+# Vanilla Entities (entity.<namespace>.<id>.name)
+entity.minecraft.PigZombie.name=Zombie Pigman
+entity.minecraft.PrimedTnt.name=Primed TNT
+entity.minecraft.FallingSand.name=Falling Sand

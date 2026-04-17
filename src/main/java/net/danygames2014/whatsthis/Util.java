@@ -5,8 +5,10 @@ import net.danygames2014.whatsthis.api.ProbeMode;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.block.Block;
+import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -27,6 +29,28 @@ public class Util {
         return null;
     }
 
+    public static String getEntityName(Entity entity) {
+        if (entity instanceof PlayerEntity player) {
+            return player.name;
+        }
+
+        String entityId = EntityRegistry.getId(entity);
+        String[] entityName = entityId != null ? entityId.split(":") : new String[0];
+
+        if (entityName.length == 1) {
+            entityName = new String[]{"minecraft", entityName[0]};
+        }
+
+        if (entityName.length == 2) {
+            return TranslationStorage.getInstance().translations.getOrDefault(
+                    "entity." + entityName[0] + "." + entityName[1] + ".name",
+                    entityName[1]
+            ).toString();
+        }
+
+        return "Unknown";
+    }
+
     public static String getModName(Block block) {
         Identifier identifier = BlockRegistry.INSTANCE.getId(block);
 
@@ -38,7 +62,8 @@ public class Util {
     }
 
     public static String getModName(Entity entity) {
-        String[] entityName = EntityRegistry.getId(entity).split(":");
+        String entityId = EntityRegistry.getId(entity);
+        String[] entityName = entityId != null ? entityId.split(":") : new String[0];
 
         if (entityName.length <= 1) {
             return "Minecraft";
@@ -58,7 +83,7 @@ public class Util {
         if (modId.startsWith("mod_")) {
             return modId.substring(4);
         }
-        
+
         Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(modId);
         if (modContainer.isPresent()) {
             return modContainer.get().getMetadata().getName();
