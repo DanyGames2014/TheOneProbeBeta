@@ -1,3 +1,7 @@
-* Fix missing creative tab localization
-* Fix double-crafting of the probe helmet
-* Fix hotbar not being transparent after rendering some elements
+* Enable error logging
+* Fix wrong resolution of modded entity mod name
+* Fix progress bar element overflowing
+* Fix not being able to probe players
+* Fix unlocalized keybinds
+* Introduce proper entity name localization
+* Fix entity offset being wrong in many cases
