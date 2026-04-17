@@ -69,7 +69,12 @@ public class RenderHelper {
         GL11.glRotatef(0.0F, 1.0F, 0.0F, 0.0F);
 //        entity.renderYawOffset = entity.rotationYaw = entity.prevRotationYaw = entity.prevRotationYawHead = entity.rotationYawHead = 0;//this.rotateTurret;
         entity.pitch = 0.0F;
-        GL11.glTranslatef(0.0F, entity.getEyeHeight(), 0.0F);
+        
+        double heightOffset = entity.getPassengerRidingHeight();
+        if (heightOffset < 0.5D) {
+            heightOffset = entity.height;
+        }
+        GL11.glTranslated(0.0D, heightOffset, 0.0D);
         EntityRenderDispatcher.INSTANCE.pitch = 180F;
 
         try {
