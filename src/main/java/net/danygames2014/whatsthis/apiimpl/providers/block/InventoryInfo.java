@@ -107,8 +107,6 @@ public class InventoryInfo {
         int inventorySize = 0;
 
         try {
-            // TODO: ItemHandler capability
-
             // If the block entity is an inventory, fetch its contents
             if (blockEntity instanceof Inventory inventory) {
                 inventorySize = inventory.size();
