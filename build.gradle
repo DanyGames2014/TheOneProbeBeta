@@ -160,7 +160,9 @@ dependencies {
     }
 
     if (project.hasProperty("debugutilities_version")) {
-        modImplementation("net.danygames2014:DebugUtilities:${project.debugutilities_version}")
+        modImplementation("net.danygames2014:DebugUtilities:${project.debugutilities_version}") {
+            transitive = false
+        }
     }
 
     if (project.hasProperty("retroauth_version")) {
