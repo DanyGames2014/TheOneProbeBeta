@@ -72,7 +72,7 @@ public class InventoryInfo {
             for (ItemStack stackInSlot : stacks) {
                 horizontal = vertical.horizontal(new LayoutStyle().spacing(10).alignment(ElementAlignment.ALIGN_CENTER));
                 horizontal.item(stackInSlot, new ItemStyle().width(16).height(16))
-                        .text(INFO + I18n.getTranslation(stackInSlot.getTranslationKey() + ".name"));
+                        .text(INFO + I18n.getTranslation(stackInSlot.getItem().getTranslationKey() + ".name"));
             }
         } else {
             for (ItemStack stackInSlot : stacks) {
