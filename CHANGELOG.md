@@ -1,7 +1,3 @@
-* Enable error logging
-* Fix wrong resolution of modded entity mod name
-* Fix progress bar element overflowing
-* Fix not being able to probe players
-* Fix unlocalized keybinds
-* Introduce proper entity name localization
-* Fix entity offset being wrong in many cases
+* Update to StationAPI Alpha 6.2
+* Update to latest AccessoryAPI and fix compat with it
+* Fix an error when looking at chest contents on server
