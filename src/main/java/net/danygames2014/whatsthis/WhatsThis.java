@@ -72,7 +72,7 @@ public class WhatsThis {
         probe = new TemplateItem(NAMESPACE.id("probe")).setTranslationKey(NAMESPACE, "probe").setMaxCount(1);
         creativeProbe = new TemplateItem(NAMESPACE.id("creative_probe")).setTranslationKey(NAMESPACE, "creative_probe").setMaxCount(1);
 
-        if (accessoryApiCompat && false) {
+        if (accessoryApiCompat) {
             AccessoryApiCompat.registerProbeAccessory();
         }
     }

@@ -1,7 +1,7 @@
 package net.danygames2014.whatsthis.compat;
 
-import com.matthewperiut.accessoryapi.api.AccessoryRegister;
-import com.matthewperiut.accessoryapi.api.helper.AccessoryAccess;
+import com.periut.accessoryapi.api.AccessoryRegister;
+import com.periut.accessoryapi.api.helper.AccessoryAccess;
 import net.danygames2014.whatsthis.WhatsThis;
 import net.danygames2014.whatsthis.item.ProbeGogglesItem;
 import net.minecraft.entity.player.PlayerEntity;
