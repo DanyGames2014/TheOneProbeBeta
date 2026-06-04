@@ -23,7 +23,7 @@ public class ElementEntityRender {
 
             entity = EntityRegistry.create(entityName, Minecraft.INSTANCE.world);
 
-            if (entityNbt != null) {
+            if (entityNbt != null && entity != null) {
                 entity.read(entityNbt);
             }
 
@@ -41,5 +41,4 @@ public class ElementEntityRender {
 
         RenderHelper.renderEntity(entity, x, y, s);
     }
-
 }
