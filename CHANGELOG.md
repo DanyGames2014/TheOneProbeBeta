@@ -1,1 +1,2 @@
-* Fix a crash when an entity is null in element
+* Add an outline to the probe goggle accessory slot
+* Add a crafting recipe for the probe goggles
