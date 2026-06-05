@@ -23,17 +23,23 @@ import net.danygames2014.whatsthis.network.PacketReturnInfo;
 import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.client.event.gui.screen.container.TooltipBuildEvent;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
+import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.mod.entrypoint.EntrypointManager;
+import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
+import net.modificationstation.stationapi.api.tag.TagKey;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Formatting;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 import org.apache.logging.log4j.Logger;
@@ -74,6 +80,17 @@ public class WhatsThis {
 
         if (accessoryApiCompat) {
             AccessoryApiCompat.registerProbeAccessory();
+        }
+    }
+
+    @EventListener
+    public void registerRecipes(RecipeRegisterEvent event) {
+        RecipeRegisterEvent.Vanilla type = RecipeRegisterEvent.Vanilla.fromType(event.recipeId);
+
+        if (accessoryApiCompat) {
+            if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPED) {
+                CraftingRegistry.addShapedRecipe(new ItemStack(probeGoggles, 1), "gpg", 'g', TagKey.of(ItemRegistry.KEY, Identifier.of("c:glass_blocks")), 'p', probe);
+            }
         }
     }
 
