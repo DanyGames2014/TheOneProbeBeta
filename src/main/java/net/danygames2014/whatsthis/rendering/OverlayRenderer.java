@@ -1,5 +1,6 @@
 package net.danygames2014.whatsthis.rendering;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.danygames2014.whatsthis.WhatsThis;
 import net.danygames2014.whatsthis.api.*;
 import net.danygames2014.whatsthis.apiimpl.ProbeHitData;
@@ -44,27 +45,65 @@ import static net.danygames2014.whatsthis.api.TextStyleClass.ERROR;
 
 @SuppressWarnings("DuplicatedCode")
 public class OverlayRenderer {
-
     private static Map<Pair<Integer, BlockPos>, Pair<Long, ProbeInfo>> cachedInfo = new HashMap<>();
     private static Map<Integer, Pair<Long, ProbeInfo>> cachedEntityInfo = new HashMap<>();
     private static long lastCleanupTime = 0;
 
     // For a short while we keep displaying the last pair if we have no new information
     // to prevent flickering
-    private static Pair<Long, ProbeInfo> lastPair;
-    private static long lastPairTime = 0;
+    public static Pair<Long, ProbeInfo> lastPair;
+    public static long lastPairTime = 0;
 
     // When the server delays too long we also show some preliminary information already
-    private static long lastRenderedTime = -1;
+    public static long lastRenderedTime = -1;
+    
+    // Custom Renderers
+    public static final ObjectArrayList<ICustomOverlayRenderer> customRenderers = new ObjectArrayList<>();
 
     public static void renderHUD(ProbeMode mode, float partialTicks) {
-        float dist = Config.PROBE_CONFIG.probeDistance;
+        float probeDistance = Config.PROBE_CONFIG.probeDistance;
 
-        HitResult mouseOver = Minecraft.INSTANCE.crosshairTarget;
-        if (mouseOver != null) {
-            if (mouseOver.type == HitResultType.ENTITY) {
-                GL11.glPushMatrix();
+        // Get the current hit result
+        HitResult hitResult = Minecraft.INSTANCE.crosshairTarget;
+        
+        // If no entity was hit, try to raycast for a block
+        if (hitResult == null || hitResult.type != HitResultType.ENTITY) {
+            PlayerEntity player = Minecraft.INSTANCE.player;
+            Vec3d start = player.getPosition(partialTicks);
+            Vec3d vec31 = player.getLookVector(partialTicks);
+            Vec3d end = start.add(vec31.x * probeDistance, vec31.y * probeDistance, vec31.z * probeDistance);
+            
+            // Do our own raycast depending on if showing liquids is enabled
+            hitResult = player.world.raycast(start, end, Config.CLIENT_CONFIG.showLiquids);
+        }
 
+        // Check if we have a hit result
+        if (hitResult != null) {
+            // If we have a hit result execute the behavior for it
+            double scale = Config.CLIENT_CONFIG.tooltipScale;
+
+            Minecraft minecraft = Minecraft.INSTANCE;
+            ScreenScaler screenScaler = new ScreenScaler(minecraft.options, minecraft.displayWidth, minecraft.displayHeight);
+            double sw = screenScaler.getScaledWidth();
+            double sh = screenScaler.getScaledHeight();
+
+            GL11.glPushMatrix();
+            RenderHelper.setupOverlayRendering(sw * scale, sh * scale);
+            switch (hitResult.type) {
+                case ENTITY -> {
+                    renderHUDEntity(mode, hitResult, sw * scale, sh * scale);
+                }
+
+                case BLOCK -> {
+                    renderHUDBlock(mode, hitResult, sw * scale, sh * scale);
+                }
+            }
+            RenderHelper.setupOverlayRendering(sw, sh);
+            GL11.glPopMatrix();
+            
+        } else {
+            // If the hit result is null, execute custom renderers
+            if (!customRenderers.isEmpty()) {
                 double scale = Config.CLIENT_CONFIG.tooltipScale;
 
                 Minecraft minecraft = Minecraft.INSTANCE;
@@ -72,40 +111,14 @@ public class OverlayRenderer {
                 double sw = screenScaler.getScaledWidth();
                 double sh = screenScaler.getScaledHeight();
 
+                GL11.glPushMatrix();
                 RenderHelper.setupOverlayRendering(sw * scale, sh * scale);
-                renderHUDEntity(mode, mouseOver, sw * scale, sh * scale);
+                for (ICustomOverlayRenderer renderer : customRenderers) {
+                    renderer.render(mode, sw * scale, sh * scale);
+                }
                 RenderHelper.setupOverlayRendering(sw, sh);
                 GL11.glPopMatrix();
-
-                checkCleanup();
-                return;
             }
-        }
-
-        PlayerEntity entity = Minecraft.INSTANCE.player;
-        Vec3d start = entity.getPosition(partialTicks);
-        Vec3d vec31 = entity.getLookVector(partialTicks);
-        Vec3d end = start.add(vec31.x * dist, vec31.y * dist, vec31.z * dist);
-
-        mouseOver = entity.world.raycast(start, end, Config.CLIENT_CONFIG.showLiquids);
-        if (mouseOver == null) {
-            return;
-        }
-
-        if (mouseOver.type == HitResultType.BLOCK) {
-            GL11.glPushMatrix();
-
-            double scale = Config.CLIENT_CONFIG.tooltipScale;
-
-            ScreenScaler scaledresolution = new ScreenScaler(Minecraft.INSTANCE.options, Minecraft.INSTANCE.displayWidth, Minecraft.INSTANCE.displayHeight);
-            double sw = scaledresolution.getScaledWidth();
-            double sh = scaledresolution.getScaledHeight();
-
-            RenderHelper.setupOverlayRendering(sw * scale, sh * scale);
-            renderHUDBlock(mode, mouseOver, sw * scale, sh * scale);
-            RenderHelper.setupOverlayRendering(sw, sh);
-
-            GL11.glPopMatrix();
         }
 
         checkCleanup();
@@ -393,6 +406,9 @@ public class OverlayRenderer {
         if (time > lastCleanupTime + 5000) {
             cleanupCachedBlocks(time);
             cleanupCachedEntities(time);
+            for (ICustomOverlayRenderer renderer : customRenderers) {
+                renderer.cleanup();
+            }
             lastCleanupTime = time;
         }
     }

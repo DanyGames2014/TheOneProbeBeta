@@ -12,6 +12,7 @@ import net.danygames2014.whatsthis.apiimpl.providers.entity.EntityProbeInfoProvi
 import net.danygames2014.whatsthis.compat.AccessoryApiCompat;
 import net.danygames2014.whatsthis.config.Config;
 import net.danygames2014.whatsthis.event.BlockProbeInfoProviderRegistryEvent;
+import net.danygames2014.whatsthis.event.CustomOverlayRendererRegistryEvent;
 import net.danygames2014.whatsthis.event.EntityProbeInfoProviderRegistryEvent;
 import net.danygames2014.whatsthis.event.ProbeElementsRegistryEvent;
 import net.danygames2014.whatsthis.item.ProbeNoteItem;
@@ -119,6 +120,8 @@ public class WhatsThis {
         theOneProbeImp.registerEntityProvider(new EntityProbeInfoProvider());
         StationAPI.EVENT_BUS.post(new EntityProbeInfoProviderRegistryEvent());
 
+        StationAPI.EVENT_BUS.post(new CustomOverlayRendererRegistryEvent());
+        
         setupModCompat();
     }
 
